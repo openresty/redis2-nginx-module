@@ -1,0 +1,120 @@
+NAME
+
+    ngx_redis2 - Nginx upstream module for Redis 2.0 protocol
+
+    *This module is not distributed with the Nginx source.* See the
+        installation instructions.
+
+STATUS
+    This module is still under initial development. Not usable yet.
+
+SYNOPSIS
+
+    location /foo {
+        redis2_query set one first;
+        redis2_pass 127.0.0.1:6379;
+    }
+
+    location /bar {
+        redis2_raw_literal_query '*3\r\n$3\r\nset\r\n$3\r\none\r\n$5\r\nfirst\r\n';
+        redis2_pass 127.0.0.1:6379;
+    }
+
+    # GET /baz?get%20foo%0d%0a
+    location /baz {
+        set_unescape_uri $query $query_string;
+        redis2_raw_query $query;
+        redis2_pass 127.0.0.1:6379;
+    }
+
+Installation
+    1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
+        example, the version 0.8.54 (see nginx compatibility),
+
+    2. and then build the source with this module:
+
+        $ wget 'http://sysoev.ru/nginx/nginx-0.8.54.tar.gz'
+        $ tar -xzvf nginx-0.8.54.tar.gz
+        $ cd nginx-0.8.54/
+
+        # Here we assume you would install you nginx under /opt/nginx/.
+        $ ./configure --prefix=/opt/nginx \
+            --add-module=/path/to/redis2-nginx-module
+
+        $ make -j2
+        $ make install
+
+    Download the latest version of the release tarball of this module from
+    redis2-nginx-module file list
+    (<http://github.com/agentzh/redis2-nginx-module/downloads>).
+
+Compatibility
+    The following versions of Nginx should work with this module:
+
+    *   0.8.x >= 0.8.54
+
+    Earlier versions of Nginx will *not* work.
+
+    If you find that any particular version of Nginx above 0.8.54 does not
+    work with this module, please consider reporting a bug.
+
+Report Bugs
+    Although a lot of effort has been put into testing and code tuning,
+    there must be some serious bugs lurking somewhere in this module. So
+    whenever you are bitten by any quirks, please don't hesitate to
+
+    1.  send a bug report or even patches to <agentzh@gmail.com>,
+
+    2.  or create a ticket on the issue tracking interface
+        (<http://github.com/agentzh/redis2-nginx-module/issues>)
+        provided by GitHub.
+
+Source Repository
+    Available on github at agentzh/redis2-nginx-module
+    (<http://github.com/agentzh/redis2-nginx-module>).
+
+TODO
+    * Add the "redis2_as_json" directive to allow emitting JSON directly.
+
+AUTHORS
+    Yichun "agentzh" Zhang (章亦春) < agentzh@gmail.com >
+
+Getting involved
+    You'll be very welcomed to submit patches to the author or just ask for
+    a commit bit to the source repository on GitHub.
+
+Copyright & License
+    Copyright (c) 2010, Taobao Inc., Alibaba Group ( http://www.taobao.com
+    ).
+
+    Copyright (c) 2010, Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>.
+
+    This module is licensed under the terms of the BSD license.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+    *   Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+    *   Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    *   Neither the name of the Taobao Inc. nor the names of its
+        contributors may be used to endorse or promote products derived from
+        this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+    TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
