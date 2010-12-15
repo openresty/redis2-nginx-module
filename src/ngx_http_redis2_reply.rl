@@ -5,11 +5,12 @@
 #include "ngx_http_redis2_util.h"
 
 
-%% machine status_code_reply;
+%% machine single_line_reply;
 %% write data;
 
+
 ngx_int_t
-ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
+ngx_http_redis2_process_single_line_reply(ngx_http_redis2_ctx_t *ctx,
         ssize_t bytes)
 {
     ngx_buf_t                *b;
@@ -21,14 +22,16 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
     int                       cs;
     u_char                   *p;
     u_char                   *pe;
+    ngx_flag_t                first_time = 0;
 
     u = ctx->request->upstream;
     b = &u->buffer;
 
     if (ctx->state == NGX_ERROR) {
+        first_time = 1;
         dd("init the state machine");
 
-        %% machine status_code_reply;
+        %% machine single_line_reply;
         %% write init;
 
         ctx->state = cs;
@@ -41,26 +44,30 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
     p  = b->last;
     pe = b->last + bytes;
 
-    %% machine status_code_reply;
-    %% include "status_code_reply.rl";
+    %% machine single_line_reply;
+    %% include "single_line_reply.rl";
     %% write exec;
 
     dd("state after exec: %d, done: %d", cs, (int) done);
 
     ctx->state = cs;
 
-    if (cs == status_code_reply_error) {
+    if (cs == single_line_reply_error) {
 
-        buf.data = b->last;
-        buf.len = bytes;
+        buf.data = b->last - 1;
+        buf.len = bytes + 1;
 
         ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
             "Redis server returns invalid response at %z near "
             "\"%V\"",
-            (ssize_t) (b->last - b->pos),
+            (ssize_t) (b->last - b->pos + 1),
             &buf);
 
         return NGX_ERROR;
+    }
+
+    if (first_time) {
+        b->last--;
     }
 
     rc = ngx_http_redis2_output_buf(ctx, b->last, p - b->last);
@@ -74,24 +81,6 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
         u->length = 0;
     }
 
-    return NGX_OK;
-}
-
-
-ngx_int_t
-ngx_http_redis2_process_error_reply(ngx_http_redis2_ctx_t *ctx,
-        ssize_t bytes)
-{
-    /* TODO */
-    return NGX_OK;
-}
-
-
-ngx_int_t
-ngx_http_redis2_process_integer_reply(ngx_http_redis2_ctx_t *ctx,
-        ssize_t bytes)
-{
-    /* TODO */
     return NGX_OK;
 }
 

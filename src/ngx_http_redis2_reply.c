@@ -11,17 +11,18 @@
 #line 9 "src/ngx_http_redis2_reply.rl"
 
 #line 14 "src/ngx_http_redis2_reply.c"
-static const int status_code_reply_start = 1;
-static const int status_code_reply_first_final = 3;
-static const int status_code_reply_error = 0;
+static const int single_line_reply_start = 1;
+static const int single_line_reply_first_final = 3;
+static const int single_line_reply_error = 0;
 
-static const int status_code_reply_en_main = 1;
+static const int single_line_reply_en_main = 1;
 
 
 #line 10 "src/ngx_http_redis2_reply.rl"
 
+
 ngx_int_t
-ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
+ngx_http_redis2_process_single_line_reply(ngx_http_redis2_ctx_t *ctx,
         ssize_t bytes)
 {
     ngx_buf_t                *b;
@@ -33,22 +34,24 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
     int                       cs;
     u_char                   *p;
     u_char                   *pe;
+    ngx_flag_t                first_time = 0;
 
     u = ctx->request->upstream;
     b = &u->buffer;
 
     if (ctx->state == NGX_ERROR) {
+        first_time = 1;
         dd("init the state machine");
 
         
-#line 32 "src/ngx_http_redis2_reply.rl"
+#line 35 "src/ngx_http_redis2_reply.rl"
         
-#line 47 "src/ngx_http_redis2_reply.c"
+#line 50 "src/ngx_http_redis2_reply.c"
 	{
-	cs = status_code_reply_start;
+	cs = single_line_reply_start;
 	}
 
-#line 33 "src/ngx_http_redis2_reply.rl"
+#line 36 "src/ngx_http_redis2_reply.rl"
 
         ctx->state = cs;
 
@@ -61,11 +64,11 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
     pe = b->last + bytes;
 
     
-#line 45 "src/ngx_http_redis2_reply.rl"
+#line 48 "src/ngx_http_redis2_reply.rl"
     
-#line 46 "src/ngx_http_redis2_reply.rl"
+#line 49 "src/ngx_http_redis2_reply.rl"
     
-#line 69 "src/ngx_http_redis2_reply.c"
+#line 72 "src/ngx_http_redis2_reply.c"
 	{
 	if ( p == pe )
 		goto _test_eof;
@@ -88,7 +91,7 @@ case 2:
 	}
 	goto st1;
 tr2:
-#line 4 "src/common.rl"
+#line 6 "src/common.rl"
 	{
         done = 1;
     }
@@ -97,7 +100,7 @@ st3:
 	if ( ++p == pe )
 		goto _test_eof3;
 case 3:
-#line 101 "src/ngx_http_redis2_reply.c"
+#line 104 "src/ngx_http_redis2_reply.c"
 	goto st0;
 st0:
 cs = 0;
@@ -111,24 +114,28 @@ cs = 0;
 	_out: {}
 	}
 
-#line 47 "src/ngx_http_redis2_reply.rl"
+#line 50 "src/ngx_http_redis2_reply.rl"
 
     dd("state after exec: %d, done: %d", cs, (int) done);
 
     ctx->state = cs;
 
-    if (cs == status_code_reply_error) {
+    if (cs == single_line_reply_error) {
 
-        buf.data = b->last;
-        buf.len = bytes;
+        buf.data = b->last - 1;
+        buf.len = bytes + 1;
 
         ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
             "Redis server returns invalid response at %z near "
             "\"%V\"",
-            (ssize_t) (b->last - b->pos),
+            (ssize_t) (b->last - b->pos + 1),
             &buf);
 
         return NGX_ERROR;
+    }
+
+    if (first_time) {
+        b->last--;
     }
 
     rc = ngx_http_redis2_output_buf(ctx, b->last, p - b->last);
@@ -142,24 +149,6 @@ cs = 0;
         u->length = 0;
     }
 
-    return NGX_OK;
-}
-
-
-ngx_int_t
-ngx_http_redis2_process_error_reply(ngx_http_redis2_ctx_t *ctx,
-        ssize_t bytes)
-{
-    /* TODO */
-    return NGX_OK;
-}
-
-
-ngx_int_t
-ngx_http_redis2_process_integer_reply(ngx_http_redis2_ctx_t *ctx,
-        ssize_t bytes)
-{
-    /* TODO */
     return NGX_OK;
 }
 

@@ -158,15 +158,15 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
 
     switch (chr) {
         case '+':
-            ctx->filter = ngx_http_redis2_process_status_code_reply;
+            ctx->filter = ngx_http_redis2_process_single_line_reply;
             break;
 
         case '-':
-            ctx->filter = ngx_http_redis2_process_error_reply;
+            ctx->filter = ngx_http_redis2_process_single_line_reply;
             break;
 
         case ':':
-            ctx->filter = ngx_http_redis2_process_integer_reply;
+            ctx->filter = ngx_http_redis2_process_single_line_reply;
             break;
 
         case '$':

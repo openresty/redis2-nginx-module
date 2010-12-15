@@ -1,9 +1,7 @@
 %%{
-    machine status_code_reply;
+    machine single_line_reply;
 
     include common "common.rl";
-
-    CRLF = "\r\n";
 
     response = (any* -- CRLF) CRLF
              ;
