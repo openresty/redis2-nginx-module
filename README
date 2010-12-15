@@ -22,7 +22,7 @@ SYNOPSIS
 
     # GET /baz?get%20foo%0d%0a
     location /baz {
-        set_unescape_uri $query $query_string;
+        set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
         redis2_raw_query $query;
         redis2_pass 127.0.0.1:6379;
     }
