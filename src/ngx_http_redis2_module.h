@@ -18,7 +18,7 @@ typedef struct {
 typedef struct ngx_http_redis2_ctx_s  ngx_http_redis2_ctx_t;
 
 typedef ngx_int_t (*ngx_http_redis2_filter_handler_ptr)
-    (ngx_http_redis2_ctx_t *ctx);
+    (ngx_http_redis2_ctx_t *ctx, ssize_t bytes);
 
 
 struct ngx_http_redis2_ctx_s {
