@@ -26,6 +26,8 @@ struct ngx_http_redis2_ctx_s {
     int                        state;
     size_t                     chunk_size;
     size_t                     chunk_bytes_read;
+    size_t                     chunks_read;
+    size_t                     chunk_count;
 
     ngx_http_redis2_filter_handler_ptr  filter;
 };

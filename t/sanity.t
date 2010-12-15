@@ -157,7 +157,7 @@ __DATA__
     }
 
     location /get {
-        redis2_literal_raw_query 'get one\r\n\r\n';
+        redis2_literal_raw_query 'get one\r\n';
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
     }
 
@@ -172,24 +172,38 @@ __DATA__
 
 
 
-=== TEST 11: multi bulk reply
+=== TEST 11: multi bulk reply (empty)
 --- config
-    location /set {
-        redis2_literal_raw_query 'set one 0\r\n\r\n';
+    location /set_foo {
+        redis2_literal_raw_query 'set foo 0\r\n\r\n';
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
     }
 
-    location /get {
-        redis2_literal_raw_query 'get one\r\n\r\n';
+    location /set_bar {
+        redis2_literal_raw_query 'set bar 0\r\n\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+
+    location /mget {
+        redis2_literal_raw_query 'mget foo bar\r\n';
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
     }
 
     location /main {
-        echo_location /set;
-        echo_location /get;
+        echo_location /set_foo;
+        echo_location /set_bar;
+        echo_location /mget;
     }
 --- request
     GET /main
 --- response_body eval
-"+OK\r\n\$0\r\n\r\n"
---- SKIP
+"+OK\r
++OK\r
+*2\r
+\$0\r
+\r
+\$0\r
+\r
+"
+
