@@ -3,7 +3,7 @@
 
     include common "common.rl";
 
-    response = (any* -- CRLF) CRLF
+    response = any (any* -- CRLF) CRLF
              ;
 
     main := response @finalize

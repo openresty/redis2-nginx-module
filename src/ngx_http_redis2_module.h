@@ -24,6 +24,8 @@ typedef ngx_int_t (*ngx_http_redis2_filter_handler_ptr)
 struct ngx_http_redis2_ctx_s {
     ngx_http_request_t        *request;
     int                        state;
+    size_t                     chunk_size;
+    size_t                     chunk_bytes_read;
 
     ngx_http_redis2_filter_handler_ptr  filter;
 };

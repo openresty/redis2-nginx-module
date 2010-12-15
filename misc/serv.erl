@@ -34,6 +34,6 @@ get_request(Sock) ->
     send_response(Sock).
 
 send_response(Sock) ->
-    gen_tcp:send(Sock, "+OK\r\nabc"),
+    gen_tcp:send(Sock, "$1a\r\n"),
     gen_tcp:close(Sock).
 

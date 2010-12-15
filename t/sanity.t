@@ -88,3 +88,108 @@ __DATA__
     GET /foo
 --- response_body_like: ^:\d+\r\n$
 
+
+
+=== TEST 7: bulk reply
+--- config
+    location /foo {
+        redis2_literal_raw_query 'get not_exist_yet\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+--- request
+    GET /foo
+--- response_body eval
+"\$-1\r\n"
+
+
+
+=== TEST 8: bulk reply
+--- config
+    location /set {
+        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /get {
+        redis2_literal_raw_query 'get one\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /main {
+        echo_location /set;
+        echo_location /get;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$5\r\nfirst\r\n"
+
+
+
+=== TEST 9: bulk reply
+--- config
+    location /set {
+        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /get {
+        redis2_literal_raw_query 'get one\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /main {
+        echo_location /set;
+        echo_location /get;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$5\r\nfirst\r\n"
+
+
+
+=== TEST 10: bulk reply (empty)
+--- config
+    location /set {
+        redis2_literal_raw_query 'set one 0\r\n\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /get {
+        redis2_literal_raw_query 'get one\r\n\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /main {
+        echo_location /set;
+        echo_location /get;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$0\r\n\r\n"
+
+
+
+=== TEST 11: multi bulk reply
+--- config
+    location /set {
+        redis2_literal_raw_query 'set one 0\r\n\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /get {
+        redis2_literal_raw_query 'get one\r\n\r\n';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /main {
+        echo_location /set;
+        echo_location /get;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$0\r\n\r\n"
+--- SKIP

@@ -56,7 +56,7 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
     u->abort_request = ngx_http_redis2_abort_request;
     u->finalize_request = ngx_http_redis2_finalize_request;
 
-    ctx = ngx_palloc(r->pool, sizeof(ngx_http_redis2_ctx_t));
+    ctx = ngx_pcalloc(r->pool, sizeof(ngx_http_redis2_ctx_t));
     if (ctx == NULL) {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
@@ -152,7 +152,7 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
 
     /* the first char is the response header */
 
-    chr = *b->pos++;
+    chr = *b->pos;
 
     dd("response heazder: %c (ascii %d)", chr, chr);
 
