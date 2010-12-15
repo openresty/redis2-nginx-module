@@ -48,5 +48,4 @@ __DATA__
     GET /foo
 --- response_body eval
 "OK\r\n"
---- ONLY
 

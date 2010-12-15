@@ -1,5 +1,3 @@
-
-#line 1 "src/ngx_http_redis2_reply.rl"
 #define DDEBUG 1
 #include "ddebug.h"
 
@@ -7,18 +5,8 @@
 #include "ngx_http_redis2_util.h"
 
 
-
-#line 9 "src/ngx_http_redis2_reply.rl"
-
-#line 14 "src/ngx_http_redis2_reply.c"
-static const int status_code_reply_start = 1;
-static const int status_code_reply_first_final = 3;
-static const int status_code_reply_error = 0;
-
-static const int status_code_reply_en_main = 1;
-
-
-#line 10 "src/ngx_http_redis2_reply.rl"
+%% machine status_code_reply;
+%% write data;
 
 ngx_int_t
 ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
@@ -40,15 +28,8 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
     if (ctx->state == NGX_ERROR) {
         dd("init the state machine");
 
-        
-#line 32 "src/ngx_http_redis2_reply.rl"
-        
-#line 47 "src/ngx_http_redis2_reply.c"
-	{
-	cs = status_code_reply_start;
-	}
-
-#line 33 "src/ngx_http_redis2_reply.rl"
+        %% machine status_code_reply;
+        %% write init;
 
         ctx->state = cs;
 
@@ -60,58 +41,9 @@ ngx_http_redis2_process_status_code_reply(ngx_http_redis2_ctx_t *ctx,
     p  = b->last;
     pe = b->last + bytes;
 
-    
-#line 45 "src/ngx_http_redis2_reply.rl"
-    
-#line 46 "src/ngx_http_redis2_reply.rl"
-    
-#line 69 "src/ngx_http_redis2_reply.c"
-	{
-	if ( p == pe )
-		goto _test_eof;
-	switch ( cs )
-	{
-st1:
-	if ( ++p == pe )
-		goto _test_eof1;
-case 1:
-	if ( (*p) == 13 )
-		goto st2;
-	goto st1;
-st2:
-	if ( ++p == pe )
-		goto _test_eof2;
-case 2:
-	switch( (*p) ) {
-		case 10: goto tr2;
-		case 13: goto st2;
-	}
-	goto st1;
-tr2:
-#line 4 "src/common.rl"
-	{
-        done = 1;
-    }
-	goto st3;
-st3:
-	if ( ++p == pe )
-		goto _test_eof3;
-case 3:
-#line 101 "src/ngx_http_redis2_reply.c"
-	goto st0;
-st0:
-cs = 0;
-	goto _out;
-	}
-	_test_eof1: cs = 1; goto _test_eof; 
-	_test_eof2: cs = 2; goto _test_eof; 
-	_test_eof3: cs = 3; goto _test_eof; 
-
-	_test_eof: {}
-	_out: {}
-	}
-
-#line 47 "src/ngx_http_redis2_reply.rl"
+    %% machine status_code_reply;
+    %% include "status_code_reply.rl";
+    %% write exec;
 
     dd("state after exec: %d, done: %d", cs, (int) done);
 

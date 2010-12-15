@@ -62,6 +62,7 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
     }
 
     ctx->request = r;
+    ctx->state = NGX_ERROR;
 
     ngx_http_set_ctx(r, ctx, ngx_http_redis2_module);
 
@@ -138,6 +139,7 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
     ngx_http_redis2_ctx_t       *ctx;
     ngx_buf_t                   *b;
     u_char                       chr;
+    ngx_str_t                    buf;
 
     u = r->upstream;
     b = &u->buffer;
@@ -176,8 +178,11 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
             break;
 
         default:
+            buf.data = b->pos - 1;
+            buf.len = b->last - buf.data;
+
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                          "redis2 sent invalid response: \"%V\"", b);
+                          "redis2 sent invalid response: \"%V\"", &buf);
 
             return NGX_HTTP_UPSTREAM_INVALID_HEADER;
     }
