@@ -51,3 +51,4 @@ src/cipher.c
 src/cipher.h
 pack.sh
 *.html
+t/servroot/
