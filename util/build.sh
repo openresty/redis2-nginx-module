@@ -40,7 +40,6 @@ if [[ "$BUILD_CLEAN" -eq 1 || ! -f Makefile || "$root/config" -nt Makefile || "$
           --add-module=$root $opts \
           --add-module=$root/../eval-nginx-module \
           --add-module=$root/../echo-nginx-module \
-          --add-module=$root/../memc-nginx-module \
           --add-module=$home/work/nginx/ngx_http_upstream_keepalive-2ce9d8a1ca93 \
           --with-debug
           #--add-module=$home/work/nginx/nginx_upstream_hash-0.3 \
