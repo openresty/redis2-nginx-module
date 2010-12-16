@@ -46,8 +46,30 @@ Directives
 
 Connection Pool
     You can use Maxim Dounin's excellent ngx_http_upstream_keepalive module
+    ( http://mdounin.ru/hg/ngx_http_upstream_keepalive/ )
     with this module to privide TCP connection pool
     for Redis.
+
+    A sample config snippet looks like this
+
+      http {
+        upstream backend {
+          server 127.0.0.1:6379;
+
+          # a pool with at most 1024 connections
+          # and do not distinguish the servers:
+          keepalive 1024 single;
+        }
+
+        server {
+            ...
+            location /redis {
+                set_unescape_uri $query $arg_query;
+                redis2_query $query;
+                redis2_pass backend;
+            }
+        }
+      }
 
 Installation
     1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
