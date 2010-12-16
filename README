@@ -1,6 +1,6 @@
 NAME
 
-    ngx_redis2 - Nginx upstream module for Redis 2.0 protocol
+    ngx_redis2 - Nginx upstream module for the Redis 2.0 protocol
 
     *This module is not distributed with the Nginx source.* See the
         installation instructions.
