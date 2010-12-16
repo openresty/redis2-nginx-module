@@ -27,6 +27,28 @@ SYNOPSIS
         redis2_pass 127.0.0.1:6379;
     }
 
+Directives
+    redis2_raw_query
+
+    redis2_literal_raw_query
+
+    redis2_pass
+
+    redis2_connect_timeout
+
+    redis2_send_timeout
+
+    redis2_read_timeout
+
+    redis2_buffer_size
+
+    redis2_next_upstream
+
+Connection Pool
+    You can use Maxim Dounin's excellent ngx_http_upstream_keepalive module
+    with this module to privide TCP connection pool
+    for Redis.
+
 Installation
     1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
         example, the version 0.8.53 (see nginx compatibility),
@@ -49,6 +71,10 @@ Installation
     (<http://github.com/agentzh/redis2-nginx-module/downloads>).
 
 Compatibility
+    Redis 2.0, 2.2, and above should work with this module
+    without any issues. So is the "Alchemy Database"
+    (aka redisql).
+
     The following versions of Nginx should work with this module:
 
     *   0.8.x >= 0.8.53

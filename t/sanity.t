@@ -262,7 +262,7 @@ __DATA__
 
 
 
-=== TEST 15: lua compatibility
+=== TEST 15: lua compatibility (GET subrequest)
 --- config
     location /redis {
         internal;
@@ -274,7 +274,31 @@ __DATA__
     location /main {
         content_by_lua '
             local res = ngx.location.capture("/redis",
-                { args = { query = "ping\\r\\n" } })
+                { args = { query = "ping\\r\\n" } }
+            )
+            ngx.print("[" .. res.body .. "]")
+        ';
+    }
+--- request
+    GET /main
+--- response_body eval
+"[+PONG\r\n]"
+
+
+=== TEST 15: lua compatibility (POST subrequest)
+--- config
+    location /redis {
+        internal;
+        redis2_raw_query $echo_request_body;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /main {
+        content_by_lua '
+            local res = ngx.location.capture("/redis",
+                { method = ngx.HTTP_PUT,
+                  body = "ping\\r\\n" }
+            )
             ngx.print("[" .. res.body .. "]")
         ';
     }

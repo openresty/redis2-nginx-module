@@ -26,10 +26,6 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
     ngx_str_t                        target;
     ngx_url_t                        url;
 
-    if (!(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
-        return NGX_HTTP_NOT_ALLOWED;
-    }
-
     rc = ngx_http_discard_request_body(r);
 
     if (rc != NGX_OK) {
