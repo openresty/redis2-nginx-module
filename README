@@ -73,7 +73,7 @@ Connection Pool
 
 Lua Interoperability
     This module can be served as a non-blocking redis2 client
-    for ngx_lua.
+    for ngx_lua ( http://github.com/chaoslawful/lua-nginx-module ).
 
     Here's an example using a GET subrequest:
 
