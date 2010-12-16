@@ -6,12 +6,12 @@ NAME
         installation instructions.
 
 STATUS
-    This module is still under initial development. Not usable yet.
+    This module is still under development and is considered experimental.
 
 SYNOPSIS
 
     location /foo {
-        redis2_query set one first;
+        redis2_query set one first; # still is a TODO
         redis2_pass 127.0.0.1:6379;
     }
 
