@@ -266,7 +266,7 @@ __DATA__
 --- config
     location /redis {
         internal;
-        set $query 'ping\r\n';
+        set_unescape_uri $query $arg_query;
         redis2_raw_query $query;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
     }
