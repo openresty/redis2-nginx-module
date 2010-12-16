@@ -71,6 +71,105 @@ Connection Pool
         }
       }
 
+Lua Interoperability
+    This module can be served as a non-blocking redis2 client
+    for ngx_lua.
+
+    Here's an example using a GET subrequest:
+
+        location /redis {
+            internal;
+
+            # set_unescape_uri is provided by ngx_set_misc
+            set_unescape_uri $query $arg_query;
+
+            redis2_raw_query $query;
+            redis2_pass 127.0.0.1:6379;
+        }
+
+        location /main {
+            content_by_lua '
+                local res = ngx.location.capture("/redis",
+                    { args = { query = "ping\\r\\n" } }
+                )
+                ngx.print("[" .. res.body .. "]")
+            ';
+        }
+
+    Then accessing /main yields
+
+        [+PONG\r\n]
+
+    where "\r\n" is CRLF.
+
+    You can also use POST/PUT subrequests to transfer the raw redis
+    request via request body, which does not require URI escaping
+    and unescaping, thus saving some CPU cycles. Here's such an example:
+
+        location /redis {
+            internal;
+
+            # the $echo_request_body is provided by the ngx_echo module
+            redis2_raw_query $echo_request_body;
+
+            redis2_pass 127.0.0.1:6379;
+        }
+
+        location /main {
+            content_by_lua '
+                local res = ngx.location.capture("/redis",
+                    { method = ngx.HTTP_PUT,
+                      body = "ping\\r\\n" }
+                )
+                ngx.print("[" .. res.body .. "]")
+            ';
+        }
+
+    This yeilds exactly the same output as the previous (GET) sample.
+
+    One can also use Lua to pick up a concrete Redis backend
+    based on some complicated hashing rules. For
+    instance,
+
+        upstream redis-a {
+            server foo.bar.com:6379;
+        }
+
+        upstream redis-b {
+            server bar.baz.com:6379;
+        }
+
+        upstream redis-c {
+            server blah.blah.org:6379;
+        }
+
+        server {
+            ...
+
+            location /redis {
+                set_unescape_uri $query $arg_query;
+                redis2_query $query;
+                redis2_pass $arg_backend;
+            }
+
+            location /foo {
+                content_by_lua "
+                    -- pick up a server randomly
+                    local servers = {'redis-a', 'redis-b', 'redis-c'}
+                    local i = ngx.time() % #servers + 1;
+                    local srv = servers[i]
+
+                    local res = ngx.location.capture('/redis',
+                        { args = {
+                            query = '...',
+                            backend = srv
+                          } }
+                    )
+                    ngx.say(res.body)
+                ";
+            }
+        }
+
 Installation
     1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
         example, the version 0.8.53 (see nginx compatibility),
