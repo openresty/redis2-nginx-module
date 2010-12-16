@@ -27,6 +27,7 @@ fi
 #tar -xzvf nginx-$version.tar.gz || exit 1
 #cp $root/../no-pool-nginx/nginx-0.8.53-no_pool.patch ./
 #patch -p0 < nginx-0.8.53-no_pool.patch
+#patch -p0 < ~/work/nginx-$version-rewrite_phase_fix.patch || exit 1
 
 if [ -n "$2" ]; then
     cd nginx-$version-$2/
@@ -38,10 +39,13 @@ if [[ "$BUILD_CLEAN" -eq 1 || ! -f Makefile || "$root/config" -nt Makefile || "$
     ./configure --prefix=/opt/nginx \
           --with-http_addition_module \
           --add-module=$root $opts \
-          --add-module=$root/../eval-nginx-module \
+          --add-module=$root/../vallery/eval-nginx-module \
           --add-module=$root/../echo-nginx-module \
+          --add-module=$root/../ndk-nginx-module \
+          --add-module=$root/../lua-nginx-module \
           --add-module=$home/work/nginx/ngx_http_upstream_keepalive-2ce9d8a1ca93 \
           --with-debug
+          #--add-module=$root/../eval-nginx-module \
           #--add-module=$home/work/nginx/nginx_upstream_hash-0.3 \
   #--without-http_ssi_module  # we cannot disable ssi because echo_location_async depends on it (i dunno why?!)
 

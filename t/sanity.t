@@ -240,3 +240,44 @@ __DATA__
 --- response_body eval
 "+PONG\r\n"
 
+
+=== TEST 12: eval compatibility
+--- config
+    location /main {
+        default_type 'application/octet-stream';
+        eval $res {
+            set $query 'ping\r\n';
+            redis2_raw_query $query;
+            redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        }
+        echo "[$res]";
+    }
+--- request
+    GET /main
+--- response_body eval
+"[+PONG\r\n]"
+--- timeout: 5
+--- SKIP
+
+
+=== TEST 12: lua compatibility
+--- config
+    location /redis {
+        internal;
+        set $query 'ping\r\n';
+        redis2_raw_query $query;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+
+    location /main {
+        content_by_lua '
+            local res = ngx.location.capture("/redis",
+                { args = { query = "ping\\r\\n" } })
+            ngx.print("[" .. res.body .. "]")
+        ';
+    }
+--- request
+    GET /main
+--- response_body eval
+"[+PONG\r\n]"
+
