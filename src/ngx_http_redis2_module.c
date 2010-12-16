@@ -1,8 +1,9 @@
-#define DDEBUG 1
+#define DDEBUG 0
 #include "ddebug.h"
 
 #include "ngx_http_redis2_module.h"
 #include "ngx_http_redis2_handler.h"
+#include "ngx_http_redis2_util.h"
 
 
 static void *ngx_http_redis2_create_loc_conf(ngx_conf_t *cf);
@@ -25,12 +26,20 @@ static ngx_conf_bitmask_t  ngx_http_redis2_next_upstream_masks[] = {
 
 static ngx_command_t  ngx_http_redis2_commands[] = {
 
+    { ngx_string("redis2_raw_query"),
+      NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF|NGX_CONF_TAKE1,
+      ngx_http_redis2_set_complex_value_slot,
+      NGX_HTTP_LOC_CONF_OFFSET,
+      offsetof(ngx_http_redis2_loc_conf_t, complex_query),
+      NULL },
+
     { ngx_string("redis2_literal_raw_query"),
       NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF|NGX_CONF_TAKE1,
       ngx_conf_set_str_slot,
       NGX_HTTP_LOC_CONF_OFFSET,
       offsetof(ngx_http_redis2_loc_conf_t, literal_query),
       NULL },
+
 
     { ngx_string("redis2_pass"),
       NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF|NGX_CONF_TAKE1,
@@ -134,6 +143,8 @@ ngx_http_redis2_create_loc_conf(ngx_conf_t *cf)
      *     conf->upstream.temp_path = NULL;
      *     conf->upstream.uri = { 0, NULL };
      *     conf->upstream.location = NULL;
+     *     conf->complex_query = NULL;
+     *     conf->literal_query = { 0, NULL };
      */
 
     conf->upstream.connect_timeout = NGX_CONF_UNSET_MSEC;
@@ -192,6 +203,10 @@ ngx_http_redis2_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 
     if (conf->upstream.upstream == NULL) {
         conf->upstream.upstream = prev->upstream.upstream;
+    }
+
+    if (conf->complex_query == NULL) {
+        conf->complex_query = prev->complex_query;
     }
 
     return NGX_CONF_OK;

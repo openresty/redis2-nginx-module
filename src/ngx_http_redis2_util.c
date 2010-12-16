@@ -36,3 +36,44 @@ ngx_http_redis2_output_buf(ngx_http_redis2_ctx_t *ctx, u_char *p,
     return NGX_OK;
 }
 
+
+char *
+ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf,
+        ngx_command_t *cmd, void *conf)
+{
+    char                             *p = conf;
+    ngx_http_complex_value_t        **field;
+    ngx_str_t                        *value;
+    ngx_http_compile_complex_value_t  ccv;
+
+    field = (ngx_http_complex_value_t **) (p + cmd->offset);
+
+    if (*field) {
+        return "is duplicate";
+    }
+
+    *field = ngx_palloc(cf->pool, sizeof(ngx_http_complex_value_t));
+    if (*field == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    value = cf->args->elts;
+
+    if (value[1].len == 0) {
+        ngx_memzero(*field, sizeof(ngx_http_complex_value_t));
+        return NGX_OK;
+    }
+
+    ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
+
+    ccv.cf = cf;
+    ccv.value = &value[1];
+    ccv.complex_value = *field;
+
+    if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
+        return NGX_CONF_ERROR;
+    }
+
+    return NGX_CONF_OK;
+}
+
