@@ -16,7 +16,7 @@ SYNOPSIS
     }
 
     location /bar {
-        redis2_literal_raw_query '*3\r\n$3\r\nset\r\n$3\r\none\r\n$5\r\nfirst\r\n';
+        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
         redis2_pass 127.0.0.1:6379;
     }
 
