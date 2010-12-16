@@ -109,7 +109,7 @@ Lua Interoperability
         location /redis {
             internal;
 
-            # the $echo_request_body is provided by the ngx_echo module
+            # $echo_request_body is provided by the ngx_echo module
             redis2_raw_query $echo_request_body;
 
             redis2_pass 127.0.0.1:6379;
