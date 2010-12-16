@@ -241,7 +241,8 @@ __DATA__
 "+PONG\r\n"
 
 
-=== TEST 12: eval compatibility
+
+=== TEST 14: eval compatibility
 --- config
     location /main {
         default_type 'application/octet-stream';
@@ -260,7 +261,8 @@ __DATA__
 --- SKIP
 
 
-=== TEST 12: lua compatibility
+
+=== TEST 15: lua compatibility
 --- config
     location /redis {
         internal;
