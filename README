@@ -16,7 +16,14 @@ SYNOPSIS
     }
 
     location /bar {
-        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+        # $ is not special here...
+        redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
+        redis2_pass 127.0.0.1:6379;
+    }
+
+    location /bar {
+        # variables can be used below and $ is special
+        redis2_raw_query 'set one 5\r\nfirst\r\n';
         redis2_pass 127.0.0.1:6379;
     }
 
