@@ -13,6 +13,8 @@ typedef struct {
     ngx_http_upstream_conf_t   upstream;
     ngx_str_t                  literal_query;
     ngx_http_complex_value_t  *complex_query;
+    ngx_http_complex_value_t  *complex_target;
+
 } ngx_http_redis2_loc_conf_t;
 
 

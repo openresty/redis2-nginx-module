@@ -77,3 +77,46 @@ ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf,
     return NGX_CONF_OK;
 }
 
+
+ngx_http_upstream_srv_conf_t *
+ngx_http_redis2_upstream_add(ngx_http_request_t *r, ngx_url_t *url)
+{
+    ngx_http_upstream_main_conf_t  *umcf;
+    ngx_http_upstream_srv_conf_t  **uscfp;
+    ngx_uint_t                      i;
+
+    umcf = ngx_http_get_module_main_conf(r, ngx_http_upstream_module);
+
+    uscfp = umcf->upstreams.elts;
+
+    for (i = 0; i < umcf->upstreams.nelts; i++) {
+
+        if (uscfp[i]->host.len != url->host.len
+            || ngx_strncasecmp(uscfp[i]->host.data, url->host.data, url->host.len)
+               != 0)
+        {
+            dd("upstream_add: host not match");
+            continue;
+        }
+
+        if (uscfp[i]->port != url->port) {
+            dd("upstream_add: port not match: %d != %d",
+                    (int) uscfp[i]->port, (int) url->port);
+            continue;
+        }
+
+        if (uscfp[i]->default_port && url->default_port
+            && uscfp[i]->default_port != url->default_port)
+        {
+            dd("upstream_add: default_port not match");
+            continue;
+        }
+
+        return uscfp[i];
+    }
+
+    dd("no upstream found: %.*s", (int) url->host.len, url->host.data);
+
+    return NULL;
+}
+

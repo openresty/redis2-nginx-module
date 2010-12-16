@@ -221,3 +221,22 @@ __DATA__
 --- response_body eval
 "+PONG\r\n"
 
+
+
+=== TEST 13: multi bulk reply (empty)
+--- http_config
+    upstream blah {
+        server 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+--- config
+    location /main {
+        set $query 'ping\r\n';
+        redis2_raw_query $query;
+        set $backend blah;
+        redis2_pass $backend;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+PONG\r\n"
+

@@ -3,6 +3,7 @@
 
 #include "ngx_http_redis2_handler.h"
 #include "ngx_http_redis2_reply.h"
+#include "ngx_http_redis2_util.h"
 
 
 static ngx_int_t ngx_http_redis2_create_request(ngx_http_request_t *r);
@@ -22,6 +23,8 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
     ngx_http_upstream_t             *u;
     ngx_http_redis2_ctx_t           *ctx;
     ngx_http_redis2_loc_conf_t      *rlcf;
+    ngx_str_t                        target;
+    ngx_url_t                        url;
 
     if (!(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
         return NGX_HTTP_NOT_ALLOWED;
@@ -43,10 +46,40 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
 
     u = r->upstream;
 
+    rlcf = ngx_http_get_module_loc_conf(r, ngx_http_redis2_module);
+
+    if (rlcf->complex_target) {
+        /* variables used in the lz_st_pass directive */
+
+        if (ngx_http_complex_value(r, rlcf->complex_target, &target)
+                != NGX_OK)
+        {
+            return NGX_ERROR;
+        }
+
+        if (target.len == 0) {
+            ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+                    "handler: empty \"lz_st_pass\" target");
+            return NGX_HTTP_INTERNAL_SERVER_ERROR;
+        }
+
+        url.host = target;
+        url.port = 0;
+        url.no_resolve = 1;
+
+        rlcf->upstream.upstream = ngx_http_redis2_upstream_add(r, &url);
+
+        if (rlcf->upstream.upstream == NULL) {
+            ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+                   "lz_st: upstream \"%V\" not found", &target);
+
+            return NGX_HTTP_INTERNAL_SERVER_ERROR;
+        }
+    }
+
+
     ngx_str_set(&u->schema, "redis2://");
     u->output.tag = (ngx_buf_tag_t) &ngx_http_redis2_module;
-
-    rlcf = ngx_http_get_module_loc_conf(r, ngx_http_redis2_module);
 
     u->conf = &rlcf->upstream;
 
