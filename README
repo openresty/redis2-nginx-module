@@ -23,7 +23,7 @@ SYNOPSIS
 
     location /bar {
         # variables can be used below and $ is special
-        redis2_raw_query 'set one 5\r\nfirst\r\n';
+        redis2_raw_query 'get one\r\n';
         redis2_pass 127.0.0.1:6379;
     }
 
