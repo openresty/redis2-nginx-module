@@ -29,12 +29,6 @@ fi
 #patch -p0 < nginx-0.8.53-no_pool.patch
 #patch -p0 < ~/work/nginx-$version-rewrite_phase_fix.patch || exit 1
 
-if [ -n "$2" ]; then
-    cd nginx-$version-$2/
-else
-    cd nginx-$version/
-fi
-
 if [[ "$BUILD_CLEAN" -eq 1 || ! -f Makefile || "$root/config" -nt Makefile || "$root/util/build.sh" -nt Makefile ]]; then
     ./configure --prefix=/opt/nginx \
           --with-http_addition_module \
