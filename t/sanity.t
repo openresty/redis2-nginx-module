@@ -7,7 +7,12 @@ plan tests => repeat_each() * 2 * blocks();
 
 $ENV{TEST_NGINX_REDIS2_PORT} ||= 6379;
 
+#master_on;
+#worker_connections 1024;
+
 #no_diff;
+
+log_level 'warn';
 
 run_tests();
 
@@ -285,7 +290,8 @@ __DATA__
 "[+PONG\r\n]"
 
 
-=== TEST 15: lua compatibility (POST subrequest)
+
+=== TEST 16: lua compatibility (POST subrequest)
 --- config
     location /redis {
         internal;
@@ -306,4 +312,56 @@ __DATA__
     GET /main
 --- response_body eval
 "[+PONG\r\n]"
+
+
+
+=== TEST 17: CRLF in data
+--- http_config
+    upstream backend {
+        server 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        keepalive 500 single;
+    }
+--- config
+    location /a {
+        redis2_literal_raw_query '*3\r\n$3\r\nset\r\n$4\r\ncrlf\r\n$2\r\n\r\n\r\n';
+        redis2_pass backend;
+    }
+    location /b {
+        redis2_literal_raw_query 'get crlf\r\n';
+        redis2_pass backend;
+    }
+    location /main {
+        echo_location /a;
+        echo_location /b;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$2\r\n\r\n\r\n"
+
+
+
+=== TEST 18: Unicode chars in data
+--- http_config
+    upstream backend {
+        server 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        keepalive 500 single;
+    }
+--- config
+    location /a {
+        redis2_literal_raw_query '*3\r\n$3\r\nset\r\n$4\r\ncrlf\r\n$6\r\n亦春\r\n';
+        redis2_pass backend;
+    }
+    location /b {
+        redis2_literal_raw_query 'get crlf\r\n';
+        redis2_pass backend;
+    }
+    location /main {
+        echo_location /a;
+        echo_location /b;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$6\r\n亦春\r\n"
 
