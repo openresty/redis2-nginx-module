@@ -114,13 +114,21 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
     ngx_chain_t                     *cl;
     ngx_http_redis2_loc_conf_t      *rlcf;
     ngx_str_t                        query;
+    ngx_int_t                        rc;
 
     rlcf = ngx_http_get_module_loc_conf(r, ngx_http_redis2_module);
 
-    if (rlcf->literal_query.len == 0) {
+    if (rlcf->queries) {
+        rc = ngx_http_redis2_build_query(r, rlcf->queries, &b);
+        if (rc != NGX_OK) {
+            return rc;
+        }
+
+    } else if (rlcf->literal_query.len == 0) {
+
         if (rlcf->complex_query == NULL) {
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                    "no redis2 query specified or the query is empty.");
+                    "no redis2 query specified or the query is empty");
 
             return NGX_ERROR;
         }

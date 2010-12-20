@@ -4,6 +4,9 @@
 #include "ngx_http_redis2_util.h"
 
 
+static size_t ngx_get_num_size(uint64_t i);
+
+
 ngx_int_t
 ngx_http_redis2_output_buf(ngx_http_redis2_ctx_t *ctx, u_char *p,
         size_t bytes)
@@ -118,5 +121,114 @@ ngx_http_redis2_upstream_add(ngx_http_request_t *r, ngx_url_t *url)
     dd("no upstream found: %.*s", (int) url->host.len, url->host.data);
 
     return NULL;
+}
+
+
+static size_t
+ngx_get_num_size(uint64_t i)
+{
+    size_t          n = 0;
+
+    do {
+        i = i / 10;
+        n++;
+    } while (i > 0);
+
+    return n;
+}
+
+
+ngx_int_t
+ngx_http_redis2_build_query(ngx_http_request_t *r,
+        ngx_array_t *queries, ngx_buf_t **b)
+{
+    ngx_uint_t                       i, j;
+    ngx_uint_t                       n;
+    ngx_str_t                       *arg;
+    ngx_array_t                     *args;
+    size_t                           len;
+    ngx_array_t                    **query_args;
+    ngx_http_complex_value_t       **complex_arg;
+    u_char                          *p;
+    ngx_http_redis2_loc_conf_t      *rlcf;
+
+    rlcf = ngx_http_get_module_loc_conf(r, ngx_http_redis2_module);
+
+    query_args = rlcf->queries->elts;
+
+    n = 0;
+    for (i = 0; i < rlcf->queries->nelts; i++) {
+        for (j = 0; j < query_args[i]->nelts; j++) {
+            n++;
+        }
+    }
+
+    args = ngx_array_create(r->pool, n, sizeof(ngx_str_t));
+
+    len = sizeof("*") - 1
+        + ngx_get_num_size(n)
+        + sizeof("\r\n") - 1
+        ;
+
+    n = 0;
+
+    for (i = 0; i < rlcf->queries->nelts; i++) {
+        complex_arg = query_args[i]->elts;
+
+        for (j = 0; j < query_args[i]->nelts; j++) {
+            n++;
+
+            arg = ngx_array_push(args);
+            if (arg == NULL) {
+                return NGX_ERROR;
+            }
+
+            if (ngx_http_complex_value(r, complex_arg[j], arg) != NGX_OK) {
+                return NGX_ERROR;
+            }
+
+            len += sizeof("$") - 1
+                 + ngx_get_num_size(arg->len)
+                 + sizeof("\r\n") - 1
+                 + arg->len
+                 + sizeof("\r\n") - 1
+                 ;
+        }
+    }
+
+    *b = ngx_create_temp_buf(r->pool, len);
+    if (*b == NULL) {
+        return NGX_ERROR;
+    }
+
+    p = (*b)->last;
+
+    *p++ = '*';
+    p = ngx_sprintf(p, "%uz", args->nelts);
+    *p++ = '\r'; *p++ = '\n';
+
+    arg = args->elts;
+
+    for (i = 0; i < args->nelts; i++) {
+        *p++ = '$';
+        p = ngx_sprintf(p, "%uz", arg[i].len);
+        *p++ = '\r'; *p++ = '\n';
+        p = ngx_copy(p, arg[i].data, arg[i].len);
+        *p++ = '\r'; *p++ = '\n';
+    }
+
+    dd("query: %.*s", (int) (p - (*b)->pos), (*b)->pos);
+
+    if (p - (*b)->pos != (ssize_t) len) {
+        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+                "redis2: redis2_query buffer error %uz != %uz",
+                (size_t) (p - (*b)->pos), len);
+
+        return NGX_ERROR;
+    }
+
+    (*b)->last = p;
+
+    return NGX_OK;
 }
 

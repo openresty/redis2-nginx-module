@@ -8,8 +8,9 @@
 
 static void *ngx_http_redis2_create_loc_conf(ngx_conf_t *cf);
 static char *ngx_http_redis2_merge_loc_conf(ngx_conf_t *cf,
-    void *parent, void *child);
-
+        void *parent, void *child);
+static char * ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd,
+        void *conf);
 static char *ngx_http_redis2_pass(ngx_conf_t *cf, ngx_command_t *cmd,
     void *conf);
 
@@ -25,6 +26,13 @@ static ngx_conf_bitmask_t  ngx_http_redis2_next_upstream_masks[] = {
 
 
 static ngx_command_t  ngx_http_redis2_commands[] = {
+
+    { ngx_string("redis2_query"),
+      NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF|NGX_CONF_1MORE,
+      ngx_http_redis2_query,
+      NGX_HTTP_LOC_CONF_OFFSET,
+      0,
+      NULL },
 
     { ngx_string("redis2_raw_query"),
       NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF|NGX_CONF_TAKE1,
@@ -145,6 +153,7 @@ ngx_http_redis2_create_loc_conf(ngx_conf_t *cf)
      *     conf->upstream.location = NULL;
      *     conf->complex_query = NULL;
      *     conf->literal_query = { 0, NULL };
+     *     conf->queries = NULL;
      */
 
     conf->upstream.connect_timeout = NGX_CONF_UNSET_MSEC;
@@ -218,10 +227,10 @@ ngx_http_redis2_pass(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     ngx_http_redis2_loc_conf_t *rlcf = conf;
 
-    ngx_str_t                 *value;
-    ngx_http_core_loc_conf_t  *clcf;
-    ngx_uint_t                 n;
-    ngx_url_t                  url;
+    ngx_str_t                  *value;
+    ngx_http_core_loc_conf_t   *clcf;
+    ngx_uint_t                  n;
+    ngx_url_t                   url;
 
     ngx_http_compile_complex_value_t         ccv;
 
@@ -270,6 +279,76 @@ ngx_http_redis2_pass(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     rlcf->upstream.upstream = ngx_http_upstream_add(cf, &url, 0);
     if (rlcf->upstream.upstream == NULL) {
         return NGX_CONF_ERROR;
+    }
+
+    return NGX_CONF_OK;
+}
+
+
+static char *
+ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+{
+    ngx_http_redis2_loc_conf_t  *rlcf = conf;
+    ngx_str_t                   *value;
+    ngx_array_t                **query;
+    ngx_uint_t                   n;
+    ngx_http_complex_value_t   **arg;
+    ngx_uint_t                   i;
+
+    ngx_http_compile_complex_value_t         ccv;
+
+    if (rlcf->literal_query.len) {
+        return "conflicts with redis2_literal_raw_query";
+    }
+
+    if (rlcf->complex_query) {
+        return "conflicts with redis2_raw_query";
+    }
+
+    if (rlcf->queries == NULL) {
+        rlcf->queries = ngx_array_create(cf->pool, 1, sizeof(ngx_array_t *));
+
+        if (rlcf->queries == NULL) {
+            return NGX_CONF_ERROR;
+        }
+    }
+
+    query = ngx_array_push(rlcf->queries);
+    if (query == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    n = cf->args->nelts - 1;
+
+    *query = ngx_array_create(cf->pool, n, sizeof(ngx_array_t *));
+
+    if (*query == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    value = cf->args->elts;
+
+    for (i = 1; i <= n; i++) {
+        arg = ngx_array_push(*query);
+        if (arg == NULL) {
+            return NGX_CONF_ERROR;
+        }
+
+        *arg = ngx_palloc(cf->pool,
+                sizeof(ngx_http_complex_value_t));
+
+        if (*arg == NULL) {
+            return NGX_CONF_ERROR;
+        }
+
+        ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
+        ccv.cf = cf;
+        ccv.value = &value[i];
+        ccv.complex_value = *arg;
+
+        if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
+            return NGX_CONF_ERROR;
+        }
     }
 
     return NGX_CONF_OK;

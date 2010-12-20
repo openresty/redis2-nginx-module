@@ -365,3 +365,24 @@ __DATA__
 --- response_body eval
 "+OK\r\n\$6\r\n亦春\r\n"
 
+
+
+=== TEST 19: advanced query
+--- config
+    location /a {
+        redis2_query set hello world;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+    location /b {
+        redis2_query get hello;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+    location /main {
+        echo_location /a;
+        echo_location /b;
+    }
+--- request
+    GET /main
+--- response_body eval
+"+OK\r\n\$5\r\nworld\r\n"
+
