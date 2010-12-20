@@ -107,7 +107,12 @@ Lua Interoperability
 
         [+PONG\r\n]
 
-    where "\r\n" is CRLF.
+    where "\r\n" is CRLF. That is, this module returns the *raw* TCP responses
+    from the remote redis server. For lua-based application developers, they
+    may want to utilize the lua-redis-parser module (written in pure C) to
+    parse such raw responses into Lua data structures:
+
+        https://github.com/agentzh/lua-redis-parser
 
     You can also use POST/PUT subrequests to transfer the raw redis
     request via request body, which does not require URI escaping
