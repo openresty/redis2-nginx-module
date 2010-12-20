@@ -386,3 +386,18 @@ __DATA__
 --- response_body eval
 "+OK\r\n\$5\r\nworld\r\n"
 
+
+
+=== TEST 20: advanced query (pipelined)
+--- config
+    location /a {
+        redis2_query set hello world;
+        redis2_query get hello;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+    }
+--- request
+    GET /a
+--- response_body eval
+"+OK\r\n\$5\r\nworld\r\n"
+--- SKIP
+

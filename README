@@ -37,6 +37,10 @@ SYNOPSIS
 
 Directives
     redis2_query
+        Multiple instances of this directive are allowd in
+        a single location. These queries will be pipelined.
+        But for now, only the first command's response will
+        be returned.
 
     redis2_raw_query
 

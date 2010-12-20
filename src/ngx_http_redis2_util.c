@@ -165,15 +165,16 @@ ngx_http_redis2_build_query(ngx_http_request_t *r,
 
     args = ngx_array_create(r->pool, n, sizeof(ngx_str_t));
 
-    len = sizeof("*") - 1
-        + ngx_get_num_size(n)
-        + sizeof("\r\n") - 1
-        ;
-
+    len = 0;
     n = 0;
 
     for (i = 0; i < rlcf->queries->nelts; i++) {
         complex_arg = query_args[i]->elts;
+
+        len += sizeof("*") - 1
+             + ngx_get_num_size(query_args[i]->nelts)
+             + sizeof("\r\n") - 1
+             ;
 
         for (j = 0; j < query_args[i]->nelts; j++) {
             n++;
@@ -203,18 +204,23 @@ ngx_http_redis2_build_query(ngx_http_request_t *r,
 
     p = (*b)->last;
 
-    *p++ = '*';
-    p = ngx_sprintf(p, "%uz", args->nelts);
-    *p++ = '\r'; *p++ = '\n';
-
     arg = args->elts;
 
-    for (i = 0; i < args->nelts; i++) {
-        *p++ = '$';
-        p = ngx_sprintf(p, "%uz", arg[i].len);
+    n = 0;
+    for (i = 0; i < rlcf->queries->nelts; i++) {
+        *p++ = '*';
+        p = ngx_sprintf(p, "%uz", query_args[i]->nelts);
         *p++ = '\r'; *p++ = '\n';
-        p = ngx_copy(p, arg[i].data, arg[i].len);
-        *p++ = '\r'; *p++ = '\n';
+
+        for (j = 0; j < query_args[i]->nelts; j++) {
+            *p++ = '$';
+            p = ngx_sprintf(p, "%uz", arg[n].len);
+            *p++ = '\r'; *p++ = '\n';
+            p = ngx_copy(p, arg[n].data, arg[n].len);
+            *p++ = '\r'; *p++ = '\n';
+
+            n++;
+        }
     }
 
     dd("query: %.*s", (int) (p - (*b)->pos), (*b)->pos);
