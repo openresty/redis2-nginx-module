@@ -11,7 +11,8 @@ STATUS
 SYNOPSIS
 
     location /foo {
-        redis2_query set one first; # this directive is still a TODO
+        set $value 'first';
+        redis2_query set one $value;
         redis2_pass 127.0.0.1:6379;
     }
 
@@ -35,6 +36,8 @@ SYNOPSIS
     }
 
 Directives
+    redis2_query
+
     redis2_raw_query
 
     redis2_literal_raw_query
