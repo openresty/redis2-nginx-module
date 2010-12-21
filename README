@@ -16,6 +16,21 @@ SYNOPSIS
         redis2_pass 127.0.0.1:6379;
     }
 
+    # GET /get?key=some_key
+    location /get {
+        set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
+        redis2_query get $key;
+        redis2_pass foo.com:6379;
+    }
+
+    # GET /set?key=one&val=first%20value
+    location /set {
+        set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
+        set_unescape_uri $val $arg_val;  # this requires ngx_set_misc
+        redis2_query set $key $val;
+        redis2_pass foo.com:6379;
+    }
+
     location /bar {
         # $ is not special here...
         redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
@@ -241,6 +256,7 @@ Source Repository
 
 TODO
     * Add the "redis2_as_json" directive to allow emitting JSON directly.
+    * Add full support for redis pipelining in the response parser.
 
 AUTHORS
     Yichun "agentzh" Zhang (章亦春) < agentzh@gmail.com >
