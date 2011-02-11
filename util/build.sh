@@ -32,6 +32,7 @@ fi
 cd nginx-$version
 
 if [[ "$BUILD_CLEAN" -eq 1 || ! -f Makefile || "$root/config" -nt Makefile || "$root/util/build.sh" -nt Makefile ]]; then
+          #--with-cc-opt="-O3" \
     ./configure --prefix=/opt/nginx \
           --with-http_addition_module \
           --add-module=$root $opts \

@@ -26,7 +26,7 @@
         ctx->chunk_bytes_read++ < ctx->chunk_size
     }
 
-    chunk_size = (digit+ -- "0"+) >start_reading_size $read_size
+    chunk_size = ([1-9] digit*) >start_reading_size $read_size
                ;
 
     chunk_data_octet = any when test_len
@@ -45,7 +45,7 @@
             ;
 
     chunk = "$" "0"+ CRLF trailer
-          | "$-" (digit+ -- "0"+) trailer
+          | "$-" digit+ trailer
           | "$" chunk_size CRLF chunk_data trailer
           ;
 

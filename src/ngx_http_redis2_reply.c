@@ -252,7 +252,7 @@ st3:
 	if ( ++p == pe )
 		goto _test_eof3;
 case 3:
-	if ( 49 <= (*p) && (*p) <= 57 )
+	if ( 48 <= (*p) && (*p) <= 57 )
 		goto st4;
 	goto st0;
 st4:
@@ -261,7 +261,7 @@ st4:
 case 4:
 	if ( (*p) == 13 )
 		goto st5;
-	if ( 49 <= (*p) && (*p) <= 57 )
+	if ( 48 <= (*p) && (*p) <= 57 )
 		goto st4;
 	goto st0;
 st5:
@@ -339,7 +339,7 @@ case 9:
 #line 340 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st10;
-	if ( 49 <= (*p) && (*p) <= 57 )
+	if ( 48 <= (*p) && (*p) <= 57 )
 		goto tr11;
 	goto st0;
 st10:
@@ -666,7 +666,7 @@ st7:
 		goto _test_eof7;
 case 7:
 	_widec = (*p);
-	if ( 49 <= (*p) && (*p) <= 57 ) {
+	if ( 48 <= (*p) && (*p) <= 57 ) {
 		_widec = (short)(1664 + ((*p) - -128));
 		if ( 
 #line 6 "src/multi_bulk_reply.rl"
@@ -674,7 +674,7 @@ case 7:
         ctx->chunks_read < ctx->chunk_count
      ) _widec += 256;
 	}
-	if ( 2097 <= _widec && _widec <= 2105 )
+	if ( 2096 <= _widec && _widec <= 2105 )
 		goto st8;
 	goto st0;
 st8:
@@ -683,7 +683,7 @@ st8:
 case 8:
 	_widec = (*p);
 	if ( (*p) > 13 ) {
-		if ( 49 <= (*p) && (*p) <= 57 ) {
+		if ( 48 <= (*p) && (*p) <= 57 ) {
 			_widec = (short)(1664 + ((*p) - -128));
 			if ( 
 #line 6 "src/multi_bulk_reply.rl"
@@ -701,7 +701,7 @@ case 8:
 	}
 	if ( _widec == 2061 )
 		goto st9;
-	if ( 2097 <= _widec && _widec <= 2105 )
+	if ( 2096 <= _widec && _widec <= 2105 )
 		goto st8;
 	goto st0;
 st9:
@@ -837,7 +837,7 @@ case 13:
 #line 838 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) > 13 ) {
-		if ( 49 <= (*p) && (*p) <= 57 ) {
+		if ( 48 <= (*p) && (*p) <= 57 ) {
 			_widec = (short)(1664 + ((*p) - -128));
 			if ( 
 #line 6 "src/multi_bulk_reply.rl"
@@ -855,7 +855,7 @@ case 13:
 	}
 	if ( _widec == 2061 )
 		goto st14;
-	if ( 2097 <= _widec && _widec <= 2105 )
+	if ( 2096 <= _widec && _widec <= 2105 )
 		goto tr16;
 	goto st0;
 st14:
@@ -1145,8 +1145,8 @@ st19:
 		goto _test_eof19;
 case 19:
 	_widec = (*p);
-	if ( (*p) < 49 ) {
-		if ( (*p) <= 48 ) {
+	if ( (*p) < 48 ) {
+		if ( (*p) <= 47 ) {
 			_widec = (short)(640 + ((*p) - -128));
 			if ( 
 #line 25 "src/common.rl"
@@ -1191,13 +1191,13 @@ case 19:
 		case 1549: goto st17;
 	}
 	if ( _widec < 1408 ) {
-		if ( 1329 <= _widec && _widec <= 1337 )
+		if ( 1328 <= _widec && _widec <= 1337 )
 			goto st8;
-	} else if ( _widec > 1584 ) {
+	} else if ( _widec > 1583 ) {
 		if ( _widec > 1593 ) {
 			if ( 1594 <= _widec && _widec <= 1663 )
 				goto st16;
-		} else if ( _widec >= 1585 )
+		} else if ( _widec >= 1584 )
 			goto st19;
 	} else
 		goto st16;
@@ -1452,7 +1452,7 @@ case 23:
         ctx->chunks_read < ctx->chunk_count
      ) _widec += 512;
 		}
-	} else if ( (*p) > 48 ) {
+	} else if ( (*p) > 47 ) {
 		if ( (*p) > 57 ) {
 			if ( 58 <= (*p) )
  {				_widec = (short)(640 + ((*p) - -128));
@@ -1467,7 +1467,7 @@ case 23:
         ctx->chunks_read < ctx->chunk_count
      ) _widec += 512;
 			}
-		} else if ( (*p) >= 49 ) {
+		} else if ( (*p) >= 48 ) {
 			_widec = (short)(640 + ((*p) - -128));
 			if ( 
 #line 25 "src/common.rl"
@@ -1498,13 +1498,13 @@ case 23:
 		case 1549: goto st25;
 	}
 	if ( _widec < 1408 ) {
-		if ( 1329 <= _widec && _widec <= 1337 )
+		if ( 1328 <= _widec && _widec <= 1337 )
 			goto tr16;
-	} else if ( _widec > 1584 ) {
+	} else if ( _widec > 1583 ) {
 		if ( _widec > 1593 ) {
 			if ( 1594 <= _widec && _widec <= 1663 )
 				goto st16;
-		} else if ( _widec >= 1585 )
+		} else if ( _widec >= 1584 )
 			goto tr30;
 	} else
 		goto st16;
