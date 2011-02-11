@@ -229,13 +229,13 @@ Lua Interoperability
 
 Installation
     1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
-        example, the version 0.8.53 (see nginx compatibility),
+        example, the version 0.8.54 (see nginx compatibility),
 
     2. and then build the source with this module:
 
-        $ wget 'http://sysoev.ru/nginx/nginx-0.8.53.tar.gz'
-        $ tar -xzvf nginx-0.8.53.tar.gz
-        $ cd nginx-0.8.53/
+        $ wget 'http://sysoev.ru/nginx/nginx-0.8.54.tar.gz'
+        $ tar -xzvf nginx-0.8.54.tar.gz
+        $ cd nginx-0.8.54/
 
         # Here we assume you would install you nginx under /opt/nginx/.
         $ ./configure --prefix=/opt/nginx \
@@ -255,11 +255,12 @@ Compatibility
 
     The following versions of Nginx should work with this module:
 
-    *   0.8.x >= 0.8.53
+    *   0.9.x (last tested: 0.9.4)
+    *   0.8.x >= 0.8.31 (last tested: 0.8.54)
 
     Earlier versions of Nginx will *not* work.
 
-    If you find that any particular version of Nginx above 0.8.53 does not
+    If you find that any particular version of Nginx above 0.8.31 does not
     work with this module, please consider reporting a bug.
 
 Report Bugs

@@ -5,6 +5,12 @@
 #include "ngx_http_redis2_module.h"
 
 
+#ifndef ngx_str_set
+#define ngx_str_set(str, text)                                               \
+    (str)->len = sizeof(text) - 1; (str)->data = (u_char *) text
+#endif
+
+
 ngx_int_t ngx_http_redis2_output_buf(ngx_http_redis2_ctx_t *ctx, u_char *p,
         size_t bytes);
 char * ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf,
