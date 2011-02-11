@@ -5,7 +5,7 @@ use Test::Nginx::Socket;
 
 plan tests => repeat_each() * (2 * blocks());
 
-$ENV{TEST_NGINX_REDIS2_PORT} ||= 6379;
+$ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 $ENV{TEST_NGINX_MEMCACHED_PORT} ||= 11984;
 $ENV{LUA_CPATH} ||= '/home/lz/luax/?.so';
 
@@ -27,7 +27,7 @@ __DATA__
         eval_subrequest_in_memory off;
         eval $res {
             redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
-            redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+            redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
         }
         echo [$res];
     }
@@ -45,7 +45,7 @@ __DATA__
         eval_subrequest_in_memory on;
         eval $res {
             #redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
-            #redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+            #redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
             set $memcached_key foo;
             memcached_pass 127.0.0.1:$TEST_NGINX_MEMCACHED_PORT;
         }
@@ -64,7 +64,7 @@ __DATA__
     location = /redis {
         internal;
         redis2_query get $query_string;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location ~ ^/([a-zA-Z0-9]+)$ {

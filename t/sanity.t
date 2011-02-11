@@ -5,7 +5,7 @@ use Test::Nginx::Socket;
 
 plan tests => repeat_each() * 2 * blocks();
 
-$ENV{TEST_NGINX_REDIS2_PORT} ||= 6379;
+$ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 
 #master_on;
 #worker_connections 1024;
@@ -21,7 +21,7 @@ __DATA__
 === TEST 1: no query
 --- config
     location /foo {
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -34,7 +34,7 @@ __DATA__
 --- config
     location /foo {
         redis2_literal_raw_query "";
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -47,7 +47,7 @@ __DATA__
 --- config
     location /foo {
         redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -60,7 +60,7 @@ __DATA__
 --- config
     location /foo {
         redis2_literal_raw_query 'get not_exist_yet\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -74,7 +74,7 @@ __DATA__
 --- config
     location /foo {
         redis2_literal_raw_query 'bad_cmd\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -87,7 +87,7 @@ __DATA__
 --- config
     location /foo {
         redis2_literal_raw_query 'incr counter\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -99,7 +99,7 @@ __DATA__
 --- config
     location /foo {
         redis2_literal_raw_query 'get not_exist_yet\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /foo
@@ -112,12 +112,12 @@ __DATA__
 --- config
     location /set {
         redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /get {
         redis2_literal_raw_query 'get one\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /main {
@@ -135,12 +135,12 @@ __DATA__
 --- config
     location /set {
         redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /get {
         redis2_literal_raw_query 'get one\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /main {
@@ -158,12 +158,12 @@ __DATA__
 --- config
     location /set {
         redis2_literal_raw_query 'set one 0\r\n\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /get {
         redis2_literal_raw_query 'get one\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /main {
@@ -181,18 +181,18 @@ __DATA__
 --- config
     location /set_foo {
         redis2_literal_raw_query 'set foo 0\r\n\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /set_bar {
         redis2_literal_raw_query 'set bar 0\r\n\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
 
     location /mget {
         redis2_literal_raw_query 'mget foo bar\r\n';
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /main {
@@ -219,7 +219,7 @@ __DATA__
     location /main {
         set $query 'ping\r\n';
         redis2_raw_query $query;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /main
@@ -231,7 +231,7 @@ __DATA__
 === TEST 13: multi bulk reply (empty)
 --- http_config
     upstream blah {
-        server 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- config
     location /main {
@@ -254,7 +254,7 @@ __DATA__
         eval $res {
             set $query 'ping\r\n';
             redis2_raw_query $query;
-            redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+            redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
         }
         echo "[$res]";
     }
@@ -273,7 +273,7 @@ __DATA__
         internal;
         set_unescape_uri $query $arg_query;
         redis2_raw_query $query;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /main {
@@ -296,7 +296,7 @@ __DATA__
     location /redis {
         internal;
         redis2_raw_query $echo_request_body;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /main {
@@ -318,7 +318,7 @@ __DATA__
 === TEST 17: CRLF in data
 --- http_config
     upstream backend {
-        server 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
         keepalive 500 single;
     }
 --- config
@@ -344,7 +344,7 @@ __DATA__
 === TEST 18: Unicode chars in data
 --- http_config
     upstream backend {
-        server 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
         keepalive 500 single;
     }
 --- config
@@ -371,11 +371,11 @@ __DATA__
 --- config
     location /a {
         redis2_query set hello world;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
     location /b {
         redis2_query get hello;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
     location /main {
         echo_location /a;
@@ -393,7 +393,7 @@ __DATA__
     location /a {
         redis2_query set hello world;
         redis2_query get hello;
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS2_PORT;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
     GET /a
