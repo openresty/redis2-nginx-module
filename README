@@ -50,6 +50,29 @@ SYNOPSIS
         redis2_pass 127.0.0.1:6379;
     }
 
+Description
+    This is an nginx upstream module that makes nginx talk to a redis 2.x
+    server in a non-blocking way. The full Redis 2.0 unified protocol has
+    been implemented except for the pipelining support which is still a
+    TODO item.
+
+    This module returns the raw TCP response from the redis server.
+    It's recommended to use my lua-redis-parser module (written in
+    pure C) to parse these responses into lua data structure when combined
+    with the ngx_lua module:
+
+       https://github.com/agentzh/lua-redis-parser
+
+    If you only want to use the "get" redis command, you can try out the
+    ngx_redis module here:
+
+       http://wiki.nginx.org/HttpRedis
+
+    It returns the parsed content part of the redis response because only
+    "get" is needed to implement.
+
+    Another option is to parse the redis responses on your client side yourself.
+
 Directives
     redis2_query
         Multiple instances of this directive are allowd in
