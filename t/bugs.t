@@ -11,6 +11,7 @@ $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 #worker_connections 1024;
 
 #no_diff;
+#no_long_string;
 
 #log_level 'warn';
 
@@ -31,12 +32,21 @@ __DATA__
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
+    location /main2 {
+        content_by_lua '
+            local res = ngx.location.capture("/set");
+            ngx.print(res.body)
+            res = ngx.location.capture("/get");
+            ngx.print(res.body)
+        ';
+    }
     location /main {
+        # echo_location is buggy...sigh.
         echo_location /set;
         echo_location /get;
     }
 --- request
-    GET /main
+    GET /main2
 --- response_body eval
 qq{+OK\r
 \$207\r
