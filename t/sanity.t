@@ -3,6 +3,8 @@
 use lib 'lib';
 use Test::Nginx::Socket;
 
+repeat_each(2);
+
 plan tests => repeat_each() * 2 * blocks();
 
 $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
