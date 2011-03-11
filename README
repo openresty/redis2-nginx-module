@@ -159,6 +159,10 @@ Lua Interoperability
 
         https://github.com/agentzh/lua-redis-parser
 
+    When moving the inlined Lua code into an external .lua file, it's important
+    to use the escape sequence "\r\n" directly. We used "\\r\\n" above just because
+    the Lua code itself needs quoting when being put into an nginx string literal.
+
     You can also use POST/PUT subrequests to transfer the raw redis
     request via request body, which does not require URI escaping
     and unescaping, thus saving some CPU cycles. Here's such an example:
