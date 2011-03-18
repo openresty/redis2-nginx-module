@@ -210,7 +210,7 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
 
     chr = *b->pos;
 
-    dd("response heazder: %c (ascii %d)", chr, chr);
+    dd("response header: %c (ascii %d)", chr, chr);
 
     switch (chr) {
         case '+':
