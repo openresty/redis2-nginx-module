@@ -87,10 +87,52 @@ Directives
     redis2_pass
 
     redis2_connect_timeout
+        syntax: *redis2_connect_timeout <time>*
+
+        default: *60s*
+
+        context: *http, server, location*
+
+        The timeout for connecting to the redis server, in seconds by
+        default.
+
+        It's wise to always explicitly specify the time unit to avoid confusion.
+        Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
+        "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+
+        This time must be less than 597 hours.
 
     redis2_send_timeout
+        syntax: *redis2_send_timeout <time>*
+
+        default: *60s*
+
+        context: *http, server, location*
+
+        The timeout for sending TCP requests to the redis server, in seconds
+        by default.
+
+        It's wise to always explicitly specify the time unit to avoid confusion.
+        Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
+        "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+
+        This time must be less than 597 hours.
 
     redis2_read_timeout
+        syntax: *redis2_read_timeout <time>*
+
+        default: *60s*
+
+        context: *http, server, location*
+
+        The timeout for reading TCP responses from the redis server, in
+        seconds by default.
+
+        It's wise to always explicitly specify the time unit to avoid confusion.
+        Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
+        "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+
+        This time must be less than 597 hours.
 
     redis2_buffer_size
 
