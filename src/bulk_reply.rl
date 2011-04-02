@@ -3,11 +3,7 @@
 
     include common "common.rl";
 
-    response = chunk
-             ;
-
-    main := response @finalize
-         ;
+    bulk_reply = chunk @finalize;
 
 }%%
 

@@ -57,6 +57,5 @@ fi
 if [ -f $target/logs/nginx.pid ]; then
     kill `cat $target/logs/nginx.pid`
 fi
-make -j3
-make install
+make -j3 && make install
 

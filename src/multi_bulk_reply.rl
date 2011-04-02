@@ -42,14 +42,11 @@
     chunk_count = ([1-9] digit*) >start_reading_count $read_count
                 ;
 
-    response = "*" "0"+ CRLF @multi_bulk_finalize
-             | "*" chunk_count CRLF
-                   (protected_chunk+ >start_reading_chunk)
-                   @multi_bulk_finalize
-             ;
-
-    main := response
-         ;
+    multi_bulk_reply = "*" "0"+ CRLF @multi_bulk_finalize
+                     | "*" chunk_count CRLF
+                        (protected_chunk+ >start_reading_chunk)
+                        @multi_bulk_finalize
+                     ;
 
 }%%
 

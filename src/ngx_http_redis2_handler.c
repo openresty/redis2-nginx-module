@@ -214,28 +214,16 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
 
     switch (chr) {
         case '+':
-            ctx->filter = ngx_http_redis2_process_single_line_reply;
-            break;
-
         case '-':
-            ctx->filter = ngx_http_redis2_process_single_line_reply;
-            break;
-
         case ':':
-            ctx->filter = ngx_http_redis2_process_single_line_reply;
-            break;
-
         case '$':
-            ctx->filter = ngx_http_redis2_process_bulk_reply;
-            break;
-
         case '*':
-            ctx->filter = ngx_http_redis2_process_multi_bulk_reply;
+            ctx->filter = ngx_http_redis2_process_reply;
             break;
 
         default:
-            buf.data = b->pos - 1;
-            buf.len = b->last - buf.data;
+            buf.data = b->pos;
+            buf.len = b->last - b->pos;
 
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                           "redis2 sent invalid response: \"%V\"", &buf);

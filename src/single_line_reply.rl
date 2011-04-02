@@ -3,11 +3,6 @@
 
     include common "common.rl";
 
-    response = any (any* -- CRLF) CRLF
-             ;
-
-    main := response @finalize
-         ;
-
+    single_line_reply = [:\+\-] (any* -- CRLF) CRLF @finalize;
 }%%
 
