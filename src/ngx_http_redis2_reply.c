@@ -29,40 +29,45 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
     ngx_http_upstream_t      *u;
     ngx_str_t                 buf;
     ngx_int_t                 rc;
-    ngx_flag_t                done = 0;
+    ngx_flag_t                done;
 
     int                       cs;
     char                     *p;
+    char                     *orig_p;
     char                     *pe;
 
     u = ctx->request->upstream;
     b = &u->buffer;
 
-    if (ctx->state == NGX_ERROR) {
-        dd("init the state machine");
+    while (ctx->query_count) {
+        done = 0;
 
-        
-#line 46 "src/ngx_http_redis2_reply.c"
+        if (ctx->state == NGX_ERROR) {
+            dd("init the state machine");
+
+            
+#line 50 "src/ngx_http_redis2_reply.c"
 	{
 	cs = reply_start;
 	}
 
-#line 44 "src/ngx_http_redis2_reply.rl"
+#line 48 "src/ngx_http_redis2_reply.rl"
 
-        ctx->state = cs;
+            ctx->state = cs;
 
-    } else {
-        cs = ctx->state;
-        dd("resumed the old state %d", cs);
-    }
+        } else {
+            cs = ctx->state;
+            dd("resumed the old state %d", cs);
+        }
 
-    p  = (char *) b->last;
-    pe = (char *) b->last + bytes;
+        orig_p = (char *) b->last;
+        p  = (char *) b->last;
+        pe = (char *) b->last + bytes;
 
-    dd("response body: %.*s", (int) bytes, p);
+        dd("response body: %.*s", (int) bytes, p);
 
-    
-#line 66 "src/ngx_http_redis2_reply.c"
+        
+#line 71 "src/ngx_http_redis2_reply.c"
 	{
 	short _widec;
 	if ( p == pe )
@@ -150,7 +155,7 @@ st42:
 	if ( ++p == pe )
 		goto _test_eof42;
 case 42:
-#line 154 "src/ngx_http_redis2_reply.c"
+#line 159 "src/ngx_http_redis2_reply.c"
 	goto st0;
 st6:
 	if ( ++p == pe )
@@ -201,7 +206,7 @@ st9:
 	if ( ++p == pe )
 		goto _test_eof9;
 case 9:
-#line 205 "src/ngx_http_redis2_reply.c"
+#line 210 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st10;
 	if ( 48 <= (*p) && (*p) <= 57 )
@@ -295,7 +300,7 @@ st43:
 	if ( ++p == pe )
 		goto _test_eof43;
 case 43:
-#line 299 "src/ngx_http_redis2_reply.c"
+#line 304 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	_widec = (short)(128 + ((*p) - -128));
 	if ( 
@@ -364,7 +369,7 @@ st17:
 	if ( ++p == pe )
 		goto _test_eof17;
 case 17:
-#line 368 "src/ngx_http_redis2_reply.c"
+#line 373 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st18;
 	if ( 48 <= (*p) && (*p) <= 57 )
@@ -408,7 +413,7 @@ st20:
 	if ( ++p == pe )
 		goto _test_eof20;
 case 20:
-#line 412 "src/ngx_http_redis2_reply.c"
+#line 417 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 48 ) {
 		if ( 45 <= (*p) && (*p) <= 45 ) {
@@ -551,7 +556,7 @@ st44:
 	if ( ++p == pe )
 		goto _test_eof44;
 case 44:
-#line 555 "src/ngx_http_redis2_reply.c"
+#line 560 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( 36 <= (*p) && (*p) <= 36 ) {
 		_widec = (short)(1664 + ((*p) - -128));
@@ -669,7 +674,7 @@ st27:
 	if ( ++p == pe )
 		goto _test_eof27;
 case 27:
-#line 673 "src/ngx_http_redis2_reply.c"
+#line 678 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 48 <= (*p) && (*p) <= 57 ) {
@@ -833,7 +838,7 @@ st45:
 	if ( ++p == pe )
 		goto _test_eof45;
 case 45:
-#line 837 "src/ngx_http_redis2_reply.c"
+#line 842 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 36 ) {
 		if ( (*p) <= 35 ) {
@@ -1315,7 +1320,7 @@ st46:
 	if ( ++p == pe )
 		goto _test_eof46;
 case 46:
-#line 1319 "src/ngx_http_redis2_reply.c"
+#line 1324 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -1452,7 +1457,7 @@ st37:
 	if ( ++p == pe )
 		goto _test_eof37;
 case 37:
-#line 1456 "src/ngx_http_redis2_reply.c"
+#line 1461 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 14 ) {
 		if ( (*p) > 12 ) {
@@ -1620,7 +1625,7 @@ st47:
 	if ( ++p == pe )
 		goto _test_eof47;
 case 47:
-#line 1624 "src/ngx_http_redis2_reply.c"
+#line 1629 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 36 ) {
 		if ( (*p) <= 35 ) {
@@ -1841,35 +1846,64 @@ case 41:
 	_out: {}
 	}
 
-#line 58 "src/ngx_http_redis2_reply.rl"
+#line 63 "src/ngx_http_redis2_reply.rl"
 
-    dd("state after exec: %d, done: %d", cs, (int) done);
+        dd("state after exec: %d, done: %d, %.*s", cs, (int) done,
+            (int) (bytes - ((u_char *) p - b->last)), p);
 
-    ctx->state = cs;
+        ctx->state = cs;
 
-    if (cs == reply_error) {
+        if (!done && cs == reply_error) {
+            buf.data = b->pos;
+            buf.len = b->last - b->pos + bytes;
 
-        buf.data = b->last;
-        buf.len = bytes;
+            ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
+                "Redis server returned invalid response near pos %z in "
+                "\"%V\"",
+                    (ssize_t) ((u_char *) p - b->pos), &buf);
 
-        ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
-            "Redis server returns invalid response at %z near "
-            "\"%V\"",
-                (ssize_t) ((u_char *) p - b->pos),
-            &buf);
+            u->length = 0;
 
-        return NGX_HTTP_INTERNAL_SERVER_ERROR;
-    }
+            return NGX_HTTP_INTERNAL_SERVER_ERROR;
+        }
 
-    rc = ngx_http_redis2_output_buf(ctx, b->last, (u_char *) p - b->last);
-    if (rc != NGX_OK) {
-        return NGX_ERROR;
-    }
+        rc = ngx_http_redis2_output_buf(ctx, b->last, (u_char *) p - b->last);
+        if (rc != NGX_OK) {
+            u->length = 0;
+            return NGX_ERROR;
+        }
 
-    b->last = (u_char *) p;
+        bytes -= (ssize_t) ((u_char *) p - b->last);
+        b->last = (u_char *) p;
 
-    if (done) {
-        u->length = 0;
+        if (done) {
+            ctx->query_count--;
+
+            if (ctx->query_count == 0) {
+                if (cs == reply_error) {
+                    buf.data = (u_char *) p;
+                    buf.len = orig_p - p + bytes;
+
+                    ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
+                        "Redis server returned extra bytes: \"%V\"", &buf);
+
+                    u->length = 0;
+
+                    return NGX_HTTP_INTERNAL_SERVER_ERROR;
+                }
+
+                u->length = 0;
+                break;
+
+            } else {
+                ctx->state = NGX_ERROR;
+                /* continue */
+            }
+
+        } else {
+            /* need more data */
+            break;
+        }
     }
 
     return NGX_OK;

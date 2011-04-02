@@ -115,17 +115,21 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
     ngx_http_redis2_loc_conf_t      *rlcf;
     ngx_str_t                        query;
     ngx_int_t                        rc;
+    ngx_http_redis2_ctx_t           *ctx;
+
+    ctx = ngx_http_get_module_ctx(r, ngx_http_redis2_module);
 
     rlcf = ngx_http_get_module_loc_conf(r, ngx_http_redis2_module);
 
     if (rlcf->queries) {
+        ctx->query_count = rlcf->queries->nelts;
+
         rc = ngx_http_redis2_build_query(r, rlcf->queries, &b);
         if (rc != NGX_OK) {
             return rc;
         }
 
     } else if (rlcf->literal_query.len == 0) {
-
         if (rlcf->complex_query == NULL) {
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                     "no redis2 query specified or the query is empty");
@@ -146,6 +150,8 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
             return NGX_ERROR;
         }
 
+        ctx->query_count = 1;
+
         b = ngx_create_temp_buf(r->pool, query.len);
         if (b == NULL) {
             return NGX_ERROR;
@@ -154,6 +160,8 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
         b->last = ngx_copy(b->pos, query.data, query.len);
 
     } else {
+        ctx->query_count = 1;
+
         b = ngx_calloc_buf(r->pool);
         if (b == NULL) {
             return NGX_ERROR;

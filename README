@@ -31,6 +31,16 @@ SYNOPSIS
         redis2_pass foo.com:6379;
     }
 
+    # multiple pipelined queries
+    location /foo {
+        set $value 'first';
+        redis2_query set one $value;
+        redis2_query get one;
+        redis2_query set one two;
+        redis2_query get one;
+        redis2_pass 127.0.0.1:6379;
+    }
+
     location /bar {
         # $ is not special here...
         redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
@@ -74,15 +84,34 @@ Description
     Another option is to parse the redis responses on your client side yourself.
 
 Directives
-    redis2_query
+    redis2_query arg1 arg2 ...
         Multiple instances of this directive are allowd in
-        a single location. These queries will be pipelined.
-        But for now, only the first command's response will
-        be returned.
+        a single location and these queries will be pipelined.
 
-    redis2_raw_query
+        For example,
 
-    redis2_literal_raw_query
+            location /pipelined {
+                redis2_query set hello world;
+                redis2_query get hello;
+                redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+            }
+
+        then GET /pipelined will yield two successive raw redis responses
+
+            +OK
+            $5
+            world
+
+        while newlines here are actually CR LF ("\r\n").
+
+    redis2_raw_query CMD
+        Specify raw redis queries and nginx variables are recognized
+        in the CMD argument.
+
+    redis2_literal_raw_query CMD
+        Specify raw redis queries but nginx variables are *not* recognized,
+        that is to say, you're free to use the dollar sign characters ($)
+        in your CMD argument.
 
     redis2_pass
 

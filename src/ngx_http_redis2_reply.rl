@@ -28,61 +28,95 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
     ngx_http_upstream_t      *u;
     ngx_str_t                 buf;
     ngx_int_t                 rc;
-    ngx_flag_t                done = 0;
+    ngx_flag_t                done;
 
     int                       cs;
     char                     *p;
+    char                     *orig_p;
     char                     *pe;
 
     u = ctx->request->upstream;
     b = &u->buffer;
 
-    if (ctx->state == NGX_ERROR) {
-        dd("init the state machine");
+    while (ctx->query_count) {
+        done = 0;
 
-        %% write init;
+        if (ctx->state == NGX_ERROR) {
+            dd("init the state machine");
+
+            %% write init;
+
+            ctx->state = cs;
+
+        } else {
+            cs = ctx->state;
+            dd("resumed the old state %d", cs);
+        }
+
+        orig_p = (char *) b->last;
+        p  = (char *) b->last;
+        pe = (char *) b->last + bytes;
+
+        dd("response body: %.*s", (int) bytes, p);
+
+        %% write exec;
+
+        dd("state after exec: %d, done: %d, %.*s", cs, (int) done,
+            (int) (bytes - ((u_char *) p - b->last)), p);
 
         ctx->state = cs;
 
-    } else {
-        cs = ctx->state;
-        dd("resumed the old state %d", cs);
-    }
+        if (!done && cs == reply_error) {
+            buf.data = b->pos;
+            buf.len = b->last - b->pos + bytes;
 
-    p  = (char *) b->last;
-    pe = (char *) b->last + bytes;
+            ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
+                "Redis server returned invalid response near pos %z in "
+                "\"%V\"",
+                    (ssize_t) ((u_char *) p - b->pos), &buf);
 
-    dd("response body: %.*s", (int) bytes, p);
+            u->length = 0;
 
-    %% write exec;
+            return NGX_HTTP_INTERNAL_SERVER_ERROR;
+        }
 
-    dd("state after exec: %d, done: %d", cs, (int) done);
+        rc = ngx_http_redis2_output_buf(ctx, b->last, (u_char *) p - b->last);
+        if (rc != NGX_OK) {
+            u->length = 0;
+            return NGX_ERROR;
+        }
 
-    ctx->state = cs;
+        bytes -= (ssize_t) ((u_char *) p - b->last);
+        b->last = (u_char *) p;
 
-    if (cs == reply_error) {
+        if (done) {
+            ctx->query_count--;
 
-        buf.data = b->last;
-        buf.len = bytes;
+            if (ctx->query_count == 0) {
+                if (cs == reply_error) {
+                    buf.data = (u_char *) p;
+                    buf.len = orig_p - p + bytes;
 
-        ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
-            "Redis server returns invalid response at %z near "
-            "\"%V\"",
-                (ssize_t) ((u_char *) p - b->pos),
-            &buf);
+                    ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
+                        "Redis server returned extra bytes: \"%V\"", &buf);
 
-        return NGX_HTTP_INTERNAL_SERVER_ERROR;
-    }
+                    u->length = 0;
 
-    rc = ngx_http_redis2_output_buf(ctx, b->last, (u_char *) p - b->last);
-    if (rc != NGX_OK) {
-        return NGX_ERROR;
-    }
+                    return NGX_HTTP_INTERNAL_SERVER_ERROR;
+                }
 
-    b->last = (u_char *) p;
+                u->length = 0;
+                break;
 
-    if (done) {
-        u->length = 0;
+            } else {
+                ctx->state = NGX_ERROR;
+                /* continue */
+            }
+
+        } else {
+            /* need more data */
+            break;
+        }
     }
 
     return NGX_OK;
