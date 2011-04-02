@@ -56,3 +56,4 @@ src/reply.c
 src/reply.h
 src/reply.rl
 all.sh
+buildroot/
