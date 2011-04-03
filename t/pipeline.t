@@ -48,3 +48,34 @@ __DATA__
 --- response_body eval
 "+OK\r\n\$5\r\nworld\r\n+OK\r\n\$7\r\nagentzh\r\n"
 
+
+
+=== TEST 3: redis2_raw_queries (2 queries)
+--- config
+    location /pipelined2 {
+        set_unescape_uri $n $arg_n;
+        set_unescape_uri $cmds $arg_cmds;
+
+        redis2_raw_queries $n $cmds;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+    GET /pipelined2?n=2&cmds=flushall%0D%0Aget%20key%0D%0A
+--- response_body eval
+"+OK\r\n\$-1\r\n"
+
+
+
+=== TEST 4: redis2_raw_queries (2 queries, smaller N arg, bad)
+--- config
+    location /pipelined2 {
+        set_unescape_uri $n $arg_n;
+        set_unescape_uri $cmds $arg_cmds;
+
+        redis2_raw_queries $n $cmds;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+    GET /pipelined2?n=1&cmds=flushall%0D%0Aget%20key%0D%0A
+--- response_body:
+

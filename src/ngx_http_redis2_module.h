@@ -13,6 +13,7 @@ typedef struct {
     ngx_http_upstream_conf_t   upstream;
     ngx_str_t                  literal_query; /* for redis2_literal_raw_query */
     ngx_http_complex_value_t  *complex_query; /* for redis2_raw_query */
+    ngx_http_complex_value_t  *complex_query_count; /* for redis2_raw_query */
     ngx_http_complex_value_t  *complex_target; /* for redis2_pass */
     ngx_array_t               *queries; /* for redis2_query */
 
@@ -26,7 +27,7 @@ typedef ngx_int_t (*ngx_http_redis2_filter_handler_ptr)
 
 
 struct ngx_http_redis2_ctx_s {
-    ngx_uint_t                 query_count;
+    ngx_int_t                  query_count;
     ngx_http_request_t        *request;
     int                        state;
     size_t                     chunk_size;

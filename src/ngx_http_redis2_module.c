@@ -9,7 +9,9 @@
 static void *ngx_http_redis2_create_loc_conf(ngx_conf_t *cf);
 static char *ngx_http_redis2_merge_loc_conf(ngx_conf_t *cf,
         void *parent, void *child);
-static char * ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd,
+static char *ngx_http_redis2_raw_queries(ngx_conf_t *cf, ngx_command_t *cmd,
+        void *conf);
+static char *ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd,
         void *conf);
 static char *ngx_http_redis2_pass(ngx_conf_t *cf, ngx_command_t *cmd,
     void *conf);
@@ -39,6 +41,13 @@ static ngx_command_t  ngx_http_redis2_commands[] = {
       ngx_http_redis2_set_complex_value_slot,
       NGX_HTTP_LOC_CONF_OFFSET,
       offsetof(ngx_http_redis2_loc_conf_t, complex_query),
+      NULL },
+
+    { ngx_string("redis2_raw_queries"),
+      NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF|NGX_CONF_TAKE2,
+      ngx_http_redis2_raw_queries,
+      NGX_HTTP_LOC_CONF_OFFSET,
+      0,
       NULL },
 
     { ngx_string("redis2_literal_raw_query"),
@@ -349,6 +358,57 @@ ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
         if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
             return NGX_CONF_ERROR;
         }
+    }
+
+    return NGX_CONF_OK;
+}
+
+
+static char *
+ngx_http_redis2_raw_queries(ngx_conf_t *cf, ngx_command_t *cmd,
+        void *conf)
+{
+    ngx_http_redis2_loc_conf_t  *rlcf = conf;
+    ngx_str_t                   *value;
+
+    ngx_http_compile_complex_value_t         ccv;
+
+    value = cf->args->elts;
+
+    /* compile the N argument */
+
+    rlcf->complex_query_count = ngx_palloc(cf->pool,
+            sizeof(ngx_http_complex_value_t));
+
+    if (rlcf->complex_query_count == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
+    ccv.cf = cf;
+    ccv.value = &value[1];
+    ccv.complex_value = rlcf->complex_query_count;
+
+    if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
+        return NGX_CONF_ERROR;
+    }
+
+    /* compile the CMDS argument */
+
+    rlcf->complex_query = ngx_palloc(cf->pool,
+            sizeof(ngx_http_complex_value_t));
+
+    if (rlcf->complex_query == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
+    ccv.cf = cf;
+    ccv.value = &value[2];
+    ccv.complex_value = rlcf->complex_query;
+
+    if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
+        return NGX_CONF_ERROR;
     }
 
     return NGX_CONF_OK;

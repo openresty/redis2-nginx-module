@@ -37,6 +37,7 @@ cd nginx-$version/
 if [[ "$BUILD_CLEAN" -eq 1 || ! -f Makefile || "$root/config" -nt Makefile || "$root/util/build.sh" -nt Makefile ]]; then
           #--with-cc-opt="-O3" \
     ./configure --prefix=$target \
+          --with-cc-opt="-D_FORTIFY_SOURCE=2" \
           --with-http_addition_module \
           --add-module=$root $opts \
           --add-module=$root/../eval-nginx-module \

@@ -1,4 +1,4 @@
-#define DDEBUG 0
+#define DDEBUG 1
 #include "ddebug.h"
 
 #include "ngx_http_redis2_reply.h"
@@ -27,16 +27,21 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
     ngx_buf_t                *b;
     ngx_http_upstream_t      *u;
     ngx_str_t                 buf;
-    ngx_int_t                 rc;
     ngx_flag_t                done;
+    ngx_chain_t              *cl = NULL;
+    ngx_chain_t             **ll = NULL;
 
     int                       cs;
     char                     *p;
     char                     *orig_p;
+    ssize_t                   orig_len;
     char                     *pe;
 
     u = ctx->request->upstream;
     b = &u->buffer;
+
+    orig_p = (char *) b->last;
+    orig_len = bytes;
 
     while (ctx->query_count) {
         done = 0;
@@ -53,7 +58,6 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
             dd("resumed the old state %d", cs);
         }
 
-        orig_p = (char *) b->last;
         p  = (char *) b->last;
         pe = (char *) b->last + bytes;
 
@@ -67,6 +71,12 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
         ctx->state = cs;
 
         if (!done && cs == reply_error) {
+            if (cl) {
+                cl->buf->last = cl->buf->pos;
+                cl = NULL;
+                *ll = NULL;
+            }
+
             buf.data = b->pos;
             buf.len = b->last - b->pos + bytes;
 
@@ -80,10 +90,30 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
             return NGX_HTTP_INTERNAL_SERVER_ERROR;
         }
 
-        rc = ngx_http_redis2_output_buf(ctx, b->last, (u_char *) p - b->last);
-        if (rc != NGX_OK) {
-            u->length = 0;
-            return NGX_ERROR;
+        if (cl == NULL) {
+            for (cl = u->out_bufs, ll = &u->out_bufs; cl; cl = cl->next) {
+                ll = &cl->next;
+            }
+
+            cl = ngx_chain_get_free_buf(ctx->request->pool, &u->free_bufs);
+            if (cl == NULL) {
+                u->length = 0;
+                return NGX_ERROR;
+            }
+
+            cl->buf->flush = 1;
+            cl->buf->memory = 1;
+
+            *ll = cl;
+
+            dd("response body: %.*s", (int) bytes, p);
+
+            cl->buf->pos = b->last;
+            cl->buf->last = (u_char *) p;
+            cl->buf->tag = u->output.tag;
+
+        } else {
+            cl->buf->last = (u_char *) p;
         }
 
         bytes -= (ssize_t) ((u_char *) p - b->last);
@@ -95,10 +125,17 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
             if (ctx->query_count == 0) {
                 if (cs == reply_error) {
                     buf.data = (u_char *) p;
-                    buf.len = orig_p - p + bytes;
+                    buf.len = orig_p - p + orig_len;
 
                     ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
-                        "Redis server returned extra bytes: \"%V\"", &buf);
+                        "Redis server returned extra bytes: \"%V\" (len %z)",
+                        &buf, buf.len);
+
+                    if (cl) {
+                        cl->buf->last = cl->buf->pos;
+                        cl = NULL;
+                        *ll = NULL;
+                    }
 
                     u->length = 0;
 
