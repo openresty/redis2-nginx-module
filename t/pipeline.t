@@ -79,3 +79,21 @@ __DATA__
     GET /pipelined2?n=1&cmds=flushall%0D%0Aget%20key%0D%0A
 --- response_body:
 
+
+
+=== TEST 5: redis2_raw_queries (2 queries, larger N arg, bad)
+--- config
+    redis2_read_timeout 100ms;
+    location /pipelined2 {
+        set_unescape_uri $n $arg_n;
+        set_unescape_uri $cmds $arg_cmds;
+
+        redis2_raw_queries $n $cmds;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+    GET /pipelined2?n=3&cmds=flushall%0D%0Aget%20key%0D%0A
+--- response_body eval
+"+OK\r\n\$-1\r\n"
+--- timeout: 0.5
+
