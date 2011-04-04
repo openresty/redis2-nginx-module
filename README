@@ -63,8 +63,7 @@ SYNOPSIS
 Description
     This is an nginx upstream module that makes nginx talk to a redis 2.x
     server in a non-blocking way. The full Redis 2.0 unified protocol has
-    been implemented except for the pipelining support which is still a
-    TODO item.
+    been implemented including the redis pipelining support.
 
     This module returns the raw TCP response from the redis server.
     It's recommended to use my lua-redis-parser module (written in
@@ -379,7 +378,6 @@ Source Repository
 
 TODO
     * Add the "redis2_as_json" directive to allow emitting JSON directly.
-    * Add full support for redis pipelining in the response parser.
 
 AUTHORS
     Yichun "agentzh" Zhang (章亦春) < agentzh@gmail.com >
