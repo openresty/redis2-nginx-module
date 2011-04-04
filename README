@@ -84,6 +84,10 @@ Description
 
 Directives
     redis2_query arg1 arg2 ...
+        Specify a redis command by specifying its individual arguments
+        (including the redis command name itself) in a
+        similar way to the redis-cli utility.
+
         Multiple instances of this directive are allowd in
         a single location and these queries will be pipelined.
 
@@ -106,6 +110,11 @@ Directives
     redis2_raw_query CMD
         Specify raw redis queries and nginx variables are recognized
         in the CMD argument.
+
+        Only one redis command is allowed in the CMD argument, or
+        you'll receive an error. If you want to specify multiple
+        pipelined commands in a single query, use the redis2_raw_queries
+        directive instead.
 
     redis2_raw_queries N CMDS
         Specify N commands in the CMDS argument. Both the N and CMDS
@@ -135,6 +144,8 @@ Directives
         Specify raw redis queries but nginx variables are *not* recognized,
         that is to say, you're free to use the dollar sign characters ($)
         in your CMD argument.
+
+        Only one redis command is allowed in the CMD argument.
 
     redis2_pass
 
