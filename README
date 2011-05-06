@@ -336,6 +336,20 @@ Lua Interoperability
             }
         }
 
+Performance Tuning
+    When you're using ngx_redis2, please ensure you're using a tcp
+    connection pool (provided by ngx_http_upstream_keepalive)
+    and redis pipelining wherever possible. These features will
+    significantly improve performance. Also, using multiple instance of
+    redis servers on your multi-core machines also help a lot due to the
+    sequential processing nature of a single redis server instance.
+
+    Also, when you're benchmarking performance using something like ab or
+    http_load, please ensure that your error log level is high enough (like
+    "warn") to prevent nginx workers spend too much cycles on flushing the
+    error.log file, which is always unbuffered and blocking and thus very
+    expensive.
+
 Installation
     1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
         example, the version 0.8.54 (see nginx compatibility),
