@@ -1,6 +1,6 @@
 
 #line 1 "src/ngx_http_redis2_reply.rl"
-#define DDEBUG 1
+#define DDEBUG 0
 #include "ddebug.h"
 
 #include "ngx_http_redis2_reply.h"
