@@ -1,4 +1,4 @@
-#define DDEBUG 0
+#define DDEBUG 1
 #include "ddebug.h"
 
 #include "ngx_http_redis2_reply.h"
@@ -120,6 +120,8 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
         b->last = (u_char *) p;
 
         if (done) {
+            dd("response parser done");
+
             ctx->query_count--;
 
             if (ctx->query_count == 0) {

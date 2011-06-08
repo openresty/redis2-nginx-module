@@ -48,7 +48,7 @@ __DATA__
 === TEST 3: simple set query
 --- config
     location /foo {
-        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+        redis2_query set one first;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 --- request
@@ -113,12 +113,12 @@ __DATA__
 === TEST 8: bulk reply
 --- config
     location /set {
-        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+        redis2_literal_raw_query '*3\r\n$3\r\nset\r\n$3\r\none\r\n$5\r\nfirst\r\n';
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /get {
-        redis2_literal_raw_query 'get one\r\n';
+        redis2_literal_raw_query '*2\r\n$3\r\nget\r\n$3\r\none\r\n';
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
@@ -136,12 +136,12 @@ __DATA__
 === TEST 9: bulk reply
 --- config
     location /set {
-        redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+        redis2_query set one first;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /get {
-        redis2_literal_raw_query 'get one\r\n';
+        redis2_query get one;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
@@ -159,12 +159,13 @@ __DATA__
 === TEST 10: bulk reply (empty)
 --- config
     location /set {
-        redis2_literal_raw_query 'set one 0\r\n\r\n';
+        set $empty '';
+        redis2_query set one $empty;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /get {
-        redis2_literal_raw_query 'get one\r\n';
+        redis2_query get one;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
@@ -182,15 +183,16 @@ __DATA__
 === TEST 11: multi bulk reply (empty)
 --- config
     location /set_foo {
-        redis2_literal_raw_query 'set foo 0\r\n\r\n';
+        set $empty '';
+        redis2_query set foo $empty;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
 
     location /set_bar {
-        redis2_literal_raw_query 'set bar 0\r\n\r\n';
+        set $empty '';
+        redis2_query set bar $empty;
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
-
 
     location /mget {
         redis2_literal_raw_query 'mget foo bar\r\n';

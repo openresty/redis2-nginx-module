@@ -26,7 +26,7 @@ __DATA__
         eval_override_content_type 'application/octet-stream';
         eval_subrequest_in_memory off;
         eval $res {
-            redis2_literal_raw_query 'set one 5\r\nfirst\r\n';
+            redis2_query set one first;
             redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
         }
         echo [$res];

@@ -3,7 +3,7 @@
 use lib 'lib';
 use Test::Nginx::Socket;
 
-repeat_each(2);
+#repeat_each(2);
 
 plan tests => repeat_each() * 2 * blocks();
 
@@ -115,5 +115,67 @@ hello\r
 --- response_body eval
 qq{+OK\r
 \*0\r
+}
+
+
+
+=== TEST 4: \r\n in content: sanity check
+--- config
+    location /set {
+        redis2_query set A 'hello\r\nworld';
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+
+    location /get {
+        redis2_query get A;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+
+    location /main {
+        content_by_lua '
+            local res = ngx.location.capture("/set");
+            ngx.print(res.body)
+            res = ngx.location.capture("/get");
+            ngx.print(res.body)
+        ';
+    }
+--- request
+    GET /main
+--- response_body eval
+qq{+OK\r
+\$12\r
+hello\r
+world\r
+}
+
+
+
+=== TEST 5: github issue #5: Get content from Redis with "\r\n" in text fails with "Redis server returned extra bytes
+--- config
+    location /set {
+        redis2_query flushall;
+        redis2_query hset "/step2redisallhget?auctionid=2l" "content" "a 1line \r\n and 2nd";
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+
+    location /get {
+        redis2_query hget "/step2redisallhget?auctionid=2l" "content";
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+
+    location /main {
+        content_by_lua '
+            local res = ngx.location.capture("/set");
+            ngx.print(res.body)
+            res = ngx.location.capture("/get");
+            ngx.print(res.body)
+        ';
+    }
+--- request
+    GET /main
+--- response_body eval
+qq{+OK\r
+:1\r
+\$18\r\na 1line \r\n and 2nd\r
 }
 

@@ -5,7 +5,9 @@
         dd("reading %c", *p);
     }
 
-    CRLF = "\r\n"; # $read_char;
+    CR = "\r";
+    LF = "\n";
+    CRLF = CR LF; # $read_char;
 
     action finalize {
         dd("done!");
@@ -51,12 +53,21 @@
             (int) (p - (char *) b->last), (char *) b->last);
     }
 
+    action check_data_complete {
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+    }
+
     trailer = CRLF @read_chunk
             ;
 
     chunk = "$" "0"+ CRLF trailer
           | "$-" digit+ trailer
-          | "$" chunk_size CRLF chunk_data trailer
+          | "$" chunk_size CRLF chunk_data CR when check_data_complete LF @read_chunk
           ;
 
 }%%

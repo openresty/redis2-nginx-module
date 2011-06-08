@@ -3,7 +3,7 @@
 use lib 'lib';
 use Test::Nginx::Socket;
 
-repeat_each(2);
+#repeat_each(2);
 
 plan tests => repeat_each() * 2 * blocks();
 
@@ -77,7 +77,7 @@ __DATA__
     }
 --- request
     GET /pipelined2?n=1&cmds=flushall%0D%0Aget%20key%0D%0A
---- response_body:
+--- response_body_like: ^.{0,5}\z
 
 
 
