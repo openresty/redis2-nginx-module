@@ -179,3 +179,22 @@ qq{+OK\r
 \$18\r\na 1line \r\n and 2nd\r
 }
 
+
+
+=== TEST 6: set empty param
+--- config
+    location /set {
+        redis2_query flushall;
+        redis2_query set foo "";
+        redis2_query get foo;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+    GET /set
+--- response_body eval
+qq{+OK\r
++OK\r
+\$0\r
+\r
+}
+

@@ -343,11 +343,14 @@ ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             return NGX_CONF_ERROR;
         }
 
-        *arg = ngx_palloc(cf->pool,
-                sizeof(ngx_http_complex_value_t));
-
+        *arg = ngx_palloc(cf->pool, sizeof(ngx_http_complex_value_t));
         if (*arg == NULL) {
             return NGX_CONF_ERROR;
+        }
+
+        if (value[i].len == 0) {
+            ngx_memzero(*arg, sizeof(ngx_http_complex_value_t));
+            continue;
         }
 
         ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
