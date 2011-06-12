@@ -156,8 +156,8 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
             ctx->query_count = 1;
 
         } else {
-            if (ngx_http_complex_value(r, rlcf->complex_query_count, &query_count)
-                    != NGX_OK)
+            if (ngx_http_complex_value(r, rlcf->complex_query_count,
+                    &query_count) != NGX_OK)
             {
                 return NGX_ERROR;
             }
