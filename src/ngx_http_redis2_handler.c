@@ -277,11 +277,13 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
 static ngx_int_t
 ngx_http_redis2_filter_init(void *data)
 {
+#if 0
     ngx_http_redis2_ctx_t  *ctx = data;
 
     ngx_http_upstream_t  *u;
 
     u = ctx->request->upstream;
+#endif
 
     return NGX_OK;
 }
