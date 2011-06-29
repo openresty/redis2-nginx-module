@@ -329,7 +329,7 @@ ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     n = cf->args->nelts - 1;
 
-    *query = ngx_array_create(cf->pool, n, sizeof(ngx_array_t *));
+    *query = ngx_array_create(cf->pool, n, sizeof(ngx_http_complex_value_t *));
 
     if (*query == NULL) {
         return NGX_CONF_ERROR;
