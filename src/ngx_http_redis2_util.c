@@ -132,6 +132,10 @@ ngx_http_redis2_build_query(ngx_http_request_t *r,
 
     args = ngx_array_create(r->pool, n, sizeof(ngx_str_t));
 
+    if (args == NULL) {
+        return NGX_ERROR;
+    }
+
     len = 0;
     n = 0;
 
