@@ -127,8 +127,8 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
                     buf.data = (u_char *) p;
                     buf.len = orig_p - p + orig_len;
 
-                    ngx_log_error(NGX_LOG_WARN, ctx->request->connection->log, 0,
-                        "Redis server returned extra bytes: \"%V\" (len %z)",
+                    ngx_log_error(NGX_LOG_WARN, ctx->request->connection->log,
+                        0, "Redis server returned extra bytes: \"%V\" (len %z)",
                         &buf, buf.len);
 
 #if 0

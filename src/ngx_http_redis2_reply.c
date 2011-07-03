@@ -4109,8 +4109,8 @@ case 49:
                     buf.data = (u_char *) p;
                     buf.len = orig_p - p + orig_len;
 
-                    ngx_log_error(NGX_LOG_WARN, ctx->request->connection->log, 0,
-                        "Redis server returned extra bytes: \"%V\" (len %z)",
+                    ngx_log_error(NGX_LOG_WARN, ctx->request->connection->log,
+                        0, "Redis server returned extra bytes: \"%V\" (len %z)",
                         &buf, buf.len);
 
 #if 0
