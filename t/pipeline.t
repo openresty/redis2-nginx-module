@@ -77,7 +77,8 @@ __DATA__
     }
 --- request
     GET /pipelined2?n=1&cmds=flushall%0D%0Aget%20key%0D%0A
---- response_body_like: ^.{0,5}\z
+--- response_body eval
+"+OK\r\n"
 
 
 
@@ -95,5 +96,5 @@ __DATA__
     GET /pipelined2?n=3&cmds=flushall%0D%0Aget%20key%0D%0A
 --- response_body eval
 "+OK\r\n\$-1\r\n"
---- timeout: 0.5
+--- timeout: 3
 

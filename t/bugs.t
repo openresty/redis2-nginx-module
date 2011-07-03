@@ -198,3 +198,28 @@ qq{+OK\r
 \r
 }
 
+
+=== TEST 6: two pipelined multi-bulk replies
+--- config
+    location /set {
+        redis2_query subscribe foo;
+        redis2_query unsubscribe foo;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+    GET /set
+--- response_body eval
+qq{*3\r
+\$9\r
+subscribe\r
+\$3\r
+foo\r
+:1\r
+*3\r
+\$11\r
+unsubscribe\r
+\$3\r
+foo\r
+:0\r
+}
+

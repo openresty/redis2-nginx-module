@@ -7,12 +7,10 @@
 %%{
     machine reply;
 
-    include single_line_reply "single_line_reply.rl";
-    include bulk_reply "bulk_reply.rl";
     include multi_bulk_reply "multi_bulk_reply.rl";
 
-    main := single_line_reply
-          | bulk_reply
+    main := single_line_reply @finalize
+          | chunk @finalize
           | multi_bulk_reply
           ;
 
@@ -129,10 +127,11 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
                     buf.data = (u_char *) p;
                     buf.len = orig_p - p + orig_len;
 
-                    ngx_log_error(NGX_LOG_ERR, ctx->request->connection->log, 0,
+                    ngx_log_error(NGX_LOG_WARN, ctx->request->connection->log, 0,
                         "Redis server returned extra bytes: \"%V\" (len %z)",
                         &buf, buf.len);
 
+#if 0
                     if (cl) {
                         cl->buf->last = cl->buf->pos;
                         cl = NULL;
@@ -142,6 +141,7 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
                     u->length = 0;
 
                     return NGX_HTTP_INTERNAL_SERVER_ERROR;
+#endif
                 }
 
                 u->length = 0;

@@ -70,5 +70,7 @@
           | "$" chunk_size CRLF chunk_data CR when check_data_complete LF @read_chunk
           ;
 
+    single_line_reply = [:\+\-] (any* -- CRLF) CRLF;
+
 }%%
 

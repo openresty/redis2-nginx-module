@@ -36,15 +36,19 @@
         }
     }
 
-    protected_chunk = chunk when test_chunk_count
+    reply = single_line_reply @read_chunk
+          | chunk
+          ;
+
+    protected_chunk = reply when test_chunk_count
                     ;
 
     chunk_count = ([1-9] digit*) >start_reading_count $read_count
                 ;
 
     multi_bulk_reply = "*" "0"+ CRLF @multi_bulk_finalize
-                     | "*" chunk_count CRLF
-                        (protected_chunk+ >start_reading_chunk)
+                     | "*" chunk_count CRLF @start_reading_chunk 
+                        protected_chunk+
                         @multi_bulk_finalize
                      ;
 
