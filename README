@@ -200,6 +200,28 @@ Directives
     redis2_buffer_size
 
     redis2_next_upstream
+        syntax: memcached_next_upstream [ error | timeout | invalid_response | off ]
+        default: error timeout
+        context: http, server, location
+
+        Specify which failure conditions should cause the request to be forwarded to another
+        upstream server. Applies only when the value in redis2_pass is an upstream with two or more
+        servers.
+
+        Here's an artificial example:
+
+            upstream redis_cluster {
+                server 127.0.0.1:6379;
+                server 127.0.0.1:6380;
+            }
+
+            server {
+                location /redis {
+                    redis2_next_upstream error timeout invalid_response;
+                    redis2_query get foo;
+                    redis2_pass redis_cluster;
+                }
+            }
 
 Connection Pool
     You can use Maxim Dounin's excellent ngx_http_upstream_keepalive module
