@@ -336,6 +336,36 @@ Lua Interoperability
             }
         }
 
+Redis Publish/Subscribe Support
+    This module has limited support for redis publish/subscribe feature.
+    It cannot be fully supported due to the stateless nature of REST and
+    HTTP model.
+
+    Consider the following example:
+
+       location /redis {
+           redis2_raw_queries 2 "subscribe /foo/bar\r\n";
+           redis2_pass 127.0.0.1:6379;
+       }
+
+    And then publish a message for the key /foo/bar in the redis-cli
+    command line. And then you'll receive two multi-bulk replies from the
+    /redis location.
+
+    You can surely parse the replies with the lua-redis-parser library if
+    you're using Lua to access this module's location.
+
+    Some limitations:
+
+    1. You cannot use ngx_http_upstream_keepalive with this redis
+       upstream. Only short redis connections will work.
+
+    2. There may be some race conditions that produce the harmless "Redis
+       server returned extra bytes" warnings in your nginx's error.log. Such
+       warnings might be rare but just be prepared for it.
+
+    3. You should tune the various timeout settings provided by ngx_redis2.
+
 Performance Tuning
     When you're using ngx_redis2, please ensure you're using a tcp
     connection pool (provided by ngx_http_upstream_keepalive)
