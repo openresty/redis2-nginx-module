@@ -7,7 +7,7 @@
 #include <ngx_http.h>
 
 
-ngx_module_t  ngx_http_redis2_module;
+extern ngx_module_t  ngx_http_redis2_module;
 
 typedef struct {
     ngx_http_upstream_conf_t   upstream;
