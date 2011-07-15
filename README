@@ -200,7 +200,7 @@ Directives
     redis2_buffer_size
 
     redis2_next_upstream
-        syntax: memcached_next_upstream [ error | timeout | invalid_response | off ]
+        syntax: redis2_next_upstream [ error | timeout | invalid_response | off ]
         default: error timeout
         context: http, server, location
 
