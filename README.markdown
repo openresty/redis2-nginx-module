@@ -73,7 +73,7 @@ Synopsis
 Description
 ===========
 
-This is an Nginx upstream module that makes nginx talk to a Redis 2.x server in a non-blocking way. The full Redis 2.0 unified protocol has been implemented including the Redis pipelining support.
+This is an Nginx upstream module that makes nginx talk to a [Redis](http://redis.io/) 2.x server in a non-blocking way. The full Redis 2.0 unified protocol has been implemented including the Redis pipelining support.
 
 This module returns the raw TCP response from the Redis server. It's recommended to use my [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) (written in pure C) to parse these responses into lua data structure when combined with [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule).
 
@@ -516,6 +516,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 SEE ALSO
 ========
+* The [Redis](http://redis.io/) server homepage.
 * a redis response parser and a request constructor for Lua: [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser).
 * [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule)
 * The [ngx_openresty bundle](http://openresty.org).
