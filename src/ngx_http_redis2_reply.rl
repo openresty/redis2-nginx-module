@@ -3,6 +3,7 @@
 
 #include "ngx_http_redis2_reply.h"
 #include "ngx_http_redis2_util.h"
+#include <nginx.h>
 
 %%{
     machine reply;
@@ -142,9 +143,15 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
 
                     return NGX_HTTP_INTERNAL_SERVER_ERROR;
 #endif
+
+                } else {
+#if defined(nginx_version) && nginx_version >= 1001004
+                    u->keepalive = 1;
+#endif
                 }
 
                 u->length = 0;
+
                 break;
 
             } else {

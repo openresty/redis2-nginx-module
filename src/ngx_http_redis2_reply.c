@@ -5,13 +5,14 @@
 
 #include "ngx_http_redis2_reply.h"
 #include "ngx_http_redis2_util.h"
+#include <nginx.h>
 
 
-#line 17 "src/ngx_http_redis2_reply.rl"
+#line 18 "src/ngx_http_redis2_reply.rl"
 
 
 
-#line 15 "src/ngx_http_redis2_reply.c"
+#line 16 "src/ngx_http_redis2_reply.c"
 static const int reply_start = 1;
 static const int reply_first_final = 50;
 static const int reply_error = 0;
@@ -19,7 +20,7 @@ static const int reply_error = 0;
 static const int reply_en_main = 1;
 
 
-#line 20 "src/ngx_http_redis2_reply.rl"
+#line 21 "src/ngx_http_redis2_reply.rl"
 
 ngx_int_t
 ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
@@ -51,12 +52,12 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
             dd("init the state machine");
 
             
-#line 55 "src/ngx_http_redis2_reply.c"
+#line 56 "src/ngx_http_redis2_reply.c"
 	{
 	cs = reply_start;
 	}
 
-#line 51 "src/ngx_http_redis2_reply.rl"
+#line 52 "src/ngx_http_redis2_reply.rl"
 
             ctx->state = cs;
 
@@ -71,7 +72,7 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
         dd("response body: %.*s", (int) bytes, p);
 
         
-#line 75 "src/ngx_http_redis2_reply.c"
+#line 76 "src/ngx_http_redis2_reply.c"
 	{
 	short _widec;
 	if ( p == pe )
@@ -159,7 +160,7 @@ st50:
 	if ( ++p == pe )
 		goto _test_eof50;
 case 50:
-#line 163 "src/ngx_http_redis2_reply.c"
+#line 164 "src/ngx_http_redis2_reply.c"
 	goto st0;
 st6:
 	if ( ++p == pe )
@@ -210,7 +211,7 @@ st9:
 	if ( ++p == pe )
 		goto _test_eof9;
 case 9:
-#line 214 "src/ngx_http_redis2_reply.c"
+#line 215 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st10;
 	if ( 48 <= (*p) && (*p) <= 57 )
@@ -388,7 +389,7 @@ st51:
 	if ( ++p == pe )
 		goto _test_eof51;
 case 51:
-#line 392 "src/ngx_http_redis2_reply.c"
+#line 393 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 13 ) {
 		if ( (*p) <= 12 ) {
@@ -499,7 +500,7 @@ st17:
 	if ( ++p == pe )
 		goto _test_eof17;
 case 17:
-#line 503 "src/ngx_http_redis2_reply.c"
+#line 504 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st18;
 	if ( 48 <= (*p) && (*p) <= 57 )
@@ -523,7 +524,7 @@ st19:
 	if ( ++p == pe )
 		goto _test_eof19;
 case 19:
-#line 527 "src/ngx_http_redis2_reply.c"
+#line 528 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -729,7 +730,7 @@ st52:
 	if ( ++p == pe )
 		goto _test_eof52;
 case 52:
-#line 733 "src/ngx_http_redis2_reply.c"
+#line 734 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -1014,7 +1015,7 @@ st29:
 	if ( ++p == pe )
 		goto _test_eof29;
 case 29:
-#line 1018 "src/ngx_http_redis2_reply.c"
+#line 1019 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 48 <= (*p) && (*p) <= 57 ) {
@@ -1342,7 +1343,7 @@ st53:
 	if ( ++p == pe )
 		goto _test_eof53;
 case 53:
-#line 1346 "src/ngx_http_redis2_reply.c"
+#line 1347 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) < 14 ) {
@@ -2525,7 +2526,7 @@ st54:
 	if ( ++p == pe )
 		goto _test_eof54;
 case 54:
-#line 2529 "src/ngx_http_redis2_reply.c"
+#line 2530 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) > 13 ) {
@@ -2757,7 +2758,7 @@ st55:
 	if ( ++p == pe )
 		goto _test_eof55;
 case 55:
-#line 2761 "src/ngx_http_redis2_reply.c"
+#line 2762 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) < 14 ) {
@@ -3298,7 +3299,7 @@ st44:
 	if ( ++p == pe )
 		goto _test_eof44;
 case 44:
-#line 3302 "src/ngx_http_redis2_reply.c"
+#line 3303 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 14 ) {
 		if ( (*p) > 12 ) {
@@ -3617,7 +3618,7 @@ st56:
 	if ( ++p == pe )
 		goto _test_eof56;
 case 56:
-#line 3621 "src/ngx_http_redis2_reply.c"
+#line 3622 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 44 ) {
 		if ( (*p) < 36 ) {
@@ -4043,7 +4044,7 @@ case 49:
 	_out: {}
 	}
 
-#line 65 "src/ngx_http_redis2_reply.rl"
+#line 66 "src/ngx_http_redis2_reply.rl"
 
         dd("state after exec: %d, done: %d, %.*s", cs, (int) done,
             (int) (bytes - ((u_char *) p - b->last)), p);
@@ -4124,9 +4125,15 @@ case 49:
 
                     return NGX_HTTP_INTERNAL_SERVER_ERROR;
 #endif
+
+                } else {
+#if defined(nginx_version) && nginx_version >= 1001004
+                    u->keepalive = 1;
+#endif
                 }
 
                 u->length = 0;
+
                 break;
 
             } else {
