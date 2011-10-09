@@ -10,7 +10,7 @@ This module is already production ready.
 
 = Version =
 
-This document describes ngx_redis2 [https://github.com/agentzh/redis2-nginx-module/downloads v0.07rc6] released on 14 July 2011.
+This document describes ngx_redis2 [https://github.com/agentzh/redis2-nginx-module/downloads v0.07rc7] released on 9 October 2011.
 
 = Synopsis =
 
@@ -413,13 +413,13 @@ You are recommended to install this module (as well as the Nginx core and many m
 
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
-* Grab the nginx source code from [http://nginx.org nginx.org], for example, the version 1.0.5 (see nginx compatibility),
+* Grab the nginx source code from [http://nginx.org nginx.org], for example, the version 1.0.8 (see nginx compatibility),
 * and then download the latest version of the release tarball of this module from ngx_redis2's [http://github.com/agentzh/redis2-nginx-module/downloads file list].
 * and finally build the source with this module:
 <geshi lang="bash">
-    wget 'http://nginx.org/download/nginx-1.0.5.tar.gz'
-    tar -xzvf nginx-1.0.5.tar.gz
-    cd nginx-1.0.5/
+    wget 'http://nginx.org/download/nginx-1.0.8.tar.gz'
+    tar -xzvf nginx-1.0.8.tar.gz
+    cd nginx-1.0.8/
 
     # Here we assume you would install you nginx under /opt/nginx/.
     ./configure --prefix=/opt/nginx \
@@ -435,7 +435,8 @@ Redis 2.0, 2.2, and above should work with this module without any issues. So is
 
 The following versions of Nginx should work with this module:
 
-* 1.0.x (last tested: 1.0.5)
+* 1.1.x (last tested: 1.1.5)
+* 1.0.x (last tested: 1.0.8)
 * 0.9.x (last tested: 0.9.4)
 * 0.8.x >= 0.8.31 (last tested: 0.8.54)
 
