@@ -97,5 +97,13 @@
    fun:ngx_init_cycle
    fun:main
 }
-
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:ngx_alloc
+   fun:ngx_create_pool
+   fun:ngx_http_upstream_connect
+   fun:ngx_http_upstream_init_request
+}
 

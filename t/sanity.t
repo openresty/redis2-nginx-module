@@ -14,7 +14,7 @@ $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 
 #no_diff;
 
-log_level 'warn';
+#log_level 'warn';
 
 run_tests();
 
