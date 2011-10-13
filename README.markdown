@@ -13,7 +13,7 @@ This module is already production ready.
 Version
 =======
 
-This document describes ngx_redis2 [v0.07rc7](https://github.com/agentzh/redis2-nginx-module/downloads) released on 9 October 2011.
+This document describes ngx_redis2 [v0.08rc1](https://github.com/agentzh/redis2-nginx-module/tags) released on 9 October 2011.
 
 Synopsis
 ========
@@ -436,7 +436,7 @@ You are recommended to install this module (as well as the Nginx core and many m
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
 * Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.0.8 (see nginx compatibility),
-* and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/downloads).
+* and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/tags).
 * and finally build the source with this module:
 
     wget 'http://nginx.org/download/nginx-1.0.8.tar.gz'
