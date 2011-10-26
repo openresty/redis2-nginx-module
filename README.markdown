@@ -396,6 +396,69 @@ One can also use Lua to pick up a concrete Redis backend based on some complicat
     }
 
 
+Pipelined Redis Requests by Lua
+-------------------------------
+
+Here's a complete example demonstrating how to use Lua to issue multiple pipelined Redis requests via this Nginx module.
+
+First of all, we include the following in our `nginx.conf` file:
+
+
+    location = /redis2 {
+        internal;
+
+        redis2_raw_queries $args $echo_request_body;
+        redis2_pass 127.0.0.1:6379;
+    }
+
+    location = /test {
+        content_by_lua_file conf/test.lua;
+    }
+
+
+Basically we use URI query args to pass the number of Redis requests and request body to pass the pipelined Redis request string.
+
+And then we create the `conf/test.lua` file (whose path is relative to the server root of Nginx) to include the following Lua code:
+
+
+    -- conf/test.lua
+    local parser = require "redis.parser"
+
+    local reqs = {
+        {"set", "foo", "hello world"},
+        {"get", "foo"}
+    }
+
+    local raw_reqs = {}
+    for i, req in ipairs(reqs) do
+        table.insert(raw_reqs, parser.build_query(req))
+    end
+
+    local res = ngx.location.capture("/redis2?" .. #reqs,
+        { body = table.concat(raw_reqs, "") })
+
+    if res.status ~= 200 or not res.body then
+        ngx.log(ngx.ERR, "failed to query redis")
+        ngx.exit(500)
+    end
+
+    local replies = parser.parse_replies(res.body, #reqs)
+    for i, reply in ipairs(replies) do
+        ngx.say(reply[1])
+    end
+
+
+Here we assume that your Redis server is listening on the default port (6379) of the localhost. We also make use of the [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) library to construct raw Redis queries for us and also use it to parse the replies.
+
+Accessing the `/test` location via HTTP clients like `curl` yields the following output
+
+
+    OK
+    hello world
+
+
+A more realistic setting is to use a proper upstream definition for our Redis backend and enable TCP connection pool via the [keepalive](http://wiki.nginx.org/HttpUpstreamKeepaliveModule#keepalive) directive in it.
+
 Redis Publish/Subscribe Support
 ===============================
 
@@ -499,8 +562,6 @@ Copyright & License
 ===================
 
 This module is licenced under the BSD license.
-
-Copyright (C) 2010, 2011, by Taobao Inc., Alibaba Group ( <http://www.taobao.com> ).
 
 Copyright (C) 2010, 2011, by Zhang "agentzh" Yichun (章亦春) <agentzh@gmail.com>.
 
