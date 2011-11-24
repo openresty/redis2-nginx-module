@@ -8,9 +8,9 @@ Status
     This module is already production ready.
 
 Version
-    This document describes ngx_redis2 v0.08rc1
-    (<https://github.com/agentzh/redis2-nginx-module/tags>) released on 9
-    October 2011.
+    This document describes ngx_redis2 v0.08rc2
+    (<https://github.com/agentzh/redis2-nginx-module/tags>) released on 24
+    November 2011.
 
 Synopsis
         location /foo {
@@ -535,7 +535,7 @@ Compatibility
 
     *   1.1.x (last tested: 1.1.5)
 
-    *   1.0.x (last tested: 1.0.8)
+    *   1.0.x (last tested: 1.0.10)
 
     *   0.9.x (last tested: 0.9.4)
 

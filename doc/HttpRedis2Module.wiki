@@ -10,7 +10,7 @@ This module is already production ready.
 
 = Version =
 
-This document describes ngx_redis2 [https://github.com/agentzh/redis2-nginx-module/tags v0.08rc1] released on 9 October 2011.
+This document describes ngx_redis2 [https://github.com/agentzh/redis2-nginx-module/tags v0.08rc2] released on 24 November 2011.
 
 = Synopsis =
 
@@ -498,7 +498,7 @@ Redis 2.0, 2.2, and above should work with this module without any issues. So is
 The following versions of Nginx should work with this module:
 
 * 1.1.x (last tested: 1.1.5)
-* 1.0.x (last tested: 1.0.8)
+* 1.0.x (last tested: 1.0.10)
 * 0.9.x (last tested: 0.9.4)
 * 0.8.x >= 0.8.31 (last tested: 0.8.54)
 
@@ -544,7 +544,6 @@ Redistribution and use in source and binary forms, with or without modification,
 * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 
 = SEE ALSO =
 * The [http://redis.io/ Redis] server homepage.
