@@ -1,258 +1,286 @@
-NAME
-
+Name
     ngx_redis2 - Nginx upstream module for the Redis 2.0 protocol
 
     *This module is not distributed with the Nginx source.* See the
-        installation instructions.
+    installation instructions.
 
-STATUS
-    This module is still under development and is considered experimental.
+Status
+    This module is already production ready.
 
-SYNOPSIS
+Version
+    This document describes ngx_redis2 v0.08rc2
+    (<https://github.com/agentzh/redis2-nginx-module/tags>) released on 24
+    November 2011.
 
-    location /foo {
-        set $value 'first';
-        redis2_query set one $value;
-        redis2_pass 127.0.0.1:6379;
-    }
+Synopsis
+        location /foo {
+            set $value 'first';
+            redis2_query set one $value;
+            redis2_pass 127.0.0.1:6379;
+        }
 
-    # GET /get?key=some_key
-    location /get {
-        set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
-        redis2_query get $key;
-        redis2_pass foo.com:6379;
-    }
+        # GET /get?key=some_key
+        location /get {
+            set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
+            redis2_query get $key;
+            redis2_pass foo.com:6379;
+        }
 
-    # GET /set?key=one&val=first%20value
-    location /set {
-        set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
-        set_unescape_uri $val $arg_val;  # this requires ngx_set_misc
-        redis2_query set $key $val;
-        redis2_pass foo.com:6379;
-    }
+        # GET /set?key=one&val=first%20value
+        location /set {
+            set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
+            set_unescape_uri $val $arg_val;  # this requires ngx_set_misc
+            redis2_query set $key $val;
+            redis2_pass foo.com:6379;
+        }
 
-    # multiple pipelined queries
-    location /foo {
-        set $value 'first';
-        redis2_query set one $value;
-        redis2_query get one;
-        redis2_query set one two;
-        redis2_query get one;
-        redis2_pass 127.0.0.1:6379;
-    }
+        # multiple pipelined queries
+        location /foo {
+            set $value 'first';
+            redis2_query set one $value;
+            redis2_query get one;
+            redis2_query set one two;
+            redis2_query get one;
+            redis2_pass 127.0.0.1:6379;
+        }
 
-    location /bar {
-        # $ is not special here...
-        redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
-        redis2_pass 127.0.0.1:6379;
-    }
+        location /bar {
+            # $ is not special here...
+            redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
+            redis2_pass 127.0.0.1:6379;
+        }
 
-    location /bar {
-        # variables can be used below and $ is special
-        redis2_raw_query 'get one\r\n';
-        redis2_pass 127.0.0.1:6379;
-    }
+        location /bar {
+            # variables can be used below and $ is special
+            redis2_raw_query 'get one\r\n';
+            redis2_pass 127.0.0.1:6379;
+        }
 
-    # GET /baz?get%20foo%0d%0a
-    location /baz {
-        set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
-        redis2_raw_query $query;
-        redis2_pass 127.0.0.1:6379;
-    }
+        # GET /baz?get%20foo%0d%0a
+        location /baz {
+            set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
+            redis2_raw_query $query;
+            redis2_pass 127.0.0.1:6379;
+        }
 
 Description
-    This is an nginx upstream module that makes nginx talk to a redis 2.x
-    server in a non-blocking way. The full Redis 2.0 unified protocol has
-    been implemented including the redis pipelining support.
+    This is an Nginx upstream module that makes nginx talk to a Redis
+    (<http://redis.io/>) 2.x server in a non-blocking way. The full Redis
+    2.0 unified protocol has been implemented including the Redis pipelining
+    support.
 
-    This module returns the raw TCP response from the redis server.
-    It's recommended to use my lua-redis-parser module (written in
-    pure C) to parse these responses into lua data structure when combined
-    with the ngx_lua module:
-
-       https://github.com/agentzh/lua-redis-parser
+    This module returns the raw TCP response from the Redis server. It's
+    recommended to use my [[LuaRedisParser]] (written in pure C) to parse
+    these responses into lua data structure when combined with
+    [[HttpLuaModule]].
 
     If you only want to use the "get" redis command, you can try out the
-    ngx_redis module here:
+    [[HttpRedisModule]]. It returns the parsed content part of the Redis
+    response because only "get" is needed to implement.
 
-       http://wiki.nginx.org/HttpRedis
-
-    It returns the parsed content part of the redis response because only
-    "get" is needed to implement.
-
-    Another option is to parse the redis responses on your client side yourself.
+    Another option is to parse the redis responses on your client side
+    yourself.
 
 Directives
-    redis2_query arg1 arg2 ...
-        Specify a redis command by specifying its individual arguments
-        (including the redis command name itself) in a
-        similar way to the redis-cli utility.
+  redis2_query
+    syntax: *redis2_query cmd arg1 arg2 ...*
 
-        Multiple instances of this directive are allowd in
-        a single location and these queries will be pipelined.
+    default: *no*
 
-        For example,
+    context: *location, location if*
 
-            location /pipelined {
-                redis2_query set hello world;
-                redis2_query get hello;
-                redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    Specify a Redis command by specifying its individual arguments
+    (including the Redis command name itself) in a similar way to the
+    "redis-cli" utility.
+
+    Multiple instances of this directive are allowed in a single location
+    and these queries will be pipelined. For example,
+
+        location /pipelined {
+            redis2_query set hello world;
+            redis2_query get hello;
+
+            redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+        }
+
+    then "GET /pipelined" will yield two successive raw Redis responses
+
+        +OK
+        $5
+        world
+
+    while newlines here are actually "CR LF" ("\r\n").
+
+  redis2_raw_query
+    syntax: *redis2_raw_query QUERY*
+
+    default: *no*
+
+    context: *location, location if*
+
+    Specify raw Redis queries and nginx variables are recognized in the
+    "QUERY" argument.
+
+    Only *one* Redis command is allowed in the "QUERY" argument, or you'll
+    receive an error. If you want to specify multiple pipelined commands in
+    a single query, use the redis2_raw_queries directive instead.
+
+  redis2_raw_queries
+    syntax: *redis2_raw_queries N QUERIES*
+
+    default: *no*
+
+    context: *location, location if*
+
+    Specify "N" commands in the "QUERIES" argument. Both the "N" and
+    "QUERIES" arguments can take Nginx variables.
+
+    Here's some examples location /pipelined { redis2_raw_queries 3
+    "flushall\r\nget key1\r\nget key2\r\n"; redis2_pass 127.0.0.1:6379; }
+
+        # GET /pipelined2?n=2&cmds=flushall%0D%0Aget%20key%0D%0A
+        location /pipelined2 {
+            set_unescape_uri $n $arg_n;
+            set_unescape_uri $cmds $arg_cmds;
+
+            redis2_raw_queries $n $cmds;
+
+            redis2_pass 127.0.0.1:6379;
+        }
+    Note that in the second sample above, the L<set_unescape_uri|HttpSetMiscModule/"set_unescape_uri"> directive is provided by the [[HttpSetMiscModule]].
+
+  redis2_literal_raw_query
+    syntax: *redis2_literal_raw_query QUERY*
+
+    default: *no*
+
+    context: *location, location if*
+
+    Specify a raw Redis query but Nginx variables in it will not be *not*
+    recognized. In other words, you're free to use the dollar sign character
+    ("$") in your "QUERY" argument.
+
+    Only One redis command is allowed in the "QUERY" argument.
+
+  redis2_pass
+    syntax: *redis2_pass <upstream_name>*
+
+    syntax: *redis2_pass <host>:<port>*
+
+    default: *no*
+
+    context: *location, location if*
+
+    phase: *content*
+
+    Specify the Redis server backend.
+
+  redis2_connect_timeout
+    syntax: *redis2_connect_timeout <time>*
+
+    default: *60s*
+
+    context: *http, server, location*
+
+    The timeout for connecting to the Redis server, in seconds by default.
+
+    It's wise to always explicitly specify the time unit to avoid confusion.
+    Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
+    "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+
+    This time must be less than 597 hours.
+
+  redis2_send_timeout
+    syntax: *redis2_send_timeout <time>*
+
+    default: *60s*
+
+    context: *http, server, location*
+
+    The timeout for sending TCP requests to the Redis server, in seconds by
+    default.
+
+    It's wise to always explicitly specify the time unit to avoid confusion.
+    Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
+    "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+
+  redis2_read_timeout
+    syntax: *redis2_read_timeout <time>*
+
+    default: *60s*
+
+    context: *http, server, location*
+
+    The timeout for reading TCP responses from the redis server, in seconds
+    by default.
+
+    It's wise to always explicitly specify the time unit to avoid confusion.
+    Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
+    "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+
+  redis2_buffer_size
+    syntax: *redis2_buffer_size <size>*
+
+    default: *4k/8k*
+
+    context: *http, server, location*
+
+    This buffer size is used for reading Redis replies, but it's not
+    required to be as big as the largest possible Redis reply.
+
+    This default size is the page size, may be 4k or 8k.
+
+  redis2_next_upstream
+    syntax: *redis2_next_upstream [ error | timeout | invalid_response | off
+    ]*
+
+    default: *error timeout*
+
+    context: *http, server, location*
+
+    Specify which failure conditions should cause the request to be
+    forwarded to another upstream server. Applies only when the value in
+    redis2_pass is an upstream with two or more servers.
+
+    Here's an artificial example: upstream redis_cluster { server
+    127.0.0.1:6379; server 127.0.0.1:6380; }
+
+        server {
+            location /redis {
+                redis2_next_upstream error timeout invalid_response;
+                redis2_query get foo;
+                redis2_pass redis_cluster;
             }
-
-        then GET /pipelined will yield two successive raw redis responses
-
-            +OK
-            $5
-            world
-
-        while newlines here are actually CR LF ("\r\n").
-
-    redis2_raw_query CMD
-        Specify raw redis queries and nginx variables are recognized
-        in the CMD argument.
-
-        Only one redis command is allowed in the CMD argument, or
-        you'll receive an error. If you want to specify multiple
-        pipelined commands in a single query, use the redis2_raw_queries
-        directive instead.
-
-    redis2_raw_queries N CMDS
-        Specify N commands in the CMDS argument. Both the N and CMDS
-        arguments can take nginx variables.
-
-        Here's some examples
-
-            location /pipelined {
-                redis2_raw_queries 3 "flushall\r\nget key1\r\nget key2\r\n";
-                redis2_pass 127.0.0.1:6379;
-            }
-
-            # GET /pipelined2?n=2&cmds=flushall%0D%0Aget%20key%0D%0A
-            location /pipelined2 {
-                set_unescape_uri $n $arg_n;
-                set_unescape_uri $cmds $arg_cmds;
-
-                redis2_raw_queries $n $cmds;
-
-                redis2_pass 127.0.0.1:6379;
-            }
-
-        Note that in the second sample above, the set_unescape_uri directive
-        is provided by the ngx_set_misc module.
-
-    redis2_literal_raw_query CMD
-        Specify raw redis queries but nginx variables are *not* recognized,
-        that is to say, you're free to use the dollar sign characters ($)
-        in your CMD argument.
-
-        Only one redis command is allowed in the CMD argument.
-
-    redis2_pass
-
-    redis2_connect_timeout
-        syntax: *redis2_connect_timeout <time>*
-
-        default: *60s*
-
-        context: *http, server, location*
-
-        The timeout for connecting to the redis server, in seconds by
-        default.
-
-        It's wise to always explicitly specify the time unit to avoid confusion.
-        Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
-        "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
-
-        This time must be less than 597 hours.
-
-    redis2_send_timeout
-        syntax: *redis2_send_timeout <time>*
-
-        default: *60s*
-
-        context: *http, server, location*
-
-        The timeout for sending TCP requests to the redis server, in seconds
-        by default.
-
-        It's wise to always explicitly specify the time unit to avoid confusion.
-        Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
-        "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
-
-        This time must be less than 597 hours.
-
-    redis2_read_timeout
-        syntax: *redis2_read_timeout <time>*
-
-        default: *60s*
-
-        context: *http, server, location*
-
-        The timeout for reading TCP responses from the redis server, in
-        seconds by default.
-
-        It's wise to always explicitly specify the time unit to avoid confusion.
-        Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years),
-        "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
-
-        This time must be less than 597 hours.
-
-    redis2_buffer_size
-
-    redis2_next_upstream
-        syntax: redis2_next_upstream [ error | timeout | invalid_response | off ]
-        default: error timeout
-        context: http, server, location
-
-        Specify which failure conditions should cause the request to be forwarded to another
-        upstream server. Applies only when the value in redis2_pass is an upstream with two or more
-        servers.
-
-        Here's an artificial example:
-
-            upstream redis_cluster {
-                server 127.0.0.1:6379;
-                server 127.0.0.1:6380;
-            }
-
-            server {
-                location /redis {
-                    redis2_next_upstream error timeout invalid_response;
-                    redis2_query get foo;
-                    redis2_pass redis_cluster;
-                }
-            }
+        }
 
 Connection Pool
-    You can use Maxim Dounin's excellent ngx_http_upstream_keepalive module
-    ( http://mdounin.ru/hg/ngx_http_upstream_keepalive/ )
-    with this module to privide TCP connection pool
-    for Redis.
+    You can use the excellent [[HttpUpstreamKeepaliveModule]] with this
+    module to privide TCP connection pool for Redis.
 
     A sample config snippet looks like this
 
-      http {
-        upstream backend {
-          server 127.0.0.1:6379;
+        http {
+            upstream backend {
+              server 127.0.0.1:6379;
 
-          # a pool with at most 1024 connections
-          # and do not distinguish the servers:
-          keepalive 1024 single;
-        }
+              # a pool with at most 1024 connections
+              # and do not distinguish the servers:
+              keepalive 1024 single;
+            }
 
-        server {
-            ...
-            location /redis {
-                set_unescape_uri $query $arg_query;
-                redis2_query $query;
-                redis2_pass backend;
+            server {
+                ...
+                location /redis {
+                    set_unescape_uri $query $arg_query;
+                    redis2_query $query;
+                    redis2_pass backend;
+                }
             }
         }
-      }
 
 Lua Interoperability
-    This module can be served as a non-blocking redis2 client
-    for ngx_lua ( http://github.com/chaoslawful/lua-nginx-module ).
+    This module can be served as a non-blocking redis2 client for
+    [[HttpLuaModule]].
 
     Here's an example using a GET subrequest:
 
@@ -275,24 +303,24 @@ Lua Interoperability
             ';
         }
 
-    Then accessing /main yields
+    Then accessing "/main" yields
 
         [+PONG\r\n]
 
-    where "\r\n" is CRLF. That is, this module returns the *raw* TCP responses
-    from the remote redis server. For lua-based application developers, they
-    may want to utilize the lua-redis-parser module (written in pure C) to
-    parse such raw responses into Lua data structures:
+    where "\r\n" is "CRLF". That is, this module returns the *raw* TCP
+    responses from the remote redis server. For Lua-based application
+    developers, they may want to utilize the [[LuaRedisParser]] library
+    (written in pure C) to parse such raw responses into Lua data
+    structures.
 
-        https://github.com/agentzh/lua-redis-parser
+    When moving the inlined Lua code into an external ".lua" file, it's
+    important to use the escape sequence "\r\n" directly. We used "\\r\\n"
+    above just because the Lua code itself needs quoting when being put into
+    an Nginx string literal.
 
-    When moving the inlined Lua code into an external .lua file, it's important
-    to use the escape sequence "\r\n" directly. We used "\\r\\n" above just because
-    the Lua code itself needs quoting when being put into an nginx string literal.
-
-    You can also use POST/PUT subrequests to transfer the raw redis
-    request via request body, which does not require URI escaping
-    and unescaping, thus saving some CPU cycles. Here's such an example:
+    You can also use POST/PUT subrequests to transfer the raw Redis request
+    via request body, which does not require URI escaping and unescaping,
+    thus saving some CPU cycles. Here's such an example:
 
         location /redis {
             internal;
@@ -315,9 +343,8 @@ Lua Interoperability
 
     This yeilds exactly the same output as the previous (GET) sample.
 
-    One can also use Lua to pick up a concrete Redis backend
-    based on some complicated hashing rules. For
-    instance,
+    One can also use Lua to pick up a concrete Redis backend based on some
+    complicated hashing rules. For instance,
 
         upstream redis-a {
             server foo.bar.com:6379;
@@ -351,86 +378,164 @@ Lua Interoperability
                         { args = {
                             query = '...',
                             backend = srv
-                          } }
+                          }
+                        }
                     )
                     ngx.say(res.body)
                 ";
             }
         }
 
+  Pipelined Redis Requests by Lua
+    Here's a complete example demonstrating how to use Lua to issue multiple
+    pipelined Redis requests via this Nginx module.
+
+    First of all, we include the following in our "nginx.conf" file:
+
+        location = /redis2 {
+            internal;
+
+            redis2_raw_queries $args $echo_request_body;
+            redis2_pass 127.0.0.1:6379;
+        }
+
+        location = /test {
+            content_by_lua_file conf/test.lua;
+        }
+
+    Basically we use URI query args to pass the number of Redis requests and
+    request body to pass the pipelined Redis request string.
+
+    And then we create the "conf/test.lua" file (whose path is relative to
+    the server root of Nginx) to include the following Lua code:
+
+        -- conf/test.lua
+        local parser = require "redis.parser"
+
+        local reqs = {
+            {"set", "foo", "hello world"},
+            {"get", "foo"}
+        }
+
+        local raw_reqs = {}
+        for i, req in ipairs(reqs) do
+            table.insert(raw_reqs, parser.build_query(req))
+        end
+
+        local res = ngx.location.capture("/redis2?" .. #reqs,
+            { body = table.concat(raw_reqs, "") })
+
+        if res.status ~= 200 or not res.body then
+            ngx.log(ngx.ERR, "failed to query redis")
+            ngx.exit(500)
+        end
+
+        local replies = parser.parse_replies(res.body, #reqs)
+        for i, reply in ipairs(replies) do
+            ngx.say(reply[1])
+        end
+
+    Here we assume that your Redis server is listening on the default port
+    (6379) of the localhost. We also make use of the [[LuaRedisParser]]
+    library to construct raw Redis queries for us and also use it to parse
+    the replies.
+
+    Accessing the "/test" location via HTTP clients like "curl" yields the
+    following output
+
+    OK hello world
+
+    A more realistic setting is to use a proper upstream definition for our
+    Redis backend and enable TCP connection pool via the keepalive directive
+    in it.
+
 Redis Publish/Subscribe Support
-    This module has limited support for redis publish/subscribe feature.
-    It cannot be fully supported due to the stateless nature of REST and
-    HTTP model.
+    This module has limited support for Redis publish/subscribe feature. It
+    cannot be fully supported due to the stateless nature of REST and HTTP
+    model.
 
     Consider the following example:
 
-       location /redis {
-           redis2_raw_queries 2 "subscribe /foo/bar\r\n";
-           redis2_pass 127.0.0.1:6379;
-       }
+        location /redis {
+            redis2_raw_queries 2 "subscribe /foo/bar\r\n";
+            redis2_pass 127.0.0.1:6379;
+        }
 
-    And then publish a message for the key /foo/bar in the redis-cli
+    And then publish a message for the key "/foo/bar" in the "redis-cli"
     command line. And then you'll receive two multi-bulk replies from the
-    /redis location.
+    "/redis" location.
 
-    You can surely parse the replies with the lua-redis-parser library if
+    You can surely parse the replies with the [[LuaRedisParser]] library if
     you're using Lua to access this module's location.
 
-    Some limitations:
+  Publish/Subscribe Limitations
+    *   You cannot use [[HttpUpstreamKeepaliveModule]] with this Redis
+        upstream. Only short Redis connections will work.
 
-    1. You cannot use ngx_http_upstream_keepalive with this redis
-       upstream. Only short redis connections will work.
+    *   There may be some race conditions that produce the harmless "Redis
+        server returned extra bytes" warnings in your nginx's error.log.
+        Such warnings might be rare but just be prepared for it.
 
-    2. There may be some race conditions that produce the harmless "Redis
-       server returned extra bytes" warnings in your nginx's error.log. Such
-       warnings might be rare but just be prepared for it.
-
-    3. You should tune the various timeout settings provided by ngx_redis2.
+    *   You should tune the various timeout settings provided by this module
+        like redis2_connect_timeout and redis2_read_timeout.
 
 Performance Tuning
-    When you're using ngx_redis2, please ensure you're using a tcp
-    connection pool (provided by ngx_http_upstream_keepalive)
-    and redis pipelining wherever possible. These features will
-    significantly improve performance. Also, using multiple instance of
-    redis servers on your multi-core machines also help a lot due to the
-    sequential processing nature of a single redis server instance.
+    *   When you're using this module, please ensure you're using a TCP
+        connection pool (provided by [[HttpUpstreamKeepaliveModule]]) and
+        Redis pipelining wherever possible. These features will
+        significantly improve performance.
 
-    Also, when you're benchmarking performance using something like ab or
-    http_load, please ensure that your error log level is high enough (like
-    "warn") to prevent nginx workers spend too much cycles on flushing the
-    error.log file, which is always unbuffered and blocking and thus very
-    expensive.
+    *   Using multiple instance of Redis servers on your multi-core machines
+        also help a lot due to the sequential processing nature of a single
+        Redis server instance.
+
+    *   When you're benchmarking performance using something like "ab" or
+        "http_load", please ensure that your error log level is high enough
+        (like "warn") to prevent Nginx workers spend too much cycles on
+        flushing the "error.log" file, which is always non-buffered and
+        blocking and thus very expensive.
 
 Installation
-    1. Grab the nginx source code from nginx.net (<http://nginx.net/>), for
-        example, the version 0.8.54 (see nginx compatibility),
+    You are recommended to install this module (as well as the Nginx core
+    and many many other goodies) via the ngx_openresty bundle
+    (<http://openresty.org>). Check out the installation instructions
+    (<http://openresty.org/#Installation>) for setting up ngx_openresty
+    (<http://openresty.org>).
 
-    2. and then build the source with this module:
+    Alternatively, you can install this module manually by recompiling the
+    standard Nginx core as follows:
 
-        $ wget 'http://sysoev.ru/nginx/nginx-0.8.54.tar.gz'
-        $ tar -xzvf nginx-0.8.54.tar.gz
-        $ cd nginx-0.8.54/
+    *   Grab the nginx source code from nginx.org (<http://nginx.org>), for
+        example, the version 1.0.8 (see nginx compatibility),
+
+    *   and then download the latest version of the release tarball of this
+        module from ngx_redis2's file list
+        (<http://github.com/agentzh/redis2-nginx-module/tags>).
+
+    *   and finally build the source with this module:
+
+        wget 'http://nginx.org/download/nginx-1.0.8.tar.gz'
+        tar -xzvf nginx-1.0.8.tar.gz
+        cd nginx-1.0.8/
 
         # Here we assume you would install you nginx under /opt/nginx/.
-        $ ./configure --prefix=/opt/nginx \
-            --add-module=/path/to/redis2-nginx-module
+        ./configure --prefix=/opt/nginx \
+                    --add-module=/path/to/redis2-nginx-module
 
-        $ make -j2
-        $ make install
-
-    Download the latest version of the release tarball of this module from
-    redis2-nginx-module file list
-    (<http://github.com/agentzh/redis2-nginx-module/downloads>).
+        make -j2
+        make install
 
 Compatibility
-    Redis 2.0, 2.2, and above should work with this module
-    without any issues. So is the "Alchemy Database"
-    (aka redisql).
+    Redis 2.0, 2.2, and above should work with this module without any
+    issues. So is the Alchemy Database
+    (<http://code.google.com/p/alchemydatabase/>) (aka redisql in its early
+    days).
 
     The following versions of Nginx should work with this module:
 
-    *   1.0.x (last tested: 1.0.2)
+    *   1.1.x (last tested: 1.1.5)
+
+    *   1.0.x (last tested: 1.0.10)
 
     *   0.9.x (last tested: 0.9.4)
 
@@ -446,33 +551,34 @@ Report Bugs
     there must be some serious bugs lurking somewhere in this module. So
     whenever you are bitten by any quirks, please don't hesitate to
 
-    1.  send a bug report or even patches to <agentzh@gmail.com>,
+    *   create a ticket on the issue tracking interface
+        (<http://github.com/agentzh/redis2-nginx-module/issues>) provided by
+        GitHub.
 
-    2.  or create a ticket on the issue tracking interface
-        (<http://github.com/agentzh/redis2-nginx-module/issues>)
-        provided by GitHub.
+    *   or send a bug report or even patches to the Nginx mailing list
+        (<http://mailman.nginx.org/mailman/listinfo/nginx>).
 
 Source Repository
     Available on github at agentzh/redis2-nginx-module
     (<http://github.com/agentzh/redis2-nginx-module>).
 
 TODO
-    * Add the "redis2_as_json" directive to allow emitting JSON directly.
+    *   Add the "redis2_as_json" directive to allow emitting JSON directly.
 
-AUTHORS
-    Yichun "agentzh" Zhang (章亦春) < agentzh@gmail.com >
+Author
+    Zhang "agentzh" Yichun (章亦春) <agentzh@gmail.com>
 
 Getting involved
     You'll be very welcomed to submit patches to the author or just ask for
     a commit bit to the source repository on GitHub.
 
 Copyright & License
-    Copyright (c) 2010, 2011 Taobao Inc., Alibaba Group ( http://www.taobao.com
-    ).
+    This module is licenced under the BSD license.
 
-    Copyright (c) 2010, 2011 Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>.
+    Copyright (C) 2010, 2011, by Zhang "agentzh" Yichun (章亦春)
+    <agentzh@gmail.com>.
 
-    This module is licensed under the terms of the BSD license.
+    All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are
@@ -498,5 +604,12 @@ Copyright & License
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 SEE ALSO
-    * a redis response parser for Lua: https://github.com/agentzh/lua-redis-parser
+    *   The Redis (<http://redis.io/>) server homepage.
+
+    *   a redis response parser and a request constructor for Lua:
+        [[LuaRedisParser]].
+
+    *   [[HttpLuaModule]]
+
+    *   The ngx_openresty bundle (<http://openresty.org>).
 

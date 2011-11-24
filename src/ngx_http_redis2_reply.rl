@@ -1,8 +1,11 @@
+#ifndef DDEBUG
 #define DDEBUG 0
+#endif
 #include "ddebug.h"
 
 #include "ngx_http_redis2_reply.h"
 #include "ngx_http_redis2_util.h"
+#include <nginx.h>
 
 %%{
     machine reply;
@@ -30,15 +33,15 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
     ngx_chain_t             **ll = NULL;
 
     int                       cs;
-    char                     *p;
-    char                     *orig_p;
+    signed char              *p;
+    signed char              *orig_p;
     ssize_t                   orig_len;
-    char                     *pe;
+    signed char              *pe;
 
     u = ctx->request->upstream;
     b = &u->buffer;
 
-    orig_p = (char *) b->last;
+    orig_p = (signed char *) b->last;
     orig_len = bytes;
 
     while (ctx->query_count) {
@@ -56,8 +59,8 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
             dd("resumed the old state %d", cs);
         }
 
-        p  = (char *) b->last;
-        pe = (char *) b->last + bytes;
+        p  = (signed char *) b->last;
+        pe = (signed char *) b->last + bytes;
 
         dd("response body: %.*s", (int) bytes, p);
 
@@ -142,9 +145,15 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
 
                     return NGX_HTTP_INTERNAL_SERVER_ERROR;
 #endif
+
+                } else {
+#if defined(nginx_version) && nginx_version >= 1001004
+                    u->keepalive = 1;
+#endif
                 }
 
                 u->length = 0;
+
                 break;
 
             } else {

@@ -14,7 +14,7 @@ $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 
 #no_diff;
 
-log_level 'warn';
+#log_level 'warn';
 
 run_tests();
 
@@ -323,7 +323,7 @@ __DATA__
 --- http_config
     upstream backend {
         server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
-        keepalive 500 single;
+        keepalive 1 single;
     }
 --- config
     location /a {
@@ -349,7 +349,7 @@ __DATA__
 --- http_config
     upstream backend {
         server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
-        keepalive 500 single;
+        keepalive 1 single;
     }
 --- config
     location /a {
