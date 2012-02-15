@@ -50,7 +50,7 @@
     action read_chunk {
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 
     action check_data_complete {

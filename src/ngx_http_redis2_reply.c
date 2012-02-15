@@ -132,7 +132,7 @@ tr9:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 12 "src/common.rl"
 	{
@@ -379,7 +379,7 @@ tr17:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 12 "src/common.rl"
 	{
@@ -716,7 +716,7 @@ tr32:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 30 "src/multi_bulk_reply.rl"
 	{
@@ -1329,7 +1329,7 @@ tr41:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 30 "src/multi_bulk_reply.rl"
 	{
@@ -2512,7 +2512,7 @@ tr50:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 30 "src/multi_bulk_reply.rl"
 	{
@@ -2744,7 +2744,7 @@ tr51:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 30 "src/multi_bulk_reply.rl"
 	{
@@ -3604,7 +3604,7 @@ tr58:
 	{
         ctx->chunks_read++;
         dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (char *) b->last), (char *) b->last);
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
     }
 #line 30 "src/multi_bulk_reply.rl"
 	{
