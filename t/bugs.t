@@ -199,7 +199,8 @@ qq{+OK\r
 }
 
 
-=== TEST 6: two pipelined multi-bulk replies
+
+=== TEST 7: two pipelined multi-bulk replies
 --- config
     location /set {
         redis2_query subscribe foo;

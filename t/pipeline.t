@@ -98,3 +98,22 @@ __DATA__
 "+OK\r\n\$-1\r\n"
 --- timeout: 3
 
+
+
+=== TEST 6: advanced query (2 pipelined) - keepalive
+--- http_config
+    upstream backend {
+        server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+        keepalive 100 single;
+    }
+--- config
+    location /a {
+        redis2_query set hello world;
+        redis2_query get hello;
+        redis2_pass backend;
+    }
+--- request
+    GET /a
+--- response_body eval
+"+OK\r\n\$5\r\nworld\r\n"
+
