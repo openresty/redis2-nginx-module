@@ -11,8 +11,10 @@ force=$2
 
           #--with-cc-opt="-O3" \
           #--with-cc-opt="-fast" \
+          #--with-cc=gcc46 \
+
 ngx-build $force $version \
-            --with-cc-opt="-O3 -funsigned-char" \
+          --with-cc-opt="-O3 -funsigned-char" \
           --with-http_addition_module \
           --add-module=$root $opts \
           --add-module=$root/../eval-nginx-module \

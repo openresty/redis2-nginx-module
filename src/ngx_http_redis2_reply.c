@@ -16,7 +16,7 @@
 
 #line 18 "src/ngx_http_redis2_reply.c"
 static const int reply_start = 1;
-static const int reply_first_final = 50;
+static const int reply_first_final = 52;
 static const int reply_error = 0;
 
 static const int reply_en_main = 1;
@@ -85,9 +85,9 @@ case 1:
 	switch( (*p) ) {
 		case 36: goto st2;
 		case 42: goto st14;
-		case 43: goto st48;
-		case 45: goto st48;
-		case 58: goto st48;
+		case 43: goto st50;
+		case 45: goto st50;
+		case 58: goto st50;
 	}
 	goto st0;
 st0:
@@ -139,8 +139,8 @@ tr9:
         dd("done!");
         done = 1;
     }
-	goto st50;
-tr21:
+	goto st52;
+tr23:
 #line 30 "src/multi_bulk_reply.rl"
 	{
         dd("finalize multi bulks");
@@ -150,18 +150,18 @@ tr21:
             done = 1;
         }
     }
-	goto st50;
-tr60:
+	goto st52;
+tr62:
 #line 12 "src/common.rl"
 	{
         dd("done!");
         done = 1;
     }
-	goto st50;
-st50:
+	goto st52;
+st52:
 	if ( ++p == pe )
-		goto _test_eof50;
-case 50:
+		goto _test_eof52;
+case 52:
 #line 166 "src/ngx_http_redis2_reply.c"
 	goto st0;
 st6:
@@ -386,11 +386,11 @@ tr17:
         dd("done!");
         done = 1;
     }
-	goto st51;
-st51:
+	goto st53;
+st53:
 	if ( ++p == pe )
-		goto _test_eof51;
-case 51:
+		goto _test_eof53;
+case 53:
 #line 395 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 13 ) {
@@ -456,28 +456,44 @@ st14:
 	if ( ++p == pe )
 		goto _test_eof14;
 case 14:
-	if ( (*p) == 48 )
-		goto st15;
+	switch( (*p) ) {
+		case 45: goto st15;
+		case 48: goto st18;
+	}
 	if ( 49 <= (*p) && (*p) <= 57 )
-		goto tr19;
+		goto tr20;
 	goto st0;
 st15:
 	if ( ++p == pe )
 		goto _test_eof15;
 case 15:
-	switch( (*p) ) {
-		case 13: goto st16;
-		case 48: goto st15;
-	}
+	if ( (*p) == 49 )
+		goto st16;
 	goto st0;
 st16:
 	if ( ++p == pe )
 		goto _test_eof16;
 case 16:
-	if ( (*p) == 10 )
-		goto tr21;
+	if ( (*p) == 13 )
+		goto st17;
 	goto st0;
-tr19:
+st17:
+	if ( ++p == pe )
+		goto _test_eof17;
+case 17:
+	if ( (*p) == 10 )
+		goto tr23;
+	goto st0;
+st18:
+	if ( ++p == pe )
+		goto _test_eof18;
+case 18:
+	switch( (*p) ) {
+		case 13: goto st17;
+		case 48: goto st18;
+	}
+	goto st0;
+tr20:
 #line 19 "src/multi_bulk_reply.rl"
 	{
         dd("start reading bulk count");
@@ -489,44 +505,44 @@ tr19:
         ctx->chunk_count += *p - '0';
         dd("chunk count: %d", (int) ctx->chunk_count);
     }
-	goto st17;
-tr23:
+	goto st19;
+tr25:
 #line 24 "src/multi_bulk_reply.rl"
 	{
         ctx->chunk_count *= 10;
         ctx->chunk_count += *p - '0';
         dd("chunk count: %d", (int) ctx->chunk_count);
     }
-	goto st17;
-st17:
-	if ( ++p == pe )
-		goto _test_eof17;
-case 17:
-#line 506 "src/ngx_http_redis2_reply.c"
-	if ( (*p) == 13 )
-		goto st18;
-	if ( 48 <= (*p) && (*p) <= 57 )
-		goto tr23;
-	goto st0;
-st18:
-	if ( ++p == pe )
-		goto _test_eof18;
-case 18:
-	if ( (*p) == 10 )
-		goto tr24;
-	goto st0;
-tr24:
-#line 14 "src/multi_bulk_reply.rl"
-	{
-        dd("start reading bulk");
-        ctx->chunks_read = 0;
-    }
 	goto st19;
 st19:
 	if ( ++p == pe )
 		goto _test_eof19;
 case 19:
-#line 530 "src/ngx_http_redis2_reply.c"
+#line 522 "src/ngx_http_redis2_reply.c"
+	if ( (*p) == 13 )
+		goto st20;
+	if ( 48 <= (*p) && (*p) <= 57 )
+		goto tr25;
+	goto st0;
+st20:
+	if ( ++p == pe )
+		goto _test_eof20;
+case 20:
+	if ( (*p) == 10 )
+		goto tr26;
+	goto st0;
+tr26:
+#line 14 "src/multi_bulk_reply.rl"
+	{
+        dd("start reading bulk");
+        ctx->chunks_read = 0;
+    }
+	goto st21;
+st21:
+	if ( ++p == pe )
+		goto _test_eof21;
+case 21:
+#line 546 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -580,16 +596,16 @@ case 19:
      ) _widec += 256;
 	}
 	switch( _widec ) {
-		case 5668: goto st20;
-		case 5675: goto st24;
-		case 5677: goto st24;
-		case 5690: goto st24;
+		case 5668: goto st22;
+		case 5675: goto st26;
+		case 5677: goto st26;
+		case 5690: goto st26;
 	}
 	goto st0;
-st20:
+st22:
 	if ( ++p == pe )
-		goto _test_eof20;
-case 20:
+		goto _test_eof22;
+case 22:
 	_widec = (*p);
 	if ( (*p) < 48 ) {
 		if ( 45 <= (*p) && (*p) <= 45 ) {
@@ -630,16 +646,16 @@ case 20:
      ) _widec += 256;
 	}
 	switch( _widec ) {
-		case 5677: goto st21;
-		case 5680: goto st26;
+		case 5677: goto st23;
+		case 5680: goto st28;
 	}
 	if ( 5681 <= _widec && _widec <= 5689 )
-		goto tr29;
+		goto tr31;
 	goto st0;
-st21:
+st23:
 	if ( ++p == pe )
-		goto _test_eof21;
-case 21:
+		goto _test_eof23;
+case 23:
 	_widec = (*p);
 	if ( 48 <= (*p) && (*p) <= 57 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -654,12 +670,12 @@ case 21:
      ) _widec += 256;
 	}
 	if ( 5680 <= _widec && _widec <= 5689 )
-		goto st22;
+		goto st24;
 	goto st0;
-st22:
+st24:
 	if ( ++p == pe )
-		goto _test_eof22;
-case 22:
+		goto _test_eof24;
+case 24:
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 48 <= (*p) && (*p) <= 57 ) {
@@ -687,14 +703,14 @@ case 22:
      ) _widec += 256;
 	}
 	if ( _widec == 5645 )
-		goto st23;
+		goto st25;
 	if ( 5680 <= _widec && _widec <= 5689 )
-		goto st22;
+		goto st24;
 	goto st0;
-st23:
+st25:
 	if ( ++p == pe )
-		goto _test_eof23;
-case 23:
+		goto _test_eof25;
+case 25:
 	_widec = (*p);
 	if ( 10 <= (*p) && (*p) <= 10 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -709,9 +725,9 @@ case 23:
      ) _widec += 256;
 	}
 	if ( _widec == 5642 )
-		goto tr32;
+		goto tr34;
 	goto st0;
-tr32:
+tr34:
 #line 50 "src/common.rl"
 	{
         ctx->chunks_read++;
@@ -727,12 +743,12 @@ tr32:
             done = 1;
         }
     }
-	goto st52;
-st52:
+	goto st54;
+st54:
 	if ( ++p == pe )
-		goto _test_eof52;
-case 52:
-#line 736 "src/ngx_http_redis2_reply.c"
+		goto _test_eof54;
+case 54:
+#line 752 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -786,16 +802,16 @@ case 52:
      ) _widec += 256;
 	}
 	switch( _widec ) {
-		case 5668: goto st20;
-		case 5675: goto st24;
-		case 5677: goto st24;
-		case 5690: goto st24;
+		case 5668: goto st22;
+		case 5675: goto st26;
+		case 5677: goto st26;
+		case 5690: goto st26;
 	}
 	goto st0;
-st24:
+st26:
 	if ( ++p == pe )
-		goto _test_eof24;
-case 24:
+		goto _test_eof26;
+case 26:
 	_widec = (*p);
 	if ( (*p) < 13 ) {
 		if ( (*p) <= 12 ) {
@@ -836,14 +852,14 @@ case 24:
      ) _widec += 256;
 	}
 	if ( _widec == 5645 )
-		goto st25;
+		goto st27;
 	if ( 5504 <= _widec && _widec <= 5759 )
-		goto st24;
+		goto st26;
 	goto st0;
-st25:
+st27:
 	if ( ++p == pe )
-		goto _test_eof25;
-case 25:
+		goto _test_eof27;
+case 27:
 	_widec = (*p);
 	if ( (*p) < 11 ) {
 		if ( (*p) > 9 ) {
@@ -910,16 +926,16 @@ case 25:
      ) _widec += 256;
 	}
 	switch( _widec ) {
-		case 5642: goto tr32;
-		case 5645: goto st25;
+		case 5642: goto tr34;
+		case 5645: goto st27;
 	}
 	if ( 5504 <= _widec && _widec <= 5759 )
-		goto st24;
+		goto st26;
 	goto st0;
-st26:
+st28:
 	if ( ++p == pe )
-		goto _test_eof26;
-case 26:
+		goto _test_eof28;
+case 28:
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 48 <= (*p) && (*p) <= 48 ) {
@@ -947,14 +963,14 @@ case 26:
      ) _widec += 256;
 	}
 	switch( _widec ) {
-		case 5645: goto st27;
-		case 5680: goto st26;
+		case 5645: goto st29;
+		case 5680: goto st28;
 	}
 	goto st0;
-st27:
+st29:
 	if ( ++p == pe )
-		goto _test_eof27;
-case 27:
+		goto _test_eof29;
+case 29:
 	_widec = (*p);
 	if ( 10 <= (*p) && (*p) <= 10 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -969,12 +985,12 @@ case 27:
      ) _widec += 256;
 	}
 	if ( _widec == 5642 )
-		goto st28;
+		goto st30;
 	goto st0;
-st28:
+st30:
 	if ( ++p == pe )
-		goto _test_eof28;
-case 28:
+		goto _test_eof30;
+case 30:
 	_widec = (*p);
 	if ( 13 <= (*p) && (*p) <= 13 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -989,9 +1005,9 @@ case 28:
      ) _widec += 256;
 	}
 	if ( _widec == 5645 )
-		goto st23;
+		goto st25;
 	goto st0;
-tr29:
+tr31:
 #line 23 "src/common.rl"
 	{
         dd("start reading chunk size");
@@ -1004,20 +1020,20 @@ tr29:
         ctx->chunk_size += *p - '0';
         dd("read chunk size: %d", (int) ctx->chunk_size);
     }
-	goto st29;
-tr37:
+	goto st31;
+tr39:
 #line 17 "src/common.rl"
 	{
         ctx->chunk_size *= 10;
         ctx->chunk_size += *p - '0';
         dd("read chunk size: %d", (int) ctx->chunk_size);
     }
-	goto st29;
-st29:
+	goto st31;
+st31:
 	if ( ++p == pe )
-		goto _test_eof29;
-case 29:
-#line 1021 "src/ngx_http_redis2_reply.c"
+		goto _test_eof31;
+case 31:
+#line 1037 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 48 <= (*p) && (*p) <= 57 ) {
@@ -1045,14 +1061,14 @@ case 29:
      ) _widec += 256;
 	}
 	if ( _widec == 5645 )
-		goto st30;
+		goto st32;
 	if ( 5680 <= _widec && _widec <= 5689 )
-		goto tr37;
+		goto tr39;
 	goto st0;
-st30:
+st32:
 	if ( ++p == pe )
-		goto _test_eof30;
-case 30:
+		goto _test_eof32;
+case 32:
 	_widec = (*p);
 	if ( 10 <= (*p) && (*p) <= 10 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -1067,12 +1083,12 @@ case 30:
      ) _widec += 256;
 	}
 	if ( _widec == 5642 )
-		goto st31;
+		goto st33;
 	goto st0;
-st31:
+st33:
 	if ( ++p == pe )
-		goto _test_eof31;
-case 31:
+		goto _test_eof33;
+case 33:
 	_widec = (*p);
 	_widec = (short)(2176 + ((*p) - -128));
 	if ( 
@@ -1094,12 +1110,12 @@ case 31:
         ctx->chunks_read < ctx->chunk_count
      ) _widec += 512;
 	if ( 2944 <= _widec && _widec <= 3199 )
-		goto st32;
+		goto st34;
 	goto st0;
-st32:
+st34:
 	if ( ++p == pe )
-		goto _test_eof32;
-case 32:
+		goto _test_eof34;
+case 34:
 	_widec = (*p);
 	if ( (*p) < 13 ) {
 		if ( (*p) <= 12 ) {
@@ -1177,20 +1193,20 @@ case 32:
      ) _widec += 1024;
 	}
 	switch( _widec ) {
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st33:
+st35:
 	if ( ++p == pe )
-		goto _test_eof33;
-case 33:
+		goto _test_eof35;
+case 35:
 	_widec = (*p);
 	if ( (*p) < 11 ) {
 		if ( (*p) > 9 ) {
@@ -1312,19 +1328,19 @@ case 33:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2826: goto tr32;
-		case 3082: goto tr41;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2826: goto tr34;
+		case 3082: goto tr43;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-tr41:
+tr43:
 #line 50 "src/common.rl"
 	{
         ctx->chunks_read++;
@@ -1340,12 +1356,12 @@ tr41:
             done = 1;
         }
     }
-	goto st53;
-st53:
+	goto st55;
+st55:
 	if ( ++p == pe )
-		goto _test_eof53;
-case 53:
-#line 1349 "src/ngx_http_redis2_reply.c"
+		goto _test_eof55;
+case 55:
+#line 1365 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) < 14 ) {
@@ -1599,28 +1615,28 @@ case 53:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2852: goto st20;
-		case 2859: goto st24;
-		case 2861: goto st24;
-		case 2874: goto st24;
-		case 3108: goto st34;
-		case 3115: goto st42;
-		case 3117: goto st42;
-		case 3130: goto st42;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2852: goto st22;
+		case 2859: goto st26;
+		case 2861: goto st26;
+		case 2874: goto st26;
+		case 3108: goto st36;
+		case 3115: goto st44;
+		case 3117: goto st44;
+		case 3130: goto st44;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st34:
+st36:
 	if ( ++p == pe )
-		goto _test_eof34;
-case 34:
+		goto _test_eof36;
+case 36:
 	_widec = (*p);
 	if ( (*p) < 45 ) {
 		if ( (*p) < 13 ) {
@@ -1808,322 +1824,322 @@ case 34:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2861: goto st21;
-		case 2864: goto st26;
-		case 3117: goto st35;
-		case 3120: goto st37;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2861: goto st23;
+		case 2864: goto st28;
+		case 3117: goto st37;
+		case 3120: goto st39;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec < 3086 ) {
 		if ( _widec > 2873 ) {
 			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st32;
+				goto st34;
 		} else if ( _widec >= 2865 )
-			goto tr29;
+			goto tr31;
 	} else if ( _widec > 3119 ) {
 		if ( _widec > 3129 ) {
 			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st32;
+				goto st34;
 		} else if ( _widec >= 3121 )
-			goto tr44;
+			goto tr46;
 	} else
-		goto st32;
-	goto st0;
-st35:
-	if ( ++p == pe )
-		goto _test_eof35;
-case 35:
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 57 ) {
-			if ( 58 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
-	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st32;
-		} else if ( _widec >= 2864 )
-			goto st22;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st32;
-		} else if ( _widec >= 3120 )
-			goto st36;
-	} else
-		goto st32;
-	goto st0;
-st36:
-	if ( ++p == pe )
-		goto _test_eof36;
-case 36:
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 57 ) {
-			if ( 58 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 4365: goto st23;
-		case 4621: goto st33;
-		case 4877: goto st23;
-		case 5133: goto st33;
-	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st32;
-		} else if ( _widec >= 2864 )
-			goto st22;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st32;
-		} else if ( _widec >= 3120 )
-			goto st36;
-	} else
-		goto st32;
+		goto st34;
 	goto st0;
 st37:
 	if ( ++p == pe )
 		goto _test_eof37;
 case 37:
+	_widec = (*p);
+	if ( (*p) < 14 ) {
+		if ( (*p) > 12 ) {
+			if ( 13 <= (*p) && (*p) <= 13 ) {
+				_widec = (short)(3200 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 512;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 1024;
+			}
+		} else {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else if ( (*p) > 47 ) {
+		if ( (*p) > 57 ) {
+			if ( 58 <= (*p) )
+ {				_widec = (short)(2176 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+			}
+		} else if ( (*p) >= 48 ) {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else {
+		_widec = (short)(2176 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+	}
+	switch( _widec ) {
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
+	}
+	if ( _widec < 3086 ) {
+		if ( _widec > 2873 ) {
+			if ( 2944 <= _widec && _widec <= 3084 )
+				goto st34;
+		} else if ( _widec >= 2864 )
+			goto st24;
+	} else if ( _widec > 3119 ) {
+		if ( _widec > 3129 ) {
+			if ( 3130 <= _widec && _widec <= 3199 )
+				goto st34;
+		} else if ( _widec >= 3120 )
+			goto st38;
+	} else
+		goto st34;
+	goto st0;
+st38:
+	if ( ++p == pe )
+		goto _test_eof38;
+case 38:
+	_widec = (*p);
+	if ( (*p) < 14 ) {
+		if ( (*p) > 12 ) {
+			if ( 13 <= (*p) && (*p) <= 13 ) {
+				_widec = (short)(3200 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 512;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 1024;
+			}
+		} else {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else if ( (*p) > 47 ) {
+		if ( (*p) > 57 ) {
+			if ( 58 <= (*p) )
+ {				_widec = (short)(2176 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+			}
+		} else if ( (*p) >= 48 ) {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else {
+		_widec = (short)(2176 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+	}
+	switch( _widec ) {
+		case 4365: goto st25;
+		case 4621: goto st35;
+		case 4877: goto st25;
+		case 5133: goto st35;
+	}
+	if ( _widec < 3086 ) {
+		if ( _widec > 2873 ) {
+			if ( 2944 <= _widec && _widec <= 3084 )
+				goto st34;
+		} else if ( _widec >= 2864 )
+			goto st24;
+	} else if ( _widec > 3119 ) {
+		if ( _widec > 3129 ) {
+			if ( 3130 <= _widec && _widec <= 3199 )
+				goto st34;
+		} else if ( _widec >= 3120 )
+			goto st38;
+	} else
+		goto st34;
+	goto st0;
+st39:
+	if ( ++p == pe )
+		goto _test_eof39;
+case 39:
 	_widec = (*p);
 	if ( (*p) < 14 ) {
 		if ( (*p) > 12 ) {
@@ -2245,23 +2261,23 @@ case 37:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2864: goto st26;
-		case 3120: goto st37;
-		case 4365: goto st27;
-		case 4621: goto st38;
-		case 4877: goto st40;
-		case 5133: goto st41;
+		case 2864: goto st28;
+		case 3120: goto st39;
+		case 4365: goto st29;
+		case 4621: goto st40;
+		case 4877: goto st42;
+		case 5133: goto st43;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st38:
+st40:
 	if ( ++p == pe )
-		goto _test_eof38;
-case 38:
+		goto _test_eof40;
+case 40:
 	_widec = (*p);
 	if ( (*p) < 11 ) {
 		if ( (*p) > 9 ) {
@@ -2383,22 +2399,22 @@ case 38:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2826: goto st28;
-		case 3082: goto st39;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2826: goto st30;
+		case 3082: goto st41;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st39:
+st41:
 	if ( ++p == pe )
-		goto _test_eof39;
-case 39:
+		goto _test_eof41;
+case 41:
 	_widec = (*p);
 	if ( (*p) < 13 ) {
 		if ( (*p) <= 12 ) {
@@ -2476,21 +2492,21 @@ case 39:
      ) _widec += 1024;
 	}
 	switch( _widec ) {
-		case 4365: goto st23;
-		case 4621: goto st33;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 4365: goto st25;
+		case 4621: goto st35;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st40:
+st42:
 	if ( ++p == pe )
-		goto _test_eof40;
-case 40:
+		goto _test_eof42;
+case 42:
 	_widec = (*p);
 	if ( 10 <= (*p) && (*p) <= 10 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -2505,9 +2521,9 @@ case 40:
      ) _widec += 256;
 	}
 	if ( _widec == 5642 )
-		goto tr50;
+		goto tr52;
 	goto st0;
-tr50:
+tr52:
 #line 50 "src/common.rl"
 	{
         ctx->chunks_read++;
@@ -2523,12 +2539,12 @@ tr50:
             done = 1;
         }
     }
-	goto st54;
-st54:
+	goto st56;
+st56:
 	if ( ++p == pe )
-		goto _test_eof54;
-case 54:
-#line 2532 "src/ngx_http_redis2_reply.c"
+		goto _test_eof56;
+case 56:
+#line 2548 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) > 13 ) {
@@ -2595,17 +2611,17 @@ case 54:
      ) _widec += 256;
 	}
 	switch( _widec ) {
-		case 5645: goto st23;
-		case 5668: goto st20;
-		case 5675: goto st24;
-		case 5677: goto st24;
-		case 5690: goto st24;
+		case 5645: goto st25;
+		case 5668: goto st22;
+		case 5675: goto st26;
+		case 5677: goto st26;
+		case 5690: goto st26;
 	}
 	goto st0;
-st41:
+st43:
 	if ( ++p == pe )
-		goto _test_eof41;
-case 41:
+		goto _test_eof43;
+case 43:
 	_widec = (*p);
 	if ( (*p) < 11 ) {
 		if ( (*p) > 9 ) {
@@ -2727,19 +2743,19 @@ case 41:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2826: goto tr50;
-		case 3082: goto tr51;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2826: goto tr52;
+		case 3082: goto tr53;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-tr51:
+tr53:
 #line 50 "src/common.rl"
 	{
         ctx->chunks_read++;
@@ -2755,12 +2771,12 @@ tr51:
             done = 1;
         }
     }
-	goto st55;
-st55:
+	goto st57;
+st57:
 	if ( ++p == pe )
-		goto _test_eof55;
-case 55:
-#line 2764 "src/ngx_http_redis2_reply.c"
+		goto _test_eof57;
+case 57:
+#line 2780 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) < 14 ) {
@@ -3014,29 +3030,29 @@ case 55:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2852: goto st20;
-		case 2859: goto st24;
-		case 2861: goto st24;
-		case 2874: goto st24;
-		case 3108: goto st34;
-		case 3115: goto st42;
-		case 3117: goto st42;
-		case 3130: goto st42;
-		case 4365: goto st23;
-		case 4621: goto st33;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2852: goto st22;
+		case 2859: goto st26;
+		case 2861: goto st26;
+		case 2874: goto st26;
+		case 3108: goto st36;
+		case 3115: goto st44;
+		case 3117: goto st44;
+		case 3130: goto st44;
+		case 4365: goto st25;
+		case 4621: goto st35;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st42:
+st44:
 	if ( ++p == pe )
-		goto _test_eof42;
-case 42:
+		goto _test_eof44;
+case 44:
 	_widec = (*p);
 	if ( (*p) < 13 ) {
 		if ( (*p) <= 12 ) {
@@ -3114,334 +3130,22 @@ case 42:
      ) _widec += 1024;
 	}
 	switch( _widec ) {
-		case 4365: goto st25;
-		case 4621: goto st43;
-		case 4877: goto st25;
-		case 5133: goto st43;
-	}
-	if ( _widec < 2830 ) {
-		if ( 2688 <= _widec && _widec <= 2828 )
-			goto st24;
-	} else if ( _widec > 2943 ) {
-		if ( _widec > 3084 ) {
-			if ( 3086 <= _widec && _widec <= 3199 )
-				goto st42;
-		} else if ( _widec >= 2944 )
-			goto st42;
-	} else
-		goto st24;
-	goto st0;
-st43:
-	if ( ++p == pe )
-		goto _test_eof43;
-case 43:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto tr32;
-		case 3082: goto tr41;
-		case 4365: goto st25;
-		case 4621: goto st43;
-		case 4877: goto st25;
-		case 5133: goto st43;
-	}
-	if ( _widec < 2830 ) {
-		if ( 2688 <= _widec && _widec <= 2828 )
-			goto st24;
-	} else if ( _widec > 2943 ) {
-		if ( _widec > 3084 ) {
-			if ( 3086 <= _widec && _widec <= 3199 )
-				goto st42;
-		} else if ( _widec >= 2944 )
-			goto st42;
-	} else
-		goto st24;
-	goto st0;
-tr44:
-#line 23 "src/common.rl"
-	{
-        dd("start reading chunk size");
-        ctx->chunk_bytes_read = 0;
-        ctx->chunk_size = 0;
-    }
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st44;
-tr54:
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st44;
-st44:
-	if ( ++p == pe )
-		goto _test_eof44;
-case 44:
-#line 3305 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 57 ) {
-			if ( 58 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 4365: goto st30;
+		case 4365: goto st27;
 		case 4621: goto st45;
-		case 4877: goto st46;
-		case 5133: goto st47;
+		case 4877: goto st27;
+		case 5133: goto st45;
 	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st32;
-		} else if ( _widec >= 2864 )
-			goto tr37;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st32;
-		} else if ( _widec >= 3120 )
-			goto tr54;
+	if ( _widec < 2830 ) {
+		if ( 2688 <= _widec && _widec <= 2828 )
+			goto st26;
+	} else if ( _widec > 2943 ) {
+		if ( _widec > 3084 ) {
+			if ( 3086 <= _widec && _widec <= 3199 )
+				goto st44;
+		} else if ( _widec >= 2944 )
+			goto st44;
 	} else
-		goto st32;
+		goto st26;
 	goto st0;
 st45:
 	if ( ++p == pe )
@@ -3568,21 +3272,333 @@ case 45:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2826: goto st31;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2826: goto tr34;
+		case 3082: goto tr43;
+		case 4365: goto st27;
+		case 4621: goto st45;
+		case 4877: goto st27;
+		case 5133: goto st45;
 	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
-	} else if ( _widec >= 2944 )
-		goto st32;
+	if ( _widec < 2830 ) {
+		if ( 2688 <= _widec && _widec <= 2828 )
+			goto st26;
+	} else if ( _widec > 2943 ) {
+		if ( _widec > 3084 ) {
+			if ( 3086 <= _widec && _widec <= 3199 )
+				goto st44;
+		} else if ( _widec >= 2944 )
+			goto st44;
+	} else
+		goto st26;
 	goto st0;
+tr46:
+#line 23 "src/common.rl"
+	{
+        dd("start reading chunk size");
+        ctx->chunk_bytes_read = 0;
+        ctx->chunk_size = 0;
+    }
+#line 17 "src/common.rl"
+	{
+        ctx->chunk_size *= 10;
+        ctx->chunk_size += *p - '0';
+        dd("read chunk size: %d", (int) ctx->chunk_size);
+    }
+	goto st46;
+tr56:
+#line 17 "src/common.rl"
+	{
+        ctx->chunk_size *= 10;
+        ctx->chunk_size += *p - '0';
+        dd("read chunk size: %d", (int) ctx->chunk_size);
+    }
+	goto st46;
 st46:
 	if ( ++p == pe )
 		goto _test_eof46;
 case 46:
+#line 3321 "src/ngx_http_redis2_reply.c"
+	_widec = (*p);
+	if ( (*p) < 14 ) {
+		if ( (*p) > 12 ) {
+			if ( 13 <= (*p) && (*p) <= 13 ) {
+				_widec = (short)(3200 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 512;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 1024;
+			}
+		} else {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else if ( (*p) > 47 ) {
+		if ( (*p) > 57 ) {
+			if ( 58 <= (*p) )
+ {				_widec = (short)(2176 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+			}
+		} else if ( (*p) >= 48 ) {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else {
+		_widec = (short)(2176 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+	}
+	switch( _widec ) {
+		case 4365: goto st32;
+		case 4621: goto st47;
+		case 4877: goto st48;
+		case 5133: goto st49;
+	}
+	if ( _widec < 3086 ) {
+		if ( _widec > 2873 ) {
+			if ( 2944 <= _widec && _widec <= 3084 )
+				goto st34;
+		} else if ( _widec >= 2864 )
+			goto tr39;
+	} else if ( _widec > 3119 ) {
+		if ( _widec > 3129 ) {
+			if ( 3130 <= _widec && _widec <= 3199 )
+				goto st34;
+		} else if ( _widec >= 3120 )
+			goto tr56;
+	} else
+		goto st34;
+	goto st0;
+st47:
+	if ( ++p == pe )
+		goto _test_eof47;
+case 47:
+	_widec = (*p);
+	if ( (*p) < 11 ) {
+		if ( (*p) > 9 ) {
+			if ( 10 <= (*p) && (*p) <= 10 ) {
+				_widec = (short)(2176 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+			}
+		} else {
+			_widec = (short)(2176 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		}
+	} else if ( (*p) > 12 ) {
+		if ( (*p) > 13 ) {
+			if ( 14 <= (*p) )
+ {				_widec = (short)(2176 + ((*p) - -128));
+				if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+				if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+			}
+		} else if ( (*p) >= 13 ) {
+			_widec = (short)(3200 + ((*p) - -128));
+			if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+			if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 512;
+			if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 1024;
+		}
+	} else {
+		_widec = (short)(2176 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+	}
+	switch( _widec ) {
+		case 2826: goto st33;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
+	}
+	if ( _widec > 3084 ) {
+		if ( 3086 <= _widec && _widec <= 3199 )
+			goto st34;
+	} else if ( _widec >= 2944 )
+		goto st34;
+	goto st0;
+st48:
+	if ( ++p == pe )
+		goto _test_eof48;
+case 48:
 	_widec = (*p);
 	if ( 10 <= (*p) && (*p) <= 10 ) {
 		_widec = (short)(5248 + ((*p) - -128));
@@ -3597,9 +3613,9 @@ case 46:
      ) _widec += 256;
 	}
 	if ( _widec == 5642 )
-		goto tr58;
+		goto tr60;
 	goto st0;
-tr58:
+tr60:
 #line 50 "src/common.rl"
 	{
         ctx->chunks_read++;
@@ -3615,12 +3631,12 @@ tr58:
             done = 1;
         }
     }
-	goto st56;
-st56:
+	goto st58;
+st58:
 	if ( ++p == pe )
-		goto _test_eof56;
-case 56:
-#line 3624 "src/ngx_http_redis2_reply.c"
+		goto _test_eof58;
+case 58:
+#line 3640 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 44 ) {
 		if ( (*p) < 36 ) {
@@ -3820,22 +3836,22 @@ case 56:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2852: goto st20;
-		case 2859: goto st24;
-		case 2861: goto st24;
-		case 2874: goto st24;
-		case 3108: goto st34;
-		case 3115: goto st42;
-		case 3117: goto st42;
-		case 3130: goto st42;
+		case 2852: goto st22;
+		case 2859: goto st26;
+		case 2861: goto st26;
+		case 2874: goto st26;
+		case 3108: goto st36;
+		case 3115: goto st44;
+		case 3117: goto st44;
+		case 3130: goto st44;
 	}
 	if ( 2944 <= _widec && _widec <= 3199 )
-		goto st32;
+		goto st34;
 	goto st0;
-st47:
+st49:
 	if ( ++p == pe )
-		goto _test_eof47;
-case 47:
+		goto _test_eof49;
+case 49:
 	_widec = (*p);
 	if ( (*p) < 11 ) {
 		if ( (*p) > 9 ) {
@@ -3957,40 +3973,40 @@ case 47:
      ) _widec += 512;
 	}
 	switch( _widec ) {
-		case 2826: goto tr58;
-		case 3082: goto tr41;
-		case 4621: goto st32;
-		case 4877: goto st23;
-		case 5133: goto st33;
+		case 2826: goto tr60;
+		case 3082: goto tr43;
+		case 4621: goto st34;
+		case 4877: goto st25;
+		case 5133: goto st35;
 	}
 	if ( _widec > 3084 ) {
 		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st32;
+			goto st34;
 	} else if ( _widec >= 2944 )
-		goto st32;
+		goto st34;
 	goto st0;
-st48:
+st50:
 	if ( ++p == pe )
-		goto _test_eof48;
-case 48:
+		goto _test_eof50;
+case 50:
 	if ( (*p) == 13 )
-		goto st49;
-	goto st48;
-st49:
+		goto st51;
+	goto st50;
+st51:
 	if ( ++p == pe )
-		goto _test_eof49;
-case 49:
+		goto _test_eof51;
+case 51:
 	switch( (*p) ) {
-		case 10: goto tr60;
-		case 13: goto st49;
+		case 10: goto tr62;
+		case 13: goto st51;
 	}
-	goto st48;
+	goto st50;
 	}
 	_test_eof2: cs = 2; goto _test_eof; 
 	_test_eof3: cs = 3; goto _test_eof; 
 	_test_eof4: cs = 4; goto _test_eof; 
 	_test_eof5: cs = 5; goto _test_eof; 
-	_test_eof50: cs = 50; goto _test_eof; 
+	_test_eof52: cs = 52; goto _test_eof; 
 	_test_eof6: cs = 6; goto _test_eof; 
 	_test_eof7: cs = 7; goto _test_eof; 
 	_test_eof8: cs = 8; goto _test_eof; 
@@ -3999,7 +4015,7 @@ case 49:
 	_test_eof11: cs = 11; goto _test_eof; 
 	_test_eof12: cs = 12; goto _test_eof; 
 	_test_eof13: cs = 13; goto _test_eof; 
-	_test_eof51: cs = 51; goto _test_eof; 
+	_test_eof53: cs = 53; goto _test_eof; 
 	_test_eof14: cs = 14; goto _test_eof; 
 	_test_eof15: cs = 15; goto _test_eof; 
 	_test_eof16: cs = 16; goto _test_eof; 
@@ -4010,9 +4026,9 @@ case 49:
 	_test_eof21: cs = 21; goto _test_eof; 
 	_test_eof22: cs = 22; goto _test_eof; 
 	_test_eof23: cs = 23; goto _test_eof; 
-	_test_eof52: cs = 52; goto _test_eof; 
 	_test_eof24: cs = 24; goto _test_eof; 
 	_test_eof25: cs = 25; goto _test_eof; 
+	_test_eof54: cs = 54; goto _test_eof; 
 	_test_eof26: cs = 26; goto _test_eof; 
 	_test_eof27: cs = 27; goto _test_eof; 
 	_test_eof28: cs = 28; goto _test_eof; 
@@ -4021,26 +4037,28 @@ case 49:
 	_test_eof31: cs = 31; goto _test_eof; 
 	_test_eof32: cs = 32; goto _test_eof; 
 	_test_eof33: cs = 33; goto _test_eof; 
-	_test_eof53: cs = 53; goto _test_eof; 
 	_test_eof34: cs = 34; goto _test_eof; 
 	_test_eof35: cs = 35; goto _test_eof; 
+	_test_eof55: cs = 55; goto _test_eof; 
 	_test_eof36: cs = 36; goto _test_eof; 
 	_test_eof37: cs = 37; goto _test_eof; 
 	_test_eof38: cs = 38; goto _test_eof; 
 	_test_eof39: cs = 39; goto _test_eof; 
 	_test_eof40: cs = 40; goto _test_eof; 
-	_test_eof54: cs = 54; goto _test_eof; 
 	_test_eof41: cs = 41; goto _test_eof; 
-	_test_eof55: cs = 55; goto _test_eof; 
 	_test_eof42: cs = 42; goto _test_eof; 
+	_test_eof56: cs = 56; goto _test_eof; 
 	_test_eof43: cs = 43; goto _test_eof; 
+	_test_eof57: cs = 57; goto _test_eof; 
 	_test_eof44: cs = 44; goto _test_eof; 
 	_test_eof45: cs = 45; goto _test_eof; 
 	_test_eof46: cs = 46; goto _test_eof; 
-	_test_eof56: cs = 56; goto _test_eof; 
 	_test_eof47: cs = 47; goto _test_eof; 
 	_test_eof48: cs = 48; goto _test_eof; 
+	_test_eof58: cs = 58; goto _test_eof; 
 	_test_eof49: cs = 49; goto _test_eof; 
+	_test_eof50: cs = 50; goto _test_eof; 
+	_test_eof51: cs = 51; goto _test_eof; 
 
 	_test_eof: {}
 	_out: {}

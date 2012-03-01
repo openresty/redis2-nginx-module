@@ -224,3 +224,21 @@ foo\r
 :0\r
 }
 
+
+
+=== TEST 8: empty multi-bulk replies
+--- config
+    location /set {
+        redis2_query flushall;
+        redis2_query blpop key 1;
+        redis2_query set key 3;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+    GET /set
+--- response_body eval
+qq{+OK\r
+*-1\r
++OK\r
+}
+
