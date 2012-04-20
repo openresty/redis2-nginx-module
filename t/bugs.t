@@ -5,7 +5,7 @@ use Test::Nginx::Socket;
 
 #repeat_each(2);
 
-plan tests => repeat_each() * 2 * blocks();
+plan tests => repeat_each() * (3 * blocks());
 
 $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 
@@ -54,6 +54,8 @@ qq{+OK\r
 \$207\r
 [["mafiaclans.eu", 12], ["picfu.net", 5], ["www.test.com", 0], ["www.ayom.com", 0], ["www.21dezember2012.org", 0], ["the-indie.ch", 0], ["spiele-check.de", 0], ["online-right-now.net", 0], ["google.com", 0]]\r
 }
+--- no_error_log
+[error]
 
 
 
@@ -86,6 +88,8 @@ qq{+OK\r
 } . "\$5\r
 hello\r
 " x 10
+--- no_error_log
+[error]
 
 
 
@@ -116,6 +120,8 @@ hello\r
 qq{+OK\r
 \*0\r
 }
+--- no_error_log
+[error]
 
 
 
@@ -147,6 +153,8 @@ qq{+OK\r
 hello\r
 world\r
 }
+--- no_error_log
+[error]
 
 
 
@@ -178,6 +186,8 @@ qq{+OK\r
 :1\r
 \$18\r\na 1line \r\n and 2nd\r
 }
+--- no_error_log
+[error]
 
 
 
@@ -197,6 +207,8 @@ qq{+OK\r
 \$0\r
 \r
 }
+--- no_error_log
+[error]
 
 
 
@@ -223,6 +235,8 @@ unsubscribe\r
 foo\r
 :0\r
 }
+--- no_error_log
+[error]
 
 
 
@@ -241,4 +255,7 @@ qq{+OK\r
 *-1\r
 +OK\r
 }
+--- timeout: 5
+--- no_error_log
+[error]
 
