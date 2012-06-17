@@ -104,7 +104,7 @@ __DATA__
 --- http_config
     upstream backend {
         server 127.0.0.1:$TEST_NGINX_REDIS_PORT;
-        keepalive 100 single;
+        keepalive 100;
     }
 --- config
     location /a {
