@@ -14,6 +14,7 @@ force=$2
           #--with-cc=gcc46 \
 
 ngx-build $force $version \
+            --with-ld-opt="-L$PCRE_LIB -Wl,-rpath,$PCRE_LIB:$LIBDRIZZLE_LIB:$LUAJIT_LIB:/usr/local/lib" \
           --with-cc-opt="-O3 -funsigned-char" \
           --with-http_addition_module \
           --add-module=$root $opts \
