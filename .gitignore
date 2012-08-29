@@ -60,3 +60,5 @@ all
 go
 buildroot/
 build1[0-3]
+*.plist
+Makefile
