@@ -229,6 +229,19 @@ ngx_http_redis2_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
         conf->complex_query = prev->complex_query;
     }
 
+    if (conf->complex_query_count == NULL) {
+        conf->complex_query_count = prev->complex_query_count;
+    }
+
+    if (conf->queries == NULL) {
+        conf->queries = prev->queries;
+    }
+
+    if (conf->literal_query.data == NULL) {
+        conf->literal_query.data = prev->literal_query.data;
+        conf->literal_query.len = prev->literal_query.len;
+    }
+
     return NGX_CONF_OK;
 }
 
