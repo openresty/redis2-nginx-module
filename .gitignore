@@ -59,4 +59,4 @@ src/reply.rl
 all
 go
 buildroot/
-build1[01]
+build1[0-3]
