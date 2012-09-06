@@ -151,6 +151,65 @@ __DATA__
     }
 --- request
     GET /main
+--- stap2
+global active = 0
+global pool
+
+F(ngx_http_init_request) {
+    println("init req")
+    active = 1
+}
+
+M(create-pool-done) {
+    if (active) {
+        printf("create pool: %p\n", $arg1)
+        print_ubacktrace()
+        active = 0;
+        pool = $arg1
+    }
+}
+
+F(ngx_destroy_pool) {
+    if ($pool == pool) {
+        printf("destroy: %p\n", $pool)
+        print_ubacktrace()
+    }
+}
+
+probe process("/lib64/libc.so.6").function("free") {
+    if ($mem == pool) {
+        printf("free: %p\n", $mem)
+    }
+}
+--- stap2
+global pools
+
+M(create-pool-done) {
+    key = sprintf("%p", $arg1)
+    pools[key] = ubacktrace()
+
+    # FIXME: the following line is necessary, and i don't know why
+    key = sprintf("%p", $arg1)
+    printf("create pool: %s\n", key)
+
+    #print_ubacktrace()
+    #print_ustack(ubacktrace())
+    #printf("%s", sprint_ubacktrace())
+}
+
+F(ngx_destroy_pool) {
+    key = sprintf("%p", $pool)
+    delete pools[key]
+    printf("destroy pool: %s\n", key)
+}
+
+probe end {
+    println("leaked pools:\n")
+    foreach (k in pools) {
+        printf("%s: [%s]\n", k, pools[k])
+    }
+}
+
 --- response_body eval
 "+OK\r\n\$5\r\nfirst\r\n"
 

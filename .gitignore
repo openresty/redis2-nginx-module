@@ -62,3 +62,4 @@ buildroot/
 build1[0-3]
 *.plist
 Makefile
+addr2line
