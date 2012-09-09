@@ -564,17 +564,22 @@ Compatibility
     If you find that any particular version of Nginx above 0.8.31 does not
     work with this module, please consider reporting a bug.
 
-Report Bugs
-    Although a lot of effort has been put into testing and code tuning,
-    there must be some serious bugs lurking somewhere in this module. So
-    whenever you are bitten by any quirks, please don't hesitate to
+Community
+  English Mailing List
+    The openresty-en (<https://groups.google.com/group/openresty-en>)
+    mailing list is for English speakers.
 
-    *   create a ticket on the issue tracking interface
-        (<http://github.com/agentzh/redis2-nginx-module/issues>) provided by
-        GitHub.
+  Chinese Mailing List
+    The openresty (<https://groups.google.com/group/openresty>) mailing list
+    is for Chinese speakers.
 
-    *   or send a bug report or even patches to the Nginx mailing list
-        (<http://mailman.nginx.org/mailman/listinfo/nginx>).
+Bugs and Patches
+    Please submit bug reports, wishlists, or patches by
+
+    1.  creating a ticket on the GitHub Issue Tracker
+        (<http://github.com/agentzh/redis2-nginx-module/issues>),
+
+    2.  or posting to the OpenResty community.
 
 Source Repository
     Available on github at agentzh/redis2-nginx-module

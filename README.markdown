@@ -549,13 +549,26 @@ Earlier versions of Nginx will *not* work.
 
 If you find that any particular version of Nginx above 0.8.31 does not work with this module, please consider reporting a bug.
 
-Report Bugs
-===========
+Community
+=========
 
-Although a lot of effort has been put into testing and code tuning, there must be some serious bugs lurking somewhere in this module. So whenever you are bitten by any quirks, please don't hesitate to
+English Mailing List
+--------------------
 
-* create a ticket on the [issue tracking interface](http://github.com/agentzh/redis2-nginx-module/issues) provided by GitHub.
-* or send a bug report or even patches to the [Nginx mailing list](http://mailman.nginx.org/mailman/listinfo/nginx).
+The [openresty-en](https://groups.google.com/group/openresty-en) mailing list is for English speakers.
+
+Chinese Mailing List
+--------------------
+
+The [openresty](https://groups.google.com/group/openresty) mailing list is for Chinese speakers.
+
+Bugs and Patches
+================
+
+Please submit bug reports, wishlists, or patches by
+
+1. creating a ticket on the [GitHub Issue Tracker](http://github.com/agentzh/redis2-nginx-module/issues),
+1. or posting to the [OpenResty community](http://wiki.nginx.org/HttpRedis2Module#Community).
 
 Source Repository
 =================
