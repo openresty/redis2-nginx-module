@@ -1,3 +1,8 @@
+<!---
+Don't edit this file manually! Instead you should generate it by using:
+    wiki2markdown.pl doc/HttpRedis2Module.wiki
+-->
+
 Name
 ====
 
@@ -13,7 +18,7 @@ This module is already production ready.
 Version
 =======
 
-This document describes ngx_redis2 [v0.08rc2](https://github.com/agentzh/redis2-nginx-module/tags) released on 24 November 2011.
+This document describes ngx_redis2 [v0.09](https://github.com/agentzh/redis2-nginx-module/tags) released on 8 September 2012.
 
 Synopsis
 ========
@@ -66,6 +71,19 @@ Synopsis
     location /baz {
         set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
         redis2_raw_query $query;
+        redis2_pass 127.0.0.1:6379;
+    }
+
+    location /init {
+        redis2_query del key1;
+        redis2_query lpush key1 C;
+        redis2_query lpush key1 B;
+        redis2_query lpush key1 A;
+        redis2_pass 127.0.0.1:6379;
+    }
+
+    location /get {
+        redis2_query lrange key1 0 -1;
         redis2_pass 127.0.0.1:6379;
     }
 
@@ -275,7 +293,7 @@ A sample config snippet looks like this
 
           # a pool with at most 1024 connections
           # and do not distinguish the servers:
-          keepalive 1024 single;
+          keepalive 1024;
         }
 
         server {
@@ -292,8 +310,7 @@ A sample config snippet looks like this
 Lua Interoperability
 ====================
 
-This module can be served as a non-blocking redis2 client for [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule).
-
+This module can be served as a non-blocking redis2 client for [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule) (but nowadays it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead, which is much simpler to use and more efficient most of the time).
 Here's an example using a GET subrequest:
 
 
@@ -498,13 +515,13 @@ You are recommended to install this module (as well as the Nginx core and many m
 
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
-* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.0.8 (see nginx compatibility),
+* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.1 (see nginx compatibility),
 * and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/tags).
 * and finally build the source with this module:
 
-    wget 'http://nginx.org/download/nginx-1.0.8.tar.gz'
-    tar -xzvf nginx-1.0.8.tar.gz
-    cd nginx-1.0.8/
+    wget 'http://nginx.org/download/nginx-1.2.1.tar.gz'
+    tar -xzvf nginx-1.2.1.tar.gz
+    cd nginx-1.2.1/
 
     # Here we assume you would install you nginx under /opt/nginx/.
     ./configure --prefix=/opt/nginx \
@@ -517,10 +534,12 @@ Alternatively, you can install this module manually by recompiling the standard 
 Compatibility
 =============
 
-Redis 2.0, 2.2, and above should work with this module without any issues. So is the [Alchemy Database](http://code.google.com/p/alchemydatabase/) (aka redisql in its early days).
+Redis 2.0, 2.2, 2.4, and above should work with this module without any issues. So is the [Alchemy Database](http://code.google.com/p/alchemydatabase/) (aka redisql in its early days).
 
 The following versions of Nginx should work with this module:
 
+* 1.3.x (last tested: 1.3.4)
+* 1.2.x (last tested: 1.2.3)
 * 1.1.x (last tested: 1.1.5)
 * 1.0.x (last tested: 1.0.10)
 * 0.9.x (last tested: 0.9.4)
@@ -550,7 +569,7 @@ TODO
 Author
 ======
 
-Zhang "agentzh" Yichun (章亦春) <agentzh@gmail.com>
+Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>
 
 Getting involved
 ================
@@ -563,7 +582,7 @@ Copyright & License
 
 This module is licenced under the BSD license.
 
-Copyright (C) 2010, 2011, by Zhang "agentzh" Yichun (章亦春) <agentzh@gmail.com>.
+Copyright (C) 2010-2012, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>.
 
 All rights reserved.
 
@@ -578,7 +597,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 SEE ALSO
 ========
 * The [Redis](http://redis.io/) server homepage.
+* The Redis wire protocol: <http://redis.io/topics/protocol>
 * a redis response parser and a request constructor for Lua: [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser).
 * [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule)
 * The [ngx_openresty bundle](http://openresty.org).
+* The [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library based on the [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule) cosocket API.
 
