@@ -515,13 +515,13 @@ You are recommended to install this module (as well as the Nginx core and many m
 
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
-* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.1 (see nginx compatibility),
+* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.3 (see nginx compatibility),
 * and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/tags).
 * and finally build the source with this module:
 
-    wget 'http://nginx.org/download/nginx-1.2.1.tar.gz'
-    tar -xzvf nginx-1.2.1.tar.gz
-    cd nginx-1.2.1/
+    wget 'http://nginx.org/download/nginx-1.2.3.tar.gz'
+    tar -xzvf nginx-1.2.3.tar.gz
+    cd nginx-1.2.3/
 
     # Here we assume you would install you nginx under /opt/nginx/.
     ./configure --prefix=/opt/nginx \
