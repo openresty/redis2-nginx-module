@@ -1,14 +1,13 @@
 {
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   fun:malloc
-   fun:ngx_alloc
-   fun:ngx_create_pool
-   fun:ngx_event_accept
-   fun:ngx_epoll_process_events
-   fun:ngx_process_events_and_timers
-   fun:ngx_single_process_cycle
-   fun:main
+<insert_a_suppression_name_here>
+Memcheck:Leak
+fun:malloc
+fun:ngx_alloc
+fun:ngx_create_pool
+fun:ngx_event_accept
+fun:ngx_epoll_process_events
+fun:ngx_process_events_and_timers
+fun:ngx_single_process_cycle
 }
 {
    <insert_a_suppression_name_here>
@@ -20,7 +19,6 @@
    fun:ngx_epoll_process_events
    fun:ngx_process_events_and_timers
    fun:ngx_single_process_cycle
-   fun:main
 }
 {
 <insert_a_suppression_name_here>
