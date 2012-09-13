@@ -87,6 +87,11 @@ Description
     these responses into lua data structure when combined with
     [[HttpLuaModule]].
 
+    When used in conjunction with [[HttpLuaModule]], it is recommended to
+    use the lua-resty-redis (<http://github.com/agentzh/lua-resty-redis>)
+    library instead of this module though, because the former is much more
+    flexible and memory-efficient.
+
     If you only want to use the "get" redis command, you can try out the
     [[HttpRedisModule]]. It returns the parsed content part of the Redis
     response because only "get" is needed to implement.

@@ -85,6 +85,8 @@ This is an Nginx upstream module that makes nginx talk to a [http://redis.io/ Re
 
 This module returns the raw TCP response from the Redis server. It's recommended to use my [[LuaRedisParser]] (written in pure C) to parse these responses into lua data structure when combined with [[HttpLuaModule]].
 
+When used in conjunction with [[HttpLuaModule]], it is recommended to use the [http://github.com/agentzh/lua-resty-redis lua-resty-redis] library instead of this module though, because the former is much more flexible and memory-efficient.
+
 If you only want to use the <code>get</code> redis command, you can try out the [[HttpRedisModule]]. It returns the parsed content part of the Redis response because only <code>get</code> is needed to implement.
 
 Another option is to parse the redis responses on your client side yourself.
