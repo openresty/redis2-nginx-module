@@ -487,7 +487,10 @@ Redis Publish/Subscribe Support
     You can surely parse the replies with the [[LuaRedisParser]] library if
     you're using Lua to access this module's location.
 
-  Publish/Subscribe Limitations
+  Limitations For Redis Publish/Subscribe
+    If you want to use the Redis pub/sub (<http://redis.io/topics/pubsub>)
+    feature with this module, then you must note the following limitations:
+
     *   You cannot use [[HttpUpstreamKeepaliveModule]] with this Redis
         upstream. Only short Redis connections will work.
 
@@ -497,6 +500,11 @@ Redis Publish/Subscribe Support
 
     *   You should tune the various timeout settings provided by this module
         like redis2_connect_timeout and redis2_read_timeout.
+
+    If you cannot stand these limitations, then you are highly recommended
+    to switch to the lua-resty-redis
+    (<https://github.com/agentzh/lua-resty-redis>) library for
+    [[HttpLuaModule]].
 
 Performance Tuning
     *   When you're using this module, please ensure you're using a TCP

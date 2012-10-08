@@ -496,12 +496,16 @@ And then publish a message for the key `/foo/bar` in the `redis-cli` command lin
 
 You can surely parse the replies with the [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) library if you're using Lua to access this module's location.
 
-Publish/Subscribe Limitations
------------------------------
+Limitations For Redis Publish/Subscribe
+---------------------------------------
+
+If you want to use the [Redis pub/sub](http://redis.io/topics/pubsub) feature with this module, then you must note the following limitations:
 
 * You cannot use [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule) with this Redis upstream. Only short Redis connections will work.
 * There may be some race conditions that produce the harmless `Redis server returned extra bytes` warnings in your nginx's error.log. Such warnings might be rare but just be prepared for it.
 * You should tune the various timeout settings provided by this module like [redis2_connect_timeout](http://wiki.nginx.org/HttpRedis2Module#redis2_connect_timeout) and [redis2_read_timeout](http://wiki.nginx.org/HttpRedis2Module#redis2_read_timeout).
+
+If you cannot stand these limitations, then you are highly recommended to switch to the [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library for [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule).
 
 Performance Tuning
 ==================
