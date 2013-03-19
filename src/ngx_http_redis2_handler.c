@@ -28,12 +28,6 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
     ngx_str_t                        target;
     ngx_url_t                        url;
 
-    rc = ngx_http_discard_request_body(r);
-
-    if (rc != NGX_OK) {
-        return rc;
-    }
-
     if (ngx_http_set_content_type(r) != NGX_OK) {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
@@ -101,9 +95,11 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
     u->input_filter = ngx_http_redis2_filter;
     u->input_filter_ctx = ctx;
 
-    r->main->count++;
+    rc = ngx_http_read_client_request_body(r, ngx_http_upstream_init);
 
-    ngx_http_upstream_init(r);
+    if (rc >= NGX_HTTP_SPECIAL_RESPONSE) {
+        return rc;
+    }
 
     return NGX_DONE;
 }

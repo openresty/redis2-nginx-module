@@ -5,7 +5,7 @@ use Test::Nginx::Socket;
 
 repeat_each(2);
 
-plan tests => repeat_each() * 2 * blocks();
+plan tests => repeat_each() * (2 * blocks() + 1);
 
 $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 
@@ -448,4 +448,28 @@ probe end {
     GET /main
 --- response_body eval
 "+OK\r\n\$5\r\nworld\r\n"
+
+
+
+=== TEST 20: request body
+--- config
+    location /t {
+        # these two settings must be the same to prevent
+        # automatic buffering large request bodies
+        # to temp files:
+        client_body_buffer_size 8k;
+        client_max_body_size 8k;
+
+        redis2_query flushall;
+        redis2_query lpush q1 $echo_request_body;
+        redis2_query lpop q1;
+        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+    }
+--- request
+POST /t
+hello world
+--- response_body eval
+"+OK\r\n:1\r\n\$11\r\nhello world\r\n"
+--- no_error_log
+[error]
 
