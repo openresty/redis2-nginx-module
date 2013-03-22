@@ -275,7 +275,7 @@ ngx_http_redis2_pass(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     n = ngx_http_script_variables_count(&value[1]);
     if (n) {
         rlcf->complex_target = ngx_palloc(cf->pool,
-                sizeof(ngx_http_complex_value_t));
+                                          sizeof(ngx_http_complex_value_t));
 
         if (rlcf->complex_target == NULL) {
             return NGX_CONF_ERROR;

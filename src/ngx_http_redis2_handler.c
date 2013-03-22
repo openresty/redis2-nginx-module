@@ -69,7 +69,6 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
         }
     }
 
-
     ngx_str_set(&u->schema, "redis2://");
     u->output.tag = (ngx_buf_tag_t) &ngx_http_redis2_module;
 
