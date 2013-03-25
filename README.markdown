@@ -18,7 +18,7 @@ This module is already production ready.
 Version
 =======
 
-This document describes ngx_redis2 [v0.09](https://github.com/agentzh/redis2-nginx-module/tags) released on 8 September 2012.
+This document describes ngx_redis2 [v0.10](https://github.com/agentzh/redis2-nginx-module/tags) released on 24 March 2013.
 
 Synopsis
 ========
@@ -521,13 +521,13 @@ You are recommended to install this module (as well as the Nginx core and many m
 
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
-* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.3 (see nginx compatibility),
+* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.7 (see nginx compatibility),
 * and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/tags).
 * and finally build the source with this module:
 
-    wget 'http://nginx.org/download/nginx-1.2.3.tar.gz'
-    tar -xzvf nginx-1.2.3.tar.gz
-    cd nginx-1.2.3/
+    wget 'http://nginx.org/download/nginx-1.2.7.tar.gz'
+    tar -xzvf nginx-1.2.7.tar.gz
+    cd nginx-1.2.7/
 
     # Here we assume you would install you nginx under /opt/nginx/.
     ./configure --prefix=/opt/nginx \
@@ -544,8 +544,8 @@ Redis 2.0, 2.2, 2.4, and above should work with this module without any issues. 
 
 The following versions of Nginx should work with this module:
 
-* 1.3.x (last tested: 1.3.4)
-* 1.2.x (last tested: 1.2.3)
+* 1.3.x (last tested: 1.3.7)
+* 1.2.x (last tested: 1.2.7)
 * 1.1.x (last tested: 1.1.5)
 * 1.0.x (last tested: 1.0.10)
 * 0.9.x (last tested: 0.9.4)
@@ -588,7 +588,7 @@ TODO
 Author
 ======
 
-Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>
+Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, CloudFlare Inc.
 
 Getting involved
 ================
@@ -601,7 +601,7 @@ Copyright & License
 
 This module is licenced under the BSD license.
 
-Copyright (C) 2010-2012, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>.
+Copyright (C) 2010-2013, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, CloudFlare Inc.
 
 All rights reserved.
 
