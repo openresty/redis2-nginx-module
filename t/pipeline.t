@@ -3,9 +3,9 @@
 use lib 'lib';
 use Test::Nginx::Socket;
 
-#repeat_each(2);
+repeat_each(2);
 
-plan tests => repeat_each() * 2 * blocks();
+plan tests => repeat_each() * (2 * blocks() + 1);
 
 $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 
@@ -94,9 +94,12 @@ __DATA__
     }
 --- request
     GET /pipelined2?n=3&cmds=flushall%0D%0Aget%20key%0D%0A
---- response_body eval
-"+OK\r\n\$-1\r\n"
---- timeout: 3
+--- ignore_response
+--- no_error_log
+[alert]
+[crit]
+--- error_log eval
+qr/upstream timed out .*? while reading upstream/
 
 
 
