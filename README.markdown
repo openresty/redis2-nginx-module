@@ -8,7 +8,7 @@ Name
 
 ngx_redis2 - Nginx upstream module for the Redis 2.0 protocol
 
-*This module is not distributed with the Nginx source.* See [the installation instructions](http://wiki.nginx.org/HttpRedis2Module#Installation).
+*This module is not distributed with the Nginx source.* See [the installation instructions](#installation).
 
 Status
 ======
@@ -93,9 +93,9 @@ Description
 
 This is an Nginx upstream module that makes nginx talk to a [Redis](http://redis.io/) 2.x server in a non-blocking way. The full Redis 2.0 unified protocol has been implemented including the Redis pipelining support.
 
-This module returns the raw TCP response from the Redis server. It's recommended to use my [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) (written in pure C) to parse these responses into lua data structure when combined with [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule).
+This module returns the raw TCP response from the Redis server. It's recommended to use my [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) (written in pure C) to parse these responses into lua data structure when combined with [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module).
 
-When used in conjunction with [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule), it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead of this module though, because the former is much more flexible and memory-efficient.
+When used in conjunction with [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module), it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead of this module though, because the former is much more flexible and memory-efficient.
 
 If you only want to use the `get` redis command, you can try out the [HttpRedisModule](http://wiki.nginx.org/HttpRedisModule). It returns the parsed content part of the Redis response because only `get` is needed to implement.
 
@@ -145,7 +145,7 @@ redis2_raw_query
 
 Specify raw Redis queries and nginx variables are recognized in the `QUERY` argument.
 
-Only *one* Redis command is allowed in the `QUERY` argument, or you'll receive an error. If you want to specify multiple pipelined commands in a single query, use the [redis2_raw_queries](http://wiki.nginx.org/HttpRedis2Module#redis2_raw_queries) directive instead.
+Only *one* Redis command is allowed in the `QUERY` argument, or you'll receive an error. If you want to specify multiple pipelined commands in a single query, use the [redis2_raw_queries](#redis2_raw_queries) directive instead.
 
 redis2_raw_queries
 ------------------
@@ -175,7 +175,7 @@ Here's some examples
         redis2_pass 127.0.0.1:6379;
     }
 
-Note that in the second sample above, the [set_unescape_uri](http://wiki.nginx.org/HttpSetMiscModule#set_unescape_uri) directive is provided by the [HttpSetMiscModule](http://wiki.nginx.org/HttpSetMiscModule).
+Note that in the second sample above, the [set_unescape_uri](http://github.com/agentzh/set-misc-nginx-module#set_unescape_uri) directive is provided by the [set-misc-nginx-module](http://github.com/agentzh/set-misc-nginx-module).
 
 redis2_literal_raw_query
 ------------------------
@@ -262,7 +262,7 @@ redis2_next_upstream
 **context:** *http, server, location*
 
 Specify which failure conditions should cause the request to be forwarded to another
-upstream server. Applies only when the value in [redis2_pass](http://wiki.nginx.org/HttpRedis2Module#redis2_pass) is an upstream with two or more
+upstream server. Applies only when the value in [redis2_pass](#redis2_pass) is an upstream with two or more
 servers.
 
 Here's an artificial example:
@@ -312,7 +312,7 @@ A sample config snippet looks like this
 Lua Interoperability
 ====================
 
-This module can be served as a non-blocking redis2 client for [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule) (but nowadays it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead, which is much simpler to use and more efficient most of the time).
+This module can be served as a non-blocking redis2 client for [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module) (but nowadays it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead, which is much simpler to use and more efficient most of the time).
 Here's an example using a GET subrequest:
 
 
@@ -342,7 +342,7 @@ Then accessing `/main` yields
     [+PONG\r\n]
 
 
-where `\r\n` is `CRLF`. That is, this module returns the *raw* TCP responses from the remote redis server. For Lua-based application developers, they may want to utilize the [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) library (written in pure C) to parse such raw responses into Lua data structures.
+where `\r\n` is `CRLF`. That is, this module returns the *raw* TCP responses from the remote redis server. For Lua-based application developers, they may want to utilize the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library (written in pure C) to parse such raw responses into Lua data structures.
 
 When moving the inlined Lua code into an external `.lua` file, it's important to use the escape sequence `\r\n` directly. We used `\\r\\n` above just because the Lua code itself needs quoting when being put into an Nginx string literal.
 
@@ -467,7 +467,7 @@ And then we create the `conf/test.lua` file (whose path is relative to the serve
     end
 
 
-Here we assume that your Redis server is listening on the default port (6379) of the localhost. We also make use of the [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) library to construct raw Redis queries for us and also use it to parse the replies.
+Here we assume that your Redis server is listening on the default port (6379) of the localhost. We also make use of the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library to construct raw Redis queries for us and also use it to parse the replies.
 
 Accessing the `/test` location via HTTP clients like `curl` yields the following output
 
@@ -494,7 +494,7 @@ Consider the following example:
 
 And then publish a message for the key `/foo/bar` in the `redis-cli` command line. And then you'll receive two multi-bulk replies from the `/redis` location.
 
-You can surely parse the replies with the [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser) library if you're using Lua to access this module's location.
+You can surely parse the replies with the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library if you're using Lua to access this module's location.
 
 Limitations For Redis Publish/Subscribe
 ---------------------------------------
@@ -503,9 +503,9 @@ If you want to use the [Redis pub/sub](http://redis.io/topics/pubsub) feature wi
 
 * You cannot use [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule) with this Redis upstream. Only short Redis connections will work.
 * There may be some race conditions that produce the harmless `Redis server returned extra bytes` warnings in your nginx's error.log. Such warnings might be rare but just be prepared for it.
-* You should tune the various timeout settings provided by this module like [redis2_connect_timeout](http://wiki.nginx.org/HttpRedis2Module#redis2_connect_timeout) and [redis2_read_timeout](http://wiki.nginx.org/HttpRedis2Module#redis2_read_timeout).
+* You should tune the various timeout settings provided by this module like [redis2_connect_timeout](#redis2_connect_timeout) and [redis2_read_timeout](#redis2_read_timeout).
 
-If you cannot stand these limitations, then you are highly recommended to switch to the [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library for [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule).
+If you cannot stand these limitations, then you are highly recommended to switch to the [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library for [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module).
 
 Performance Tuning
 ==================
@@ -574,7 +574,7 @@ Bugs and Patches
 Please submit bug reports, wishlists, or patches by
 
 1. creating a ticket on the [GitHub Issue Tracker](http://github.com/agentzh/redis2-nginx-module/issues),
-1. or posting to the [OpenResty community](http://wiki.nginx.org/HttpRedis2Module#Community).
+1. or posting to the [OpenResty community](#community).
 
 Source Repository
 =================
@@ -617,8 +617,8 @@ SEE ALSO
 ========
 * The [Redis](http://redis.io/) server homepage.
 * The Redis wire protocol: <http://redis.io/topics/protocol>
-* a redis response parser and a request constructor for Lua: [LuaRedisParser](http://wiki.nginx.org/LuaRedisParser).
-* [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule)
+* a redis response parser and a request constructor for Lua: [lua-redis-parser](http://github.com/agentzh/lua-redis-parser).
+* [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module)
 * The [ngx_openresty bundle](http://openresty.org).
-* The [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library based on the [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule) cosocket API.
+* The [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library based on the [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module) cosocket API.
 
