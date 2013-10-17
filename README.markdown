@@ -524,6 +524,7 @@ Alternatively, you can install this module manually by recompiling the standard 
 * Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.7 (see nginx compatibility),
 * and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/tags).
 * and finally build the source with this module:
+Steps:
 
     wget 'http://nginx.org/download/nginx-1.2.7.tar.gz'
     tar -xzvf nginx-1.2.7.tar.gz

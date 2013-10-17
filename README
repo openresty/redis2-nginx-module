@@ -541,9 +541,8 @@ Installation
 
     *   and finally build the source with this module:
 
-        wget 'http://nginx.org/download/nginx-1.2.7.tar.gz'
-        tar -xzvf nginx-1.2.7.tar.gz
-        cd nginx-1.2.7/
+    Steps: wget 'http://nginx.org/download/nginx-1.2.7.tar.gz' tar -xzvf
+    nginx-1.2.7.tar.gz cd nginx-1.2.7/
 
         # Here we assume you would install you nginx under /opt/nginx/.
         ./configure --prefix=/opt/nginx \
