@@ -25,8 +25,7 @@ static const int reply_en_main = 1;
 #line 23 "src/ngx_http_redis2_reply.rl"
 
 ngx_int_t
-ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
-        ssize_t bytes)
+ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx, ssize_t bytes)
 {
     ngx_buf_t                *b;
     ngx_http_upstream_t      *u;
@@ -54,12 +53,12 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
             dd("init the state machine");
 
             
-#line 58 "src/ngx_http_redis2_reply.c"
+#line 57 "src/ngx_http_redis2_reply.c"
 	{
 	cs = reply_start;
 	}
 
-#line 54 "src/ngx_http_redis2_reply.rl"
+#line 53 "src/ngx_http_redis2_reply.rl"
 
             ctx->state = cs;
 
@@ -74,7 +73,7 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
         dd("response body: %.*s", (int) bytes, p);
 
         
-#line 78 "src/ngx_http_redis2_reply.c"
+#line 77 "src/ngx_http_redis2_reply.c"
 	{
 	short _widec;
 	if ( p == pe )
@@ -162,7 +161,7 @@ st52:
 	if ( ++p == pe )
 		goto _test_eof52;
 case 52:
-#line 166 "src/ngx_http_redis2_reply.c"
+#line 165 "src/ngx_http_redis2_reply.c"
 	goto st0;
 st6:
 	if ( ++p == pe )
@@ -213,7 +212,7 @@ st9:
 	if ( ++p == pe )
 		goto _test_eof9;
 case 9:
-#line 217 "src/ngx_http_redis2_reply.c"
+#line 216 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st10;
 	if ( 48 <= (*p) && (*p) <= 57 )
@@ -391,7 +390,7 @@ st53:
 	if ( ++p == pe )
 		goto _test_eof53;
 case 53:
-#line 395 "src/ngx_http_redis2_reply.c"
+#line 394 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 13 ) {
 		if ( (*p) <= 12 ) {
@@ -518,7 +517,7 @@ st19:
 	if ( ++p == pe )
 		goto _test_eof19;
 case 19:
-#line 522 "src/ngx_http_redis2_reply.c"
+#line 521 "src/ngx_http_redis2_reply.c"
 	if ( (*p) == 13 )
 		goto st20;
 	if ( 48 <= (*p) && (*p) <= 57 )
@@ -542,7 +541,7 @@ st21:
 	if ( ++p == pe )
 		goto _test_eof21;
 case 21:
-#line 546 "src/ngx_http_redis2_reply.c"
+#line 545 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -748,7 +747,7 @@ st54:
 	if ( ++p == pe )
 		goto _test_eof54;
 case 54:
-#line 752 "src/ngx_http_redis2_reply.c"
+#line 751 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( 36 <= (*p) && (*p) <= 36 ) {
@@ -1033,7 +1032,7 @@ st31:
 	if ( ++p == pe )
 		goto _test_eof31;
 case 31:
-#line 1037 "src/ngx_http_redis2_reply.c"
+#line 1036 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) > 13 ) {
 		if ( 48 <= (*p) && (*p) <= 57 ) {
@@ -1361,7 +1360,7 @@ st55:
 	if ( ++p == pe )
 		goto _test_eof55;
 case 55:
-#line 1365 "src/ngx_http_redis2_reply.c"
+#line 1364 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) < 14 ) {
@@ -2544,7 +2543,7 @@ st56:
 	if ( ++p == pe )
 		goto _test_eof56;
 case 56:
-#line 2548 "src/ngx_http_redis2_reply.c"
+#line 2547 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) > 13 ) {
@@ -2776,7 +2775,7 @@ st57:
 	if ( ++p == pe )
 		goto _test_eof57;
 case 57:
-#line 2780 "src/ngx_http_redis2_reply.c"
+#line 2779 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 43 ) {
 		if ( (*p) < 14 ) {
@@ -3317,7 +3316,7 @@ st46:
 	if ( ++p == pe )
 		goto _test_eof46;
 case 46:
-#line 3321 "src/ngx_http_redis2_reply.c"
+#line 3320 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 14 ) {
 		if ( (*p) > 12 ) {
@@ -3636,7 +3635,7 @@ st58:
 	if ( ++p == pe )
 		goto _test_eof58;
 case 58:
-#line 3640 "src/ngx_http_redis2_reply.c"
+#line 3639 "src/ngx_http_redis2_reply.c"
 	_widec = (*p);
 	if ( (*p) < 44 ) {
 		if ( (*p) < 36 ) {
@@ -4064,7 +4063,7 @@ case 51:
 	_out: {}
 	}
 
-#line 68 "src/ngx_http_redis2_reply.rl"
+#line 67 "src/ngx_http_redis2_reply.rl"
 
         dd("state after exec: %d, done: %d, %.*s", cs, (int) done,
             (int) (bytes - ((u_char *) p - b->last)), p);
@@ -4169,4 +4168,3 @@ case 51:
 
     return NGX_OK;
 }
-

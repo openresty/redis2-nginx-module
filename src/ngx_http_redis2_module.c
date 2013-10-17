@@ -383,8 +383,7 @@ ngx_http_redis2_query(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
 
 static char *
-ngx_http_redis2_raw_queries(ngx_conf_t *cf, ngx_command_t *cmd,
-        void *conf)
+ngx_http_redis2_raw_queries(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     ngx_http_redis2_loc_conf_t  *rlcf = conf;
     ngx_str_t                   *value;

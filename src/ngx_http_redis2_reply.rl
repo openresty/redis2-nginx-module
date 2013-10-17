@@ -22,8 +22,7 @@
 %% write data;
 
 ngx_int_t
-ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
-        ssize_t bytes)
+ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx, ssize_t bytes)
 {
     ngx_buf_t                *b;
     ngx_http_upstream_t      *u;
@@ -169,4 +168,3 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx,
 
     return NGX_OK;
 }
-

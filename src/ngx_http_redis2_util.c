@@ -10,8 +10,8 @@ static size_t ngx_get_num_size(uint64_t i);
 
 
 char *
-ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf,
-        ngx_command_t *cmd, void *conf)
+ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf, ngx_command_t *cmd,
+    void *conf)
 {
     char                             *p = conf;
     ngx_http_complex_value_t        **field;
@@ -109,8 +109,8 @@ ngx_get_num_size(uint64_t i)
 
 
 ngx_int_t
-ngx_http_redis2_build_query(ngx_http_request_t *r,
-        ngx_array_t *queries, ngx_buf_t **b)
+ngx_http_redis2_build_query(ngx_http_request_t *r, ngx_array_t *queries,
+    ngx_buf_t **b)
 {
     ngx_uint_t                       i, j;
     ngx_uint_t                       n;
