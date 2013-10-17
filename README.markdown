@@ -530,7 +530,7 @@ Alternatively, you can install this module manually by recompiling the standard 
     tar -xzvf nginx-1.2.7.tar.gz
     cd nginx-1.2.7/
 
-    # Here we assume you would install you nginx under /opt/nginx/.
+    # here we assume you would install you nginx under /opt/nginx/.
     ./configure --prefix=/opt/nginx \
                 --add-module=/path/to/redis2-nginx-module
 
