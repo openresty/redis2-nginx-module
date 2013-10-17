@@ -10,6 +10,43 @@ ngx_redis2 - Nginx upstream module for the Redis 2.0 protocol
 
 *This module is not distributed with the Nginx source.* See [the installation instructions](#installation).
 
+Table of Contents
+=================
+
+* [Status](#status)
+* [Version](#version)
+* [Synopsis](#synopsis)
+* [Description](#description)
+* [Directives](#directives)
+    * [redis2_query](#redis2_query)
+    * [redis2_raw_query](#redis2_raw_query)
+    * [redis2_raw_queries](#redis2_raw_queries)
+    * [redis2_literal_raw_query](#redis2_literal_raw_query)
+    * [redis2_pass](#redis2_pass)
+    * [redis2_connect_timeout](#redis2_connect_timeout)
+    * [redis2_send_timeout](#redis2_send_timeout)
+    * [redis2_read_timeout](#redis2_read_timeout)
+    * [redis2_buffer_size](#redis2_buffer_size)
+    * [redis2_next_upstream](#redis2_next_upstream)
+* [Connection Pool](#connection-pool)
+* [Lua Interoperability](#lua-interoperability)
+    * [Pipelined Redis Requests by Lua](#pipelined-redis-requests-by-lua)
+* [Redis Publish/Subscribe Support](#redis-publishsubscribe-support)
+    * [Limitations For Redis Publish/Subscribe](#limitations-for-redis-publishsubscribe)
+* [Performance Tuning](#performance-tuning)
+* [Installation](#installation)
+* [Compatibility](#compatibility)
+* [Community](#community)
+    * [English Mailing List](#english-mailing-list)
+    * [Chinese Mailing List](#chinese-mailing-list)
+* [Bugs and Patches](#bugs-and-patches)
+* [Source Repository](#source-repository)
+* [TODO](#todo)
+* [Author](#author)
+* [Getting involved](#getting-involved)
+* [Copyright & License](#copyright--license)
+* [SEE ALSO](#see-also)
+
 Status
 ======
 
@@ -88,6 +125,8 @@ Synopsis
     }
 
 
+[Back to TOC](#table-of-contents)
+
 Description
 ===========
 
@@ -101,8 +140,12 @@ If you only want to use the `get` redis command, you can try out the [HttpRedisM
 
 Another option is to parse the redis responses on your client side yourself.
 
+[Back to TOC](#table-of-contents)
+
 Directives
 ==========
+
+[Back to TOC](#table-of-contents)
 
 redis2_query
 ------------
@@ -135,6 +178,8 @@ then `GET /pipelined` will yield two successive raw Redis responses
 
 while newlines here are actually `CR LF` (`\r\n`).
 
+[Back to TOC](#table-of-contents)
+
 redis2_raw_query
 ----------------
 **syntax:** *redis2_raw_query QUERY*
@@ -146,6 +191,8 @@ redis2_raw_query
 Specify raw Redis queries and nginx variables are recognized in the `QUERY` argument.
 
 Only *one* Redis command is allowed in the `QUERY` argument, or you'll receive an error. If you want to specify multiple pipelined commands in a single query, use the [redis2_raw_queries](#redis2_raw_queries) directive instead.
+
+[Back to TOC](#table-of-contents)
 
 redis2_raw_queries
 ------------------
@@ -177,6 +224,8 @@ Here's some examples
 
 Note that in the second sample above, the [set_unescape_uri](http://github.com/agentzh/set-misc-nginx-module#set_unescape_uri) directive is provided by the [set-misc-nginx-module](http://github.com/agentzh/set-misc-nginx-module).
 
+[Back to TOC](#table-of-contents)
+
 redis2_literal_raw_query
 ------------------------
 **syntax:** *redis2_literal_raw_query QUERY*
@@ -188,6 +237,8 @@ redis2_literal_raw_query
 Specify a raw Redis query but Nginx variables in it will not be *not* recognized. In other words, you're free to use the dollar sign character (`$`) in your `QUERY` argument.
 
 Only One redis command is allowed in the `QUERY` argument.
+
+[Back to TOC](#table-of-contents)
 
 redis2_pass
 -----------
@@ -203,6 +254,8 @@ redis2_pass
 
 Specify the Redis server backend. 
 
+[Back to TOC](#table-of-contents)
+
 redis2_connect_timeout
 ----------------------
 **syntax:** *redis2_connect_timeout &lt;time&gt;*
@@ -217,6 +270,8 @@ It's wise to always explicitly specify the time unit to avoid confusion. Time un
 
 This time must be less than 597 hours.
 
+[Back to TOC](#table-of-contents)
+
 redis2_send_timeout
 -------------------
 **syntax:** *redis2_send_timeout &lt;time&gt;*
@@ -228,6 +283,8 @@ redis2_send_timeout
 The timeout for sending TCP requests to the Redis server, in seconds by default.
 
 It's wise to always explicitly specify the time unit to avoid confusion. Time units supported are `s`(seconds), `ms`(milliseconds), `y`(years), `M`(months), `w`(weeks), `d`(days), `h`(hours), and `m`(minutes).
+
+[Back to TOC](#table-of-contents)
 
 redis2_read_timeout
 -------------------
@@ -241,6 +298,8 @@ The timeout for reading TCP responses from the redis server, in seconds by defau
 
 It's wise to always explicitly specify the time unit to avoid confusion. Time units supported are `s`(seconds), `ms`(milliseconds), `y`(years), `M`(months), `w`(weeks), `d`(days), `h`(hours), and `m`(minutes).
 
+[Back to TOC](#table-of-contents)
+
 redis2_buffer_size
 ------------------
 **syntax:** *redis2_buffer_size &lt;size&gt;*
@@ -252,6 +311,8 @@ redis2_buffer_size
 This buffer size is used for reading Redis replies, but it's not required to be as big as the largest possible Redis reply.
 
 This default size is the page size, may be 4k or 8k.
+
+[Back to TOC](#table-of-contents)
 
 redis2_next_upstream
 --------------------
@@ -281,6 +342,8 @@ Here's an artificial example:
     }
 
 
+[Back to TOC](#table-of-contents)
+
 Connection Pool
 ===============
 
@@ -308,6 +371,8 @@ A sample config snippet looks like this
         }
     }
 
+
+[Back to TOC](#table-of-contents)
 
 Lua Interoperability
 ====================
@@ -415,6 +480,8 @@ One can also use Lua to pick up a concrete Redis backend based on some complicat
     }
 
 
+[Back to TOC](#table-of-contents)
+
 Pipelined Redis Requests by Lua
 -------------------------------
 
@@ -478,6 +545,8 @@ Accessing the `/test` location via HTTP clients like `curl` yields the following
 
 A more realistic setting is to use a proper upstream definition for our Redis backend and enable TCP connection pool via the [keepalive](http://wiki.nginx.org/HttpUpstreamKeepaliveModule#keepalive) directive in it.
 
+[Back to TOC](#table-of-contents)
+
 Redis Publish/Subscribe Support
 ===============================
 
@@ -496,6 +565,8 @@ And then publish a message for the key `/foo/bar` in the `redis-cli` command lin
 
 You can surely parse the replies with the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library if you're using Lua to access this module's location.
 
+[Back to TOC](#table-of-contents)
+
 Limitations For Redis Publish/Subscribe
 ---------------------------------------
 
@@ -507,12 +578,16 @@ If you want to use the [Redis pub/sub](http://redis.io/topics/pubsub) feature wi
 
 If you cannot stand these limitations, then you are highly recommended to switch to the [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library for [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module).
 
+[Back to TOC](#table-of-contents)
+
 Performance Tuning
 ==================
 
 * When you're using this module, please ensure you're using a TCP connection pool (provided by [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule)) and Redis pipelining wherever possible. These features will significantly improve performance.
 * Using multiple instance of Redis servers on your multi-core machines also help a lot due to the sequential processing nature of a single Redis server instance.
 * When you're benchmarking performance using something like `ab` or `http_load`, please ensure that your error log level is high enough (like `warn`) to prevent Nginx workers spend too much cycles on flushing the `error.log` file, which is always non-buffered and blocking and thus very expensive.
+
+[Back to TOC](#table-of-contents)
 
 Installation
 ============
@@ -539,6 +614,8 @@ Commands:
     make install
 
 
+[Back to TOC](#table-of-contents)
+
 Compatibility
 =============
 
@@ -557,18 +634,26 @@ Earlier versions of Nginx will *not* work.
 
 If you find that any particular version of Nginx above 0.8.31 does not work with this module, please consider reporting a bug.
 
+[Back to TOC](#table-of-contents)
+
 Community
 =========
+
+[Back to TOC](#table-of-contents)
 
 English Mailing List
 --------------------
 
 The [openresty-en](https://groups.google.com/group/openresty-en) mailing list is for English speakers.
 
+[Back to TOC](#table-of-contents)
+
 Chinese Mailing List
 --------------------
 
 The [openresty](https://groups.google.com/group/openresty) mailing list is for Chinese speakers.
+
+[Back to TOC](#table-of-contents)
 
 Bugs and Patches
 ================
@@ -578,25 +663,35 @@ Please submit bug reports, wishlists, or patches by
 1. creating a ticket on the [GitHub Issue Tracker](http://github.com/agentzh/redis2-nginx-module/issues),
 1. or posting to the [OpenResty community](#community).
 
+[Back to TOC](#table-of-contents)
+
 Source Repository
 =================
 
 Available on github at [agentzh/redis2-nginx-module](http://github.com/agentzh/redis2-nginx-module).
 
+[Back to TOC](#table-of-contents)
+
 TODO
 ====
 * Add the `redis2_as_json` directive to allow emitting JSON directly.
+
+[Back to TOC](#table-of-contents)
 
 Author
 ======
 
 Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, CloudFlare Inc.
 
+[Back to TOC](#table-of-contents)
+
 Getting involved
 ================
 
 You'll be very welcomed to submit patches to the author or just ask for
 a commit bit to the source repository on GitHub.
+
+[Back to TOC](#table-of-contents)
 
 Copyright & License
 ===================
@@ -614,6 +709,8 @@ Redistribution and use in source and binary forms, with or without modification,
 * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+[Back to TOC](#table-of-contents)
 
 SEE ALSO
 ========
