@@ -60,6 +60,7 @@ This document describes ngx_redis2 [v0.10](https://github.com/agentzh/redis2-ngi
 Synopsis
 ========
 
+```nginx
 
     location /foo {
         set $value 'first';
@@ -123,7 +124,7 @@ Synopsis
         redis2_query lrange key1 0 -1;
         redis2_pass 127.0.0.1:6379;
     }
-
+```
 
 [Back to TOC](#table-of-contents)
 
@@ -159,6 +160,7 @@ Specify a Redis command by specifying its individual arguments (including the Re
 
 Multiple instances of this directive are allowed in a single location and these queries will be pipelined. For example,
 
+```nginx
 
     location /pipelined {
         redis2_query set hello world;
@@ -166,15 +168,16 @@ Multiple instances of this directive are allowed in a single location and these 
 
         redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
     }
-
+```
 
 then `GET /pipelined` will yield two successive raw Redis responses
 
+```nginx
 
     +OK
     $5
     world
-
+```
 
 while newlines here are actually `CR LF` (`\r\n`).
 
@@ -206,6 +209,7 @@ Specify `N` commands in the `QUERIES` argument. Both the `N` and `QUERIES`
 arguments can take Nginx variables.
 
 Here's some examples
+```nginx
 
     location /pipelined {
         redis2_raw_queries 3 "flushall\r\nget key1\r\nget key2\r\n";
@@ -221,7 +225,7 @@ Here's some examples
 
         redis2_pass 127.0.0.1:6379;
     }
-
+```
 Note that in the second sample above, the [set_unescape_uri](http://github.com/agentzh/set-misc-nginx-module#set_unescape_uri) directive is provided by the [set-misc-nginx-module](http://github.com/agentzh/set-misc-nginx-module).
 
 [Back to TOC](#table-of-contents)
@@ -327,6 +331,7 @@ upstream server. Applies only when the value in [redis2_pass](#redis2_pass) is a
 servers.
 
 Here's an artificial example:
+```nginx
 
     upstream redis_cluster {
         server 127.0.0.1:6379;
@@ -340,7 +345,7 @@ Here's an artificial example:
             redis2_pass redis_cluster;
         }
     }
-
+```
 
 [Back to TOC](#table-of-contents)
 
@@ -351,6 +356,7 @@ You can use the excellent [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/Ht
 
 A sample config snippet looks like this
 
+```nginx
 
     http {
         upstream backend {
@@ -370,7 +376,7 @@ A sample config snippet looks like this
             }
         }
     }
-
+```
 
 [Back to TOC](#table-of-contents)
 
@@ -380,6 +386,7 @@ Lua Interoperability
 This module can be served as a non-blocking redis2 client for [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module) (but nowadays it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead, which is much simpler to use and more efficient most of the time).
 Here's an example using a GET subrequest:
 
+```nginx
 
     location /redis {
         internal;
@@ -399,7 +406,7 @@ Here's an example using a GET subrequest:
             ngx.print("[" .. res.body .. "]")
         ';
     }
-
+```
 
 Then accessing `/main` yields
 
@@ -413,6 +420,7 @@ When moving the inlined Lua code into an external `.lua` file, it's important to
 
 You can also use POST/PUT subrequests to transfer the raw Redis request via request body, which does not require URI escaping and unescaping, thus saving some CPU cycles. Here's such an example:
 
+```nginx
 
     location /redis {
         internal;
@@ -432,12 +440,13 @@ You can also use POST/PUT subrequests to transfer the raw Redis request via requ
             ngx.print("[" .. res.body .. "]")
         ';
     }
-
+```
 
 This yeilds exactly the same output as the previous (GET) sample.
 
 One can also use Lua to pick up a concrete Redis backend based on some complicated hashing rules. For instance,
 
+```nginx
 
     upstream redis-a {
         server foo.bar.com:6379;
@@ -478,7 +487,7 @@ One can also use Lua to pick up a concrete Redis backend based on some complicat
             ";
         }
     }
-
+```
 
 [Back to TOC](#table-of-contents)
 
@@ -489,6 +498,7 @@ Here's a complete example demonstrating how to use Lua to issue multiple pipelin
 
 First of all, we include the following in our `nginx.conf` file:
 
+```nginx
 
     location = /redis2 {
         internal;
@@ -500,12 +510,13 @@ First of all, we include the following in our `nginx.conf` file:
     location = /test {
         content_by_lua_file conf/test.lua;
     }
-
+```
 
 Basically we use URI query args to pass the number of Redis requests and request body to pass the pipelined Redis request string.
 
 And then we create the `conf/test.lua` file (whose path is relative to the server root of Nginx) to include the following Lua code:
 
+```lua
 
     -- conf/test.lua
     local parser = require "redis.parser"
@@ -532,7 +543,7 @@ And then we create the `conf/test.lua` file (whose path is relative to the serve
     for i, reply in ipairs(replies) do
         ngx.say(reply[1])
     end
-
+```
 
 Here we assume that your Redis server is listening on the default port (6379) of the localhost. We also make use of the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library to construct raw Redis queries for us and also use it to parse the replies.
 
@@ -554,12 +565,13 @@ This module has limited support for Redis publish/subscribe feature. It cannot b
 
 Consider the following example:
 
+```nginx
 
     location /redis {
         redis2_raw_queries 2 "subscribe /foo/bar\r\n";
         redis2_pass 127.0.0.1:6379;
     }
-
+```
 
 And then publish a message for the key `/foo/bar` in the `redis-cli` command line. And then you'll receive two multi-bulk replies from the `/redis` location.
 
@@ -601,6 +613,7 @@ Alternatively, you can install this module manually by recompiling the standard 
 * and finally build the source with this module:
 
 Commands:
+```bash
 
     wget 'http://nginx.org/download/nginx-1.2.7.tar.gz'
     tar -xzvf nginx-1.2.7.tar.gz
@@ -612,7 +625,7 @@ Commands:
  
     make -j2
     make install
-
+```
 
 [Back to TOC](#table-of-contents)
 
