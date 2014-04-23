@@ -176,7 +176,7 @@ ngx_http_redis2_create_loc_conf(ngx_conf_t *cf)
     /* the hardcoded values */
     conf->upstream.cyclic_temp_file = 0;
     conf->upstream.buffering = 0;
-    conf->upstream.ignore_client_abort = 0;
+    conf->upstream.ignore_client_abort = 1;
     conf->upstream.send_lowat = 0;
     conf->upstream.bufs.num = 0;
     conf->upstream.busy_buffers_size = 0;
