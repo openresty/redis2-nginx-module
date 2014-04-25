@@ -709,7 +709,7 @@ Copyright & License
 
 This module is licenced under the BSD license.
 
-Copyright (C) 2010-2013, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, CloudFlare Inc.
+Copyright (C) 2010-2014, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, CloudFlare Inc.
 
 All rights reserved.
 
