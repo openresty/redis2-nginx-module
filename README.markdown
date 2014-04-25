@@ -55,75 +55,75 @@ This module is already production ready.
 Version
 =======
 
-This document describes ngx_redis2 [v0.10](https://github.com/agentzh/redis2-nginx-module/tags) released on 24 March 2013.
+This document describes ngx_redis2 [v0.11](https://github.com/openresty/redis2-nginx-module/tags) released on 24 April 2014.
 
 Synopsis
 ========
 
 ```nginx
 
-    location /foo {
-        set $value 'first';
-        redis2_query set one $value;
-        redis2_pass 127.0.0.1:6379;
-    }
+location /foo {
+    set $value 'first';
+    redis2_query set one $value;
+    redis2_pass 127.0.0.1:6379;
+}
 
-    # GET /get?key=some_key
-    location /get {
-        set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
-        redis2_query get $key;
-        redis2_pass foo.com:6379;
-    }
+# GET /get?key=some_key
+location /get {
+    set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
+    redis2_query get $key;
+    redis2_pass foo.com:6379;
+}
 
-    # GET /set?key=one&val=first%20value
-    location /set {
-        set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
-        set_unescape_uri $val $arg_val;  # this requires ngx_set_misc
-        redis2_query set $key $val;
-        redis2_pass foo.com:6379;
-    }
+# GET /set?key=one&val=first%20value
+location /set {
+    set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
+    set_unescape_uri $val $arg_val;  # this requires ngx_set_misc
+    redis2_query set $key $val;
+    redis2_pass foo.com:6379;
+}
 
-    # multiple pipelined queries
-    location /foo {
-        set $value 'first';
-        redis2_query set one $value;
-        redis2_query get one;
-        redis2_query set one two;
-        redis2_query get one;
-        redis2_pass 127.0.0.1:6379;
-    }
+# multiple pipelined queries
+location /foo {
+    set $value 'first';
+    redis2_query set one $value;
+    redis2_query get one;
+    redis2_query set one two;
+    redis2_query get one;
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location /bar {
-        # $ is not special here...
-        redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
-        redis2_pass 127.0.0.1:6379;
-    }
+location /bar {
+    # $ is not special here...
+    redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location /bar {
-        # variables can be used below and $ is special
-        redis2_raw_query 'get one\r\n';
-        redis2_pass 127.0.0.1:6379;
-    }
+location /bar {
+    # variables can be used below and $ is special
+    redis2_raw_query 'get one\r\n';
+    redis2_pass 127.0.0.1:6379;
+}
 
-    # GET /baz?get%20foo%0d%0a
-    location /baz {
-        set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
-        redis2_raw_query $query;
-        redis2_pass 127.0.0.1:6379;
-    }
+# GET /baz?get%20foo%0d%0a
+location /baz {
+    set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
+    redis2_raw_query $query;
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location /init {
-        redis2_query del key1;
-        redis2_query lpush key1 C;
-        redis2_query lpush key1 B;
-        redis2_query lpush key1 A;
-        redis2_pass 127.0.0.1:6379;
-    }
+location /init {
+    redis2_query del key1;
+    redis2_query lpush key1 C;
+    redis2_query lpush key1 B;
+    redis2_query lpush key1 A;
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location /get {
-        redis2_query lrange key1 0 -1;
-        redis2_pass 127.0.0.1:6379;
-    }
+location /get {
+    redis2_query lrange key1 0 -1;
+    redis2_pass 127.0.0.1:6379;
+}
 ```
 
 [Back to TOC](#table-of-contents)
@@ -133,9 +133,9 @@ Description
 
 This is an Nginx upstream module that makes nginx talk to a [Redis](http://redis.io/) 2.x server in a non-blocking way. The full Redis 2.0 unified protocol has been implemented including the Redis pipelining support.
 
-This module returns the raw TCP response from the Redis server. It's recommended to use my [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) (written in pure C) to parse these responses into lua data structure when combined with [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module).
+This module returns the raw TCP response from the Redis server. It's recommended to use my [lua-redis-parser](http://github.com/openresty/lua-redis-parser) (written in pure C) to parse these responses into lua data structure when combined with [lua-nginx-module](http://github.com/openresty/lua-nginx-module).
 
-When used in conjunction with [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module), it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead of this module though, because the former is much more flexible and memory-efficient.
+When used in conjunction with [lua-nginx-module](http://github.com/openresty/lua-nginx-module), it is recommended to use the [lua-resty-redis](http://github.com/openresty/lua-resty-redis) library instead of this module though, because the former is much more flexible and memory-efficient.
 
 If you only want to use the `get` redis command, you can try out the [HttpRedisModule](http://wiki.nginx.org/HttpRedisModule). It returns the parsed content part of the Redis response because only `get` is needed to implement.
 
@@ -162,21 +162,21 @@ Multiple instances of this directive are allowed in a single location and these 
 
 ```nginx
 
-    location /pipelined {
-        redis2_query set hello world;
-        redis2_query get hello;
+location /pipelined {
+    redis2_query set hello world;
+    redis2_query get hello;
 
-        redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
-    }
+    redis2_pass 127.0.0.1:$TEST_NGINX_REDIS_PORT;
+}
 ```
 
 then `GET /pipelined` will yield two successive raw Redis responses
 
 ```nginx
 
-    +OK
-    $5
-    world
++OK
+$5
+world
 ```
 
 while newlines here are actually `CR LF` (`\r\n`).
@@ -211,22 +211,22 @@ arguments can take Nginx variables.
 Here's some examples
 ```nginx
 
-    location /pipelined {
-        redis2_raw_queries 3 "flushall\r\nget key1\r\nget key2\r\n";
-        redis2_pass 127.0.0.1:6379;
-    }
+location /pipelined {
+    redis2_raw_queries 3 "flushall\r\nget key1\r\nget key2\r\n";
+    redis2_pass 127.0.0.1:6379;
+}
 
-    # GET /pipelined2?n=2&cmds=flushall%0D%0Aget%20key%0D%0A
-    location /pipelined2 {
-        set_unescape_uri $n $arg_n;
-        set_unescape_uri $cmds $arg_cmds;
+# GET /pipelined2?n=2&cmds=flushall%0D%0Aget%20key%0D%0A
+location /pipelined2 {
+    set_unescape_uri $n $arg_n;
+    set_unescape_uri $cmds $arg_cmds;
 
-        redis2_raw_queries $n $cmds;
+    redis2_raw_queries $n $cmds;
 
-        redis2_pass 127.0.0.1:6379;
-    }
+    redis2_pass 127.0.0.1:6379;
+}
 ```
-Note that in the second sample above, the [set_unescape_uri](http://github.com/agentzh/set-misc-nginx-module#set_unescape_uri) directive is provided by the [set-misc-nginx-module](http://github.com/agentzh/set-misc-nginx-module).
+Note that in the second sample above, the [set_unescape_uri](http://github.com/openresty/set-misc-nginx-module#set_unescape_uri) directive is provided by the [set-misc-nginx-module](http://github.com/openresty/set-misc-nginx-module).
 
 [Back to TOC](#table-of-contents)
 
@@ -333,18 +333,18 @@ servers.
 Here's an artificial example:
 ```nginx
 
-    upstream redis_cluster {
-        server 127.0.0.1:6379;
-        server 127.0.0.1:6380;
-    }
+upstream redis_cluster {
+    server 127.0.0.1:6379;
+    server 127.0.0.1:6380;
+}
 
-    server {
-        location /redis {
-            redis2_next_upstream error timeout invalid_response;
-            redis2_query get foo;
-            redis2_pass redis_cluster;
-        }
+server {
+    location /redis {
+        redis2_next_upstream error timeout invalid_response;
+        redis2_query get foo;
+        redis2_pass redis_cluster;
     }
+}
 ```
 
 [Back to TOC](#table-of-contents)
@@ -358,24 +358,24 @@ A sample config snippet looks like this
 
 ```nginx
 
-    http {
-        upstream backend {
-          server 127.0.0.1:6379;
+http {
+    upstream backend {
+      server 127.0.0.1:6379;
 
-          # a pool with at most 1024 connections
-          # and do not distinguish the servers:
-          keepalive 1024;
-        }
+      # a pool with at most 1024 connections
+      # and do not distinguish the servers:
+      keepalive 1024;
+    }
 
-        server {
-            ...
-            location /redis {
-                set_unescape_uri $query $arg_query;
-                redis2_query $query;
-                redis2_pass backend;
-            }
+    server {
+        ...
+        location /redis {
+            set_unescape_uri $query $arg_query;
+            redis2_query $query;
+            redis2_pass backend;
         }
     }
+}
 ```
 
 [Back to TOC](#table-of-contents)
@@ -383,29 +383,29 @@ A sample config snippet looks like this
 Lua Interoperability
 ====================
 
-This module can be served as a non-blocking redis2 client for [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module) (but nowadays it is recommended to use the [lua-resty-redis](http://github.com/agentzh/lua-resty-redis) library instead, which is much simpler to use and more efficient most of the time).
+This module can be served as a non-blocking redis2 client for [lua-nginx-module](http://github.com/openresty/lua-nginx-module) (but nowadays it is recommended to use the [lua-resty-redis](http://github.com/openresty/lua-resty-redis) library instead, which is much simpler to use and more efficient most of the time).
 Here's an example using a GET subrequest:
 
 ```nginx
 
-    location /redis {
-        internal;
+location /redis {
+    internal;
 
-        # set_unescape_uri is provided by ngx_set_misc
-        set_unescape_uri $query $arg_query;
+    # set_unescape_uri is provided by ngx_set_misc
+    set_unescape_uri $query $arg_query;
 
-        redis2_raw_query $query;
-        redis2_pass 127.0.0.1:6379;
-    }
+    redis2_raw_query $query;
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location /main {
-        content_by_lua '
-            local res = ngx.location.capture("/redis",
-                { args = { query = "ping\\r\\n" } }
-            )
-            ngx.print("[" .. res.body .. "]")
-        ';
-    }
+location /main {
+    content_by_lua '
+        local res = ngx.location.capture("/redis",
+            { args = { query = "ping\\r\\n" } }
+        )
+        ngx.print("[" .. res.body .. "]")
+    ';
+}
 ```
 
 Then accessing `/main` yields
@@ -414,7 +414,7 @@ Then accessing `/main` yields
     [+PONG\r\n]
 
 
-where `\r\n` is `CRLF`. That is, this module returns the *raw* TCP responses from the remote redis server. For Lua-based application developers, they may want to utilize the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library (written in pure C) to parse such raw responses into Lua data structures.
+where `\r\n` is `CRLF`. That is, this module returns the *raw* TCP responses from the remote redis server. For Lua-based application developers, they may want to utilize the [lua-redis-parser](http://github.com/openresty/lua-redis-parser) library (written in pure C) to parse such raw responses into Lua data structures.
 
 When moving the inlined Lua code into an external `.lua` file, it's important to use the escape sequence `\r\n` directly. We used `\\r\\n` above just because the Lua code itself needs quoting when being put into an Nginx string literal.
 
@@ -422,24 +422,24 @@ You can also use POST/PUT subrequests to transfer the raw Redis request via requ
 
 ```nginx
 
-    location /redis {
-        internal;
+location /redis {
+    internal;
 
-        # $echo_request_body is provided by the ngx_echo module
-        redis2_raw_query $echo_request_body;
+    # $echo_request_body is provided by the ngx_echo module
+    redis2_raw_query $echo_request_body;
 
-        redis2_pass 127.0.0.1:6379;
-    }
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location /main {
-        content_by_lua '
-            local res = ngx.location.capture("/redis",
-                { method = ngx.HTTP_PUT,
-                  body = "ping\\r\\n" }
-            )
-            ngx.print("[" .. res.body .. "]")
-        ';
-    }
+location /main {
+    content_by_lua '
+        local res = ngx.location.capture("/redis",
+            { method = ngx.HTTP_PUT,
+              body = "ping\\r\\n" }
+        )
+        ngx.print("[" .. res.body .. "]")
+    ';
+}
 ```
 
 This yeilds exactly the same output as the previous (GET) sample.
@@ -448,45 +448,45 @@ One can also use Lua to pick up a concrete Redis backend based on some complicat
 
 ```nginx
 
-    upstream redis-a {
-        server foo.bar.com:6379;
+upstream redis-a {
+    server foo.bar.com:6379;
+}
+
+upstream redis-b {
+    server bar.baz.com:6379;
+}
+
+upstream redis-c {
+    server blah.blah.org:6379;
+}
+
+server {
+    ...
+
+    location /redis {
+        set_unescape_uri $query $arg_query;
+        redis2_query $query;
+        redis2_pass $arg_backend;
     }
 
-    upstream redis-b {
-        server bar.baz.com:6379;
+    location /foo {
+        content_by_lua "
+            -- pick up a server randomly
+            local servers = {'redis-a', 'redis-b', 'redis-c'}
+            local i = ngx.time() % #servers + 1;
+            local srv = servers[i]
+
+            local res = ngx.location.capture('/redis',
+                { args = {
+                    query = '...',
+                    backend = srv
+                  }
+                }
+            )
+            ngx.say(res.body)
+        ";
     }
-
-    upstream redis-c {
-        server blah.blah.org:6379;
-    }
-
-    server {
-        ...
-
-        location /redis {
-            set_unescape_uri $query $arg_query;
-            redis2_query $query;
-            redis2_pass $arg_backend;
-        }
-
-        location /foo {
-            content_by_lua "
-                -- pick up a server randomly
-                local servers = {'redis-a', 'redis-b', 'redis-c'}
-                local i = ngx.time() % #servers + 1;
-                local srv = servers[i]
-
-                local res = ngx.location.capture('/redis',
-                    { args = {
-                        query = '...',
-                        backend = srv
-                      }
-                    }
-                )
-                ngx.say(res.body)
-            ";
-        }
-    }
+}
 ```
 
 [Back to TOC](#table-of-contents)
@@ -500,16 +500,16 @@ First of all, we include the following in our `nginx.conf` file:
 
 ```nginx
 
-    location = /redis2 {
-        internal;
+location = /redis2 {
+    internal;
 
-        redis2_raw_queries $args $echo_request_body;
-        redis2_pass 127.0.0.1:6379;
-    }
+    redis2_raw_queries $args $echo_request_body;
+    redis2_pass 127.0.0.1:6379;
+}
 
-    location = /test {
-        content_by_lua_file conf/test.lua;
-    }
+location = /test {
+    content_by_lua_file conf/test.lua;
+}
 ```
 
 Basically we use URI query args to pass the number of Redis requests and request body to pass the pipelined Redis request string.
@@ -518,34 +518,34 @@ And then we create the `conf/test.lua` file (whose path is relative to the serve
 
 ```lua
 
-    -- conf/test.lua
-    local parser = require "redis.parser"
+-- conf/test.lua
+local parser = require "redis.parser"
 
-    local reqs = {
-        {"set", "foo", "hello world"},
-        {"get", "foo"}
-    }
+local reqs = {
+    {"set", "foo", "hello world"},
+    {"get", "foo"}
+}
 
-    local raw_reqs = {}
-    for i, req in ipairs(reqs) do
-        table.insert(raw_reqs, parser.build_query(req))
-    end
+local raw_reqs = {}
+for i, req in ipairs(reqs) do
+    table.insert(raw_reqs, parser.build_query(req))
+end
 
-    local res = ngx.location.capture("/redis2?" .. #reqs,
-        { body = table.concat(raw_reqs, "") })
+local res = ngx.location.capture("/redis2?" .. #reqs,
+    { body = table.concat(raw_reqs, "") })
 
-    if res.status ~= 200 or not res.body then
-        ngx.log(ngx.ERR, "failed to query redis")
-        ngx.exit(500)
-    end
+if res.status ~= 200 or not res.body then
+    ngx.log(ngx.ERR, "failed to query redis")
+    ngx.exit(500)
+end
 
-    local replies = parser.parse_replies(res.body, #reqs)
-    for i, reply in ipairs(replies) do
-        ngx.say(reply[1])
-    end
+local replies = parser.parse_replies(res.body, #reqs)
+for i, reply in ipairs(replies) do
+    ngx.say(reply[1])
+end
 ```
 
-Here we assume that your Redis server is listening on the default port (6379) of the localhost. We also make use of the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library to construct raw Redis queries for us and also use it to parse the replies.
+Here we assume that your Redis server is listening on the default port (6379) of the localhost. We also make use of the [lua-redis-parser](http://github.com/openresty/lua-redis-parser) library to construct raw Redis queries for us and also use it to parse the replies.
 
 Accessing the `/test` location via HTTP clients like `curl` yields the following output
 
@@ -567,15 +567,15 @@ Consider the following example:
 
 ```nginx
 
-    location /redis {
-        redis2_raw_queries 2 "subscribe /foo/bar\r\n";
-        redis2_pass 127.0.0.1:6379;
-    }
+location /redis {
+    redis2_raw_queries 2 "subscribe /foo/bar\r\n";
+    redis2_pass 127.0.0.1:6379;
+}
 ```
 
 And then publish a message for the key `/foo/bar` in the `redis-cli` command line. And then you'll receive two multi-bulk replies from the `/redis` location.
 
-You can surely parse the replies with the [lua-redis-parser](http://github.com/agentzh/lua-redis-parser) library if you're using Lua to access this module's location.
+You can surely parse the replies with the [lua-redis-parser](http://github.com/openresty/lua-redis-parser) library if you're using Lua to access this module's location.
 
 [Back to TOC](#table-of-contents)
 
@@ -588,7 +588,7 @@ If you want to use the [Redis pub/sub](http://redis.io/topics/pubsub) feature wi
 * There may be some race conditions that produce the harmless `Redis server returned extra bytes` warnings in your nginx's error.log. Such warnings might be rare but just be prepared for it.
 * You should tune the various timeout settings provided by this module like [redis2_connect_timeout](#redis2_connect_timeout) and [redis2_read_timeout](#redis2_read_timeout).
 
-If you cannot stand these limitations, then you are highly recommended to switch to the [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library for [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module).
+If you cannot stand these limitations, then you are highly recommended to switch to the [lua-resty-redis](https://github.com/openresty/lua-resty-redis) library for [lua-nginx-module](http://github.com/openresty/lua-nginx-module).
 
 [Back to TOC](#table-of-contents)
 
@@ -609,22 +609,20 @@ You are recommended to install this module (as well as the Nginx core and many m
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
 * Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.2.7 (see nginx compatibility),
-* and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/agentzh/redis2-nginx-module/tags).
+* and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/openresty/redis2-nginx-module/tags).
 * and finally build the source with this module:
-
-Commands:
 ```bash
 
-    wget 'http://nginx.org/download/nginx-1.2.7.tar.gz'
-    tar -xzvf nginx-1.2.7.tar.gz
-    cd nginx-1.2.7/
- 
-    # Here we assume you would install you nginx under /opt/nginx/.
-    ./configure --prefix=/opt/nginx \
-                --add-module=/path/to/redis2-nginx-module
- 
-    make -j2
-    make install
+wget 'http://nginx.org/download/nginx-1.2.7.tar.gz'
+tar -xzvf nginx-1.2.7.tar.gz
+cd nginx-1.2.7/
+
+# Here we assume you would install you nginx under /opt/nginx/.
+./configure --prefix=/opt/nginx \
+            --add-module=/path/to/redis2-nginx-module
+
+make -j2
+make install
 ```
 
 [Back to TOC](#table-of-contents)
@@ -673,7 +671,7 @@ Bugs and Patches
 
 Please submit bug reports, wishlists, or patches by
 
-1. creating a ticket on the [GitHub Issue Tracker](http://github.com/agentzh/redis2-nginx-module/issues),
+1. creating a ticket on the [GitHub Issue Tracker](http://github.com/openresty/redis2-nginx-module/issues),
 1. or posting to the [OpenResty community](#community).
 
 [Back to TOC](#table-of-contents)
@@ -681,7 +679,7 @@ Please submit bug reports, wishlists, or patches by
 Source Repository
 =================
 
-Available on github at [agentzh/redis2-nginx-module](http://github.com/agentzh/redis2-nginx-module).
+Available on github at [openresty/redis2-nginx-module](http://github.com/openresty/redis2-nginx-module).
 
 [Back to TOC](#table-of-contents)
 
@@ -729,8 +727,7 @@ SEE ALSO
 ========
 * The [Redis](http://redis.io/) server homepage.
 * The Redis wire protocol: <http://redis.io/topics/protocol>
-* a redis response parser and a request constructor for Lua: [lua-redis-parser](http://github.com/agentzh/lua-redis-parser).
-* [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module)
+* a redis response parser and a request constructor for Lua: [lua-redis-parser](http://github.com/openresty/lua-redis-parser).
+* [lua-nginx-module](http://github.com/openresty/lua-nginx-module)
 * The [ngx_openresty bundle](http://openresty.org).
-* The [lua-resty-redis](https://github.com/agentzh/lua-resty-redis) library based on the [lua-nginx-module](http://github.com/chaoslawful/lua-nginx-module) cosocket API.
-
+* The [lua-resty-redis](https://github.com/openresty/lua-resty-redis) library based on the [lua-nginx-module](http://github.com/openresty/lua-nginx-module) cosocket API.
