@@ -352,7 +352,7 @@ server {
 Connection Pool
 ===============
 
-You can use the excellent [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule) with this module to privide TCP connection pool for Redis.
+You can use the excellent [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule) with this module to provide TCP connection pool for Redis.
 
 A sample config snippet looks like this
 
