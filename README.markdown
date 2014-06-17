@@ -352,7 +352,7 @@ server {
 Connection Pool
 ===============
 
-You can use the excellent [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule) with this module to privide TCP connection pool for Redis.
+You can use the excellent [HttpUpstreamKeepaliveModule](http://wiki.nginx.org/HttpUpstreamKeepaliveModule) with this module to provide TCP connection pool for Redis.
 
 A sample config snippet looks like this
 
@@ -733,3 +733,4 @@ SEE ALSO
 * [lua-nginx-module](http://github.com/openresty/lua-nginx-module)
 * The [ngx_openresty bundle](http://openresty.org).
 * The [lua-resty-redis](https://github.com/openresty/lua-resty-redis) library based on the [lua-nginx-module](http://github.com/openresty/lua-nginx-module) cosocket API.
+

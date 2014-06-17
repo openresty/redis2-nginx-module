@@ -262,7 +262,7 @@ Here's an artificial example:
 
 = Connection Pool =
 
-You can use the excellent [[HttpUpstreamKeepaliveModule]] with this module to privide TCP connection pool for Redis.
+You can use the excellent [[HttpUpstreamKeepaliveModule]] with this module to provide TCP connection pool for Redis.
 
 A sample config snippet looks like this
 
@@ -584,3 +584,4 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 * [[HttpLuaModule]]
 * The [http://openresty.org ngx_openresty bundle].
 * The [https://github.com/openresty/lua-resty-redis lua-resty-redis] library based on the [[HttpLuaModule]] cosocket API.
+
