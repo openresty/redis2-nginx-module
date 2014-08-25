@@ -62,21 +62,21 @@ Synopsis
 
 ```nginx
 
-location /foo {
+location = /foo {
     set $value 'first';
     redis2_query set one $value;
     redis2_pass 127.0.0.1:6379;
 }
 
 # GET /get?key=some_key
-location /get {
+location = /get {
     set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
     redis2_query get $key;
     redis2_pass foo.com:6379;
 }
 
 # GET /set?key=one&val=first%20value
-location /set {
+location = /set {
     set_unescape_uri $key $arg_key;  # this requires ngx_set_misc
     set_unescape_uri $val $arg_val;  # this requires ngx_set_misc
     redis2_query set $key $val;
@@ -84,7 +84,7 @@ location /set {
 }
 
 # multiple pipelined queries
-location /foo {
+location = /foo {
     set $value 'first';
     redis2_query set one $value;
     redis2_query get one;
@@ -93,26 +93,26 @@ location /foo {
     redis2_pass 127.0.0.1:6379;
 }
 
-location /bar {
+location = /bar {
     # $ is not special here...
     redis2_literal_raw_query '*1\r\n$4\r\nping\r\n';
     redis2_pass 127.0.0.1:6379;
 }
 
-location /bar {
+location = /bar {
     # variables can be used below and $ is special
     redis2_raw_query 'get one\r\n';
     redis2_pass 127.0.0.1:6379;
 }
 
 # GET /baz?get%20foo%0d%0a
-location /baz {
+location = /baz {
     set_unescape_uri $query $query_string; # this requires the ngx_set_misc module
     redis2_raw_query $query;
     redis2_pass 127.0.0.1:6379;
 }
 
-location /init {
+location = /init {
     redis2_query del key1;
     redis2_query lpush key1 C;
     redis2_query lpush key1 B;
@@ -120,7 +120,7 @@ location /init {
     redis2_pass 127.0.0.1:6379;
 }
 
-location /get {
+location = /get {
     redis2_query lrange key1 0 -1;
     redis2_pass 127.0.0.1:6379;
 }
@@ -162,7 +162,7 @@ Multiple instances of this directive are allowed in a single location and these 
 
 ```nginx
 
-location /pipelined {
+location = /pipelined {
     redis2_query set hello world;
     redis2_query get hello;
 
@@ -211,13 +211,13 @@ arguments can take Nginx variables.
 Here's some examples
 ```nginx
 
-location /pipelined {
+location = /pipelined {
     redis2_raw_queries 3 "flushall\r\nget key1\r\nget key2\r\n";
     redis2_pass 127.0.0.1:6379;
 }
 
 # GET /pipelined2?n=2&cmds=flushall%0D%0Aget%20key%0D%0A
-location /pipelined2 {
+location = /pipelined2 {
     set_unescape_uri $n $arg_n;
     set_unescape_uri $cmds $arg_cmds;
 
@@ -339,7 +339,7 @@ upstream redis_cluster {
 }
 
 server {
-    location /redis {
+    location = /redis {
         redis2_next_upstream error timeout invalid_response;
         redis2_query get foo;
         redis2_pass redis_cluster;
@@ -369,7 +369,7 @@ http {
 
     server {
         ...
-        location /redis {
+        location = /redis {
             set_unescape_uri $query $arg_query;
             redis2_query $query;
             redis2_pass backend;
@@ -388,7 +388,7 @@ Here's an example using a GET subrequest:
 
 ```nginx
 
-location /redis {
+location = /redis {
     internal;
 
     # set_unescape_uri is provided by ngx_set_misc
@@ -398,7 +398,7 @@ location /redis {
     redis2_pass 127.0.0.1:6379;
 }
 
-location /main {
+location = /main {
     content_by_lua '
         local res = ngx.location.capture("/redis",
             { args = { query = "ping\\r\\n" } }
@@ -422,7 +422,7 @@ You can also use POST/PUT subrequests to transfer the raw Redis request via requ
 
 ```nginx
 
-location /redis {
+location = /redis {
     internal;
 
     # $echo_request_body is provided by the ngx_echo module
@@ -431,7 +431,7 @@ location /redis {
     redis2_pass 127.0.0.1:6379;
 }
 
-location /main {
+location = /main {
     content_by_lua '
         local res = ngx.location.capture("/redis",
             { method = ngx.HTTP_PUT,
@@ -463,13 +463,13 @@ upstream redis-c {
 server {
     ...
 
-    location /redis {
+    location = /redis {
         set_unescape_uri $query $arg_query;
         redis2_query $query;
         redis2_pass $arg_backend;
     }
 
-    location /foo {
+    location = /foo {
         content_by_lua "
             -- pick up a server randomly
             local servers = {'redis-a', 'redis-b', 'redis-c'}
@@ -567,7 +567,7 @@ Consider the following example:
 
 ```nginx
 
-location /redis {
+location = /redis {
     redis2_raw_queries 2 "subscribe /foo/bar\r\n";
     redis2_pass 127.0.0.1:6379;
 }
