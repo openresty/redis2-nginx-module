@@ -16,10 +16,8 @@
 
 #line 18 "src/ngx_http_redis2_reply.c"
 static const int reply_start = 1;
-static const int reply_first_final = 52;
 static const int reply_error = 0;
 
-static const int reply_en_main = 1;
 
 
 #line 23 "src/ngx_http_redis2_reply.rl"
