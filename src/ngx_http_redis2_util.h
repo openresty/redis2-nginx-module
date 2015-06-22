@@ -11,9 +11,9 @@
 #endif
 
 
-char * ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf,
+char *ngx_http_redis2_set_complex_value_slot(ngx_conf_t *cf,
         ngx_command_t *cmd, void *conf);
-ngx_http_upstream_srv_conf_t * ngx_http_redis2_upstream_add(
+ngx_http_upstream_srv_conf_t *ngx_http_redis2_upstream_add(
         ngx_http_request_t *r, ngx_url_t *url);
 ngx_int_t ngx_http_redis2_build_query(ngx_http_request_t *r,
         ngx_array_t *queries, ngx_buf_t **b);
