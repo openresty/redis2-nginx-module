@@ -1,8 +1,3 @@
-<!---
-Don't edit this file manually! Instead you should generate it by using:
-    wiki2markdown.pl doc/HttpRedis2Module.wiki
--->
-
 Name
 ====
 
