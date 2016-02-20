@@ -1,5 +1,29 @@
 ngx_addon_name=ngx_http_redis2_module
-HTTP_MODULES="$HTTP_MODULES ngx_http_redis2_module"
-NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/src/ngx_http_redis2_module.c $ngx_addon_dir/src/ngx_http_redis2_handler.c $ngx_addon_dir/src/ngx_http_redis2_reply.c $ngx_addon_dir/src/ngx_http_redis2_util.c"
-NGX_ADDON_DEPS="$NGX_ADDON_DEPS $ngx_addon_dir/src/ddebug.h $ngx_addon_dir/src/ngx_http_redis2_module.h $ngx_addon_dir/src/ngx_http_redis2_handler.h $ngx_addon_dir/src/ngx_http_redis2_reply.h $ngx_addon_dir/src/ngx_http_redis2_util.h"
 
+REDIS2_SRCS="                                                               \
+            $ngx_addon_dir/src/ngx_http_redis2_module.c                     \
+            $ngx_addon_dir/src/ngx_http_redis2_handler.c                    \
+            $ngx_addon_dir/src/ngx_http_redis2_reply.c                      \
+            $ngx_addon_dir/src/ngx_http_redis2_util.c                       \
+            "
+
+REDIS2_DEPS="                                                               \
+            $ngx_addon_dir/src/ddebug.h                                     \
+            $ngx_addon_dir/src/ngx_http_redis2_module.h                     \
+            $ngx_addon_dir/src/ngx_http_redis2_handler.h                    \
+            $ngx_addon_dir/src/ngx_http_redis2_reply.h                      \
+            $ngx_addon_dir/src/ngx_http_redis2_util.h                       \
+            "
+
+if [ -n "$ngx_module_link" ]; then
+    ngx_module_type=HTTP
+    ngx_module_name=$ngx_addon_name
+    ngx_module_srcs="$REDIS2_SRCS"
+    ngx_module_deps="$REDIS2_DEPS"
+
+    . auto/module
+else
+    HTTP_MODULES="$HTTP_MODULES $ngx_addon_name"
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $REDIS2_SRCS"
+    NGX_ADDON_DEPS="$NGX_ADDON_DEPS $REDIS2_DEPS"
+fi
