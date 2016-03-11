@@ -8,6 +8,7 @@ ngx_redis2 - Nginx upstream module for the Redis 2.0 protocol
 Table of Contents
 =================
 
+* [Name](#name)
 * [Status](#status)
 * [Version](#version)
 * [Synopsis](#synopsis)
@@ -24,6 +25,7 @@ Table of Contents
     * [redis2_buffer_size](#redis2_buffer_size)
     * [redis2_next_upstream](#redis2_next_upstream)
 * [Connection Pool](#connection-pool)
+* [Selecting Redis Databases](#selecting-redis-databases)
 * [Lua Interoperability](#lua-interoperability)
     * [Pipelined Redis Requests by Lua](#pipelined-redis-requests-by-lua)
 * [Redis Publish/Subscribe Support](#redis-publishsubscribe-support)
@@ -371,6 +373,20 @@ A sample config snippet looks like this
          }
      }
  }
+```
+
+[Back to TOC](#table-of-contents)
+
+Selecting Redis Databases
+=========================
+
+Redis provides the [select](http://redis.io/commands/SELECT) command to switch Redis databaess. This command is no different from other normal commands
+like [get](http://redis.io/commands/GET) or [set](http://redis.io/commands/SET). So you can use them in [redis2_query](#redis2_query) directives, for
+example,
+
+```nginx
+redis2_query select 8;
+redis2_query get foo;
 ```
 
 [Back to TOC](#table-of-contents)
@@ -740,4 +756,6 @@ SEE ALSO
 * [lua-nginx-module](http://github.com/openresty/lua-nginx-module)
 * The [ngx_openresty bundle](http://openresty.org).
 * The [lua-resty-redis](https://github.com/openresty/lua-resty-redis) library based on the [lua-nginx-module](http://github.com/openresty/lua-nginx-module) cosocket API.
+
+[Back to TOC](#table-of-contents)
 
