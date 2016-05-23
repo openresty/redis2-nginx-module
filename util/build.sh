@@ -24,7 +24,6 @@ ngx-build $force $version \
           --add-module=$root/../ndk-nginx-module \
           --add-module=$root/../set-misc-nginx-module \
           --add-module=$root/../lua-nginx-module \
-    --add-module=$home/work/nginx/ngx_http_upstream_keepalive-0.7 \
           --with-debug
           #--add-module=$root/../eval-nginx-module \
           #--add-module=$home/work/nginx/nginx_upstream_hash-0.3 \
