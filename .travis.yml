@@ -9,6 +9,21 @@ compiler:
   - gcc
   - clang
 
+addons:
+  apt:
+    packages:
+    - axel
+    - cpanminus
+    - libtest-base-perl
+    - libtext-diff-perl
+    - liburi-perl
+    - libwww-perl
+    - libtest-longstring-perl
+    - liblist-moreutils-perl
+
+cache:
+  apt: true
+
 env:
   global:
     - LUAJIT_PREFIX=/opt/luajit21
@@ -21,12 +36,10 @@ env:
     - NGX_BUILD_JOBS=$JOBS
   matrix:
     - NGINX_VERSION=1.9.15
+    - NGINX_VERSION=1.11.2
 
 services:
  - redis-server
-
-before_install:
-  - sudo apt-get install -qq -y axel cpanminus libtest-base-perl libtext-diff-perl liburi-perl libwww-perl libtest-longstring-perl liblist-moreutils-perl > build.log 2>&1 || (cat build.log && exit 1)
 
 install:
   - git clone https://github.com/openresty/nginx-devel-utils.git
