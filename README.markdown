@@ -52,7 +52,7 @@ This module is already production ready.
 Version
 =======
 
-This document describes ngx_redis2 [v0.13](https://github.com/openresty/redis2-nginx-module/tags) released on 15 May 2016.
+This document describes ngx_redis2 [v0.14](https://github.com/openresty/redis2-nginx-module/tags) released on 8 April 2017.
 
 Synopsis
 ========
@@ -619,14 +619,14 @@ You are recommended to install this module (as well as the Nginx core and many m
 
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
-* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.9.15 (see nginx compatibility),
+* Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.11.2 (see nginx compatibility),
 * and then download the latest version of the release tarball of this module from ngx_redis2's [file list](http://github.com/openresty/redis2-nginx-module/tags).
 * and finally build the source with this module:
 ```bash
 
- wget 'http://nginx.org/download/nginx-1.9.15.tar.gz'
- tar -xzvf nginx-1.9.15.tar.gz
- cd nginx-1.9.15/
+ wget 'http://nginx.org/download/nginx-1.11.2.tar.gz'
+ tar -xzvf nginx-1.11.2.tar.gz
+ cd nginx-1.11.2/
 
  # Here we assume you would install you nginx under /opt/nginx/.
  ./configure --prefix=/opt/nginx \
@@ -653,6 +653,8 @@ Redis 2.0, 2.2, 2.4, and above should work with this module without any issues. 
 
 The following versions of Nginx should work with this module:
 
+* 1.11.x (last tested: 1.11.2)
+* 1.10.x
 * 1.9.x (last tested: 1.9.15)
 * 1.8.x
 * 1.7.x (last tested: 1.7.10)
@@ -734,7 +736,7 @@ Copyright & License
 
 This module is licenced under the BSD license.
 
-Copyright (C) 2010-2016, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, OpenResty Inc.
+Copyright (C) 2010-2017, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, OpenResty Inc.
 
 All rights reserved.
 
