@@ -99,7 +99,6 @@ fun:ngx_http_lua_handle_subreq_responses
    Memcheck:Leak
    fun:malloc
    fun:ngx_alloc
-   fun:(below main)
 }
 {
    <insert_a_suppression_name_here>
@@ -174,34 +173,6 @@ fun:ngx_http_lua_handle_subreq_responses
    fun:ngx_http_init_request
    fun:ngx_epoll_process_events
    fun:ngx_process_events_and_timers
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   fun:malloc
-   fun:nss_parse_service_list
-   fun:__nss_database_lookup
-   obj:*
-   obj:*
-   fun:getgrnam_r@@GLIBC_2.2.5
-   fun:getgrnam
-   fun:ngx_core_module_init_conf
-   fun:ngx_init_cycle
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   fun:malloc
-   fun:nss_parse_service_list
-   fun:__nss_database_lookup
-   obj:*
-   obj:*
-   fun:getpwnam_r@@GLIBC_2.2.5
-   fun:getpwnam
-   fun:ngx_core_module_init_conf
-   fun:ngx_init_cycle
-   fun:main
 }
 {
    <insert_a_suppression_name_here>
