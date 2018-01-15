@@ -211,10 +211,10 @@ ngx_http_redis2_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
                               (size_t) ngx_pagesize);
 
     ngx_conf_merge_bitmask_value(conf->upstream.next_upstream,
-                              prev->upstream.next_upstream,
-                              (NGX_CONF_BITMASK_SET
-                               |NGX_HTTP_UPSTREAM_FT_ERROR
-                               |NGX_HTTP_UPSTREAM_FT_TIMEOUT));
+                                 prev->upstream.next_upstream,
+                                 (NGX_CONF_BITMASK_SET
+                                  |NGX_HTTP_UPSTREAM_FT_ERROR
+                                  |NGX_HTTP_UPSTREAM_FT_TIMEOUT));
 
     if (conf->upstream.next_upstream & NGX_HTTP_UPSTREAM_FT_OFF) {
         conf->upstream.next_upstream = NGX_CONF_BITMASK_SET
@@ -395,7 +395,7 @@ ngx_http_redis2_raw_queries(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     /* compile the N argument */
 
     rlcf->complex_query_count = ngx_palloc(cf->pool,
-            sizeof(ngx_http_complex_value_t));
+                                           sizeof(ngx_http_complex_value_t));
 
     if (rlcf->complex_query_count == NULL) {
         return NGX_CONF_ERROR;
@@ -413,7 +413,7 @@ ngx_http_redis2_raw_queries(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     /* compile the CMDS argument */
 
     rlcf->complex_query = ngx_palloc(cf->pool,
-            sizeof(ngx_http_complex_value_t));
+                                     sizeof(ngx_http_complex_value_t));
 
     if (rlcf->complex_query == NULL) {
         return NGX_CONF_ERROR;

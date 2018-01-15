@@ -44,14 +44,14 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
         /* variables used in the redis2_pass directive */
 
         if (ngx_http_complex_value(r, rlcf->complex_target, &target)
-                != NGX_OK)
+            != NGX_OK)
         {
             return NGX_ERROR;
         }
 
         if (target.len == 0) {
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                    "handler: empty \"redis2_pass\" target");
+                          "handler: empty \"redis2_pass\" target");
             return NGX_HTTP_INTERNAL_SERVER_ERROR;
         }
 
@@ -63,7 +63,7 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
 
         if (rlcf->upstream.upstream == NULL) {
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                   "redis2: upstream \"%V\" not found", &target);
+                          "redis2: upstream \"%V\" not found", &target);
 
             return NGX_HTTP_INTERNAL_SERVER_ERROR;
         }
@@ -131,20 +131,20 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
     } else if (rlcf->literal_query.len == 0) {
         if (rlcf->complex_query == NULL) {
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                    "no redis2 query specified or the query is empty");
+                          "no redis2 query specified or the query is empty");
 
             return NGX_ERROR;
         }
 
         if (ngx_http_complex_value(r, rlcf->complex_query, &query)
-                != NGX_OK)
+            != NGX_OK)
         {
             return NGX_ERROR;
         }
 
         if (query.len == 0) {
             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                    "the redis query is empty");
+                          "the redis query is empty");
 
             return NGX_ERROR;
         }
@@ -154,14 +154,15 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
 
         } else {
             if (ngx_http_complex_value(r, rlcf->complex_query_count,
-                    &query_count) != NGX_OK)
+                                       &query_count)
+                != NGX_OK)
             {
                 return NGX_ERROR;
             }
 
             if (query_count.len == 0) {
                 ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                        "the N argument to redis2_raw_queries is empty");
+                              "the N argument to redis2_raw_queries is empty");
 
                 return NGX_ERROR;
             }
@@ -169,7 +170,8 @@ ngx_http_redis2_create_request(ngx_http_request_t *r)
             n = ngx_atoi(query_count.data, query_count.len);
             if (n == NGX_ERROR || n == 0) {
                 ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                        "the N argument to redis2_raw_queries is invalid");
+                              "the N argument to redis2_raw_queries is "
+                              "invalid");
 
                 return NGX_ERROR;
             }

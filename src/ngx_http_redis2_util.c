@@ -65,7 +65,7 @@ ngx_http_redis2_upstream_add(ngx_http_request_t *r, ngx_url_t *url)
 
         if (uscfp[i]->host.len != url->host.len
             || ngx_strncasecmp(uscfp[i]->host.data, url->host.data,
-               url->host.len) != 0)
+                               url->host.len) != 0)
         {
             dd("upstream_add: host not match");
             continue;
@@ -73,7 +73,7 @@ ngx_http_redis2_upstream_add(ngx_http_request_t *r, ngx_url_t *url)
 
         if (uscfp[i]->port != url->port) {
             dd("upstream_add: port not match: %d != %d",
-                    (int) uscfp[i]->port, (int) url->port);
+               (int) uscfp[i]->port, (int) url->port);
             continue;
         }
 
@@ -203,8 +203,8 @@ ngx_http_redis2_build_query(ngx_http_request_t *r, ngx_array_t *queries,
 
     if (p - (*b)->pos != (ssize_t) len) {
         ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-                "redis2: redis2_query buffer error %uz != %uz",
-                (size_t) (p - (*b)->pos), len);
+                      "redis2: redis2_query buffer error %uz != %uz",
+                      (size_t) (p - (*b)->pos), len);
 
         return NGX_ERROR;
     }
