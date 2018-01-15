@@ -2,7 +2,7 @@
 
 # this file is mostly meant to be used by the author himself.
 
-ragel -I src -G2 src/ngx_http_redis2_reply.rl || exit 1
+ragel -I src -T1 src/ngx_http_redis2_reply.rl || exit 1
 ./util/fix-clang-warnings
 
 root=`pwd`

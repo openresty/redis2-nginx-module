@@ -15,6 +15,237 @@
 
 
 #line 18 "src/ngx_http_redis2_reply.c"
+static const unsigned char _reply_cond_offsets[] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 1, 4, 7, 7, 
+	7, 7, 7, 7, 7, 7, 11, 14, 
+	15, 17, 18, 21, 26, 28, 29, 30, 
+	32, 33, 34, 37, 42, 50, 55, 60, 
+	65, 70, 73, 74, 79, 82, 87, 92, 
+	97, 98, 103, 103, 103, 103, 106, 110, 
+	121, 126, 137
+};
+
+static const char _reply_cond_lengths[] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 1, 3, 3, 0, 0, 
+	0, 0, 0, 0, 0, 4, 3, 1, 
+	2, 1, 3, 5, 2, 1, 1, 2, 
+	1, 1, 3, 5, 8, 5, 5, 5, 
+	5, 3, 1, 5, 3, 5, 5, 5, 
+	1, 5, 0, 0, 0, 3, 4, 11, 
+	5, 11, 9
+};
+
+static const short _reply_cond_keys[] = {
+	-128, 127, -128, 12, 13, 13, 14, 127, 
+	-128, 12, 13, 13, 14, 127, 36, 36, 
+	43, 43, 45, 45, 58, 58, 45, 45, 
+	48, 48, 49, 57, 48, 57, 13, 13, 
+	48, 57, 10, 10, -128, 12, 13, 13, 
+	14, 127, -128, 9, 10, 10, 11, 12, 
+	13, 13, 14, 127, 13, 13, 48, 48, 
+	10, 10, 13, 13, 13, 13, 48, 57, 
+	10, 10, -128, 127, -128, 12, 13, 13, 
+	14, 127, -128, 9, 10, 10, 11, 12, 
+	13, 13, 14, 127, -128, 12, 13, 13, 
+	14, 44, 45, 45, 46, 47, 48, 48, 
+	49, 57, 58, 127, -128, 12, 13, 13, 
+	14, 47, 48, 57, 58, 127, -128, 12, 
+	13, 13, 14, 47, 48, 57, 58, 127, 
+	-128, 12, 13, 13, 14, 47, 48, 48, 
+	49, 127, -128, 9, 10, 10, 11, 12, 
+	13, 13, 14, 127, -128, 12, 13, 13, 
+	14, 127, 10, 10, -128, 9, 10, 10, 
+	11, 12, 13, 13, 14, 127, -128, 12, 
+	13, 13, 14, 127, -128, 9, 10, 10, 
+	11, 12, 13, 13, 14, 127, -128, 12, 
+	13, 13, 14, 47, 48, 57, 58, 127, 
+	-128, 9, 10, 10, 11, 12, 13, 13, 
+	14, 127, 10, 10, -128, 9, 10, 10, 
+	11, 12, 13, 13, 14, 127, -128, 12, 
+	13, 13, 14, 127, 36, 36, 43, 43, 
+	45, 45, 58, 58, -128, 12, 13, 13, 
+	14, 35, 36, 36, 37, 42, 43, 43, 
+	44, 44, 45, 45, 46, 57, 58, 58, 
+	59, 127, 13, 13, 36, 36, 43, 43, 
+	45, 45, 58, 58, -128, 12, 13, 13, 
+	14, 35, 36, 36, 37, 42, 43, 43, 
+	44, 44, 45, 45, 46, 57, 58, 58, 
+	59, 127, -128, 35, 36, 36, 37, 42, 
+	43, 43, 44, 44, 45, 45, 46, 57, 
+	58, 58, 59, 127, 0
+};
+
+static const char _reply_cond_spaces[] = {
+	0, 0, 3, 0, 0, 3, 0, 2, 
+	2, 2, 2, 2, 2, 2, 2, 2, 
+	2, 2, 2, 2, 2, 2, 2, 2, 
+	2, 2, 2, 2, 2, 2, 2, 2, 
+	2, 4, 4, 5, 4, 4, 4, 4, 
+	5, 4, 4, 5, 4, 4, 4, 4, 
+	4, 4, 4, 5, 4, 4, 4, 4, 
+	5, 4, 4, 4, 4, 5, 4, 4, 
+	4, 4, 4, 4, 5, 4, 4, 5, 
+	4, 2, 4, 4, 4, 5, 4, 4, 
+	5, 4, 4, 4, 4, 5, 4, 4, 
+	5, 4, 4, 4, 4, 4, 4, 5, 
+	4, 2, 4, 4, 4, 5, 4, 0, 
+	3, 0, 2, 2, 2, 2, 4, 5, 
+	4, 4, 4, 4, 4, 4, 4, 4, 
+	4, 2, 2, 2, 2, 2, 4, 5, 
+	4, 4, 4, 4, 4, 4, 4, 4, 
+	4, 4, 4, 4, 4, 4, 4, 4, 
+	4, 4, 0
+};
+
+static const short _reply_key_offsets[] = {
+	0, 0, 5, 9, 11, 14, 15, 17, 
+	18, 19, 22, 23, 25, 32, 41, 45, 
+	46, 47, 48, 50, 53, 54, 58, 62, 
+	64, 67, 68, 71, 75, 77, 78, 79, 
+	82, 83, 85, 92, 101, 118, 131, 145, 
+	155, 164, 172, 173, 182, 194, 208, 222, 
+	230, 231, 240, 241, 243, 243, 250, 254, 
+	269, 274, 290
+};
+
+static const short _reply_trans_keys[] = {
+	36, 42, 43, 45, 58, 45, 48, 49, 
+	57, 48, 57, 13, 48, 57, 10, 13, 
+	48, 10, 13, 13, 48, 57, 10, 384, 
+	639, 1549, 1805, 2061, 384, 524, 526, 639, 
+	266, 522, 1549, 1805, 2061, 384, 524, 526, 
+	639, 45, 48, 49, 57, 49, 13, 10, 
+	13, 48, 13, 48, 57, 10, 5668, 5675, 
+	5677, 5690, 5677, 5680, 5681, 5689, 5680, 5689, 
+	5645, 5680, 5689, 5642, 5645, 5504, 5759, 5642, 
+	5645, 5504, 5759, 5645, 5680, 5642, 5645, 5645, 
+	5680, 5689, 5642, 2944, 3199, 4621, 4877, 5133, 
+	2944, 3084, 3086, 3199, 2826, 3082, 4621, 4877, 
+	5133, 2944, 3084, 3086, 3199, 2861, 2864, 3117, 
+	3120, 4621, 4877, 5133, 2865, 2873, 2944, 3084, 
+	3086, 3119, 3121, 3129, 3130, 3199, 4621, 4877, 
+	5133, 2864, 2873, 2944, 3084, 3086, 3119, 3120, 
+	3129, 3130, 3199, 4365, 4621, 4877, 5133, 2864, 
+	2873, 2944, 3084, 3086, 3119, 3120, 3129, 3130, 
+	3199, 2864, 3120, 4365, 4621, 4877, 5133, 2944, 
+	3084, 3086, 3199, 2826, 3082, 4621, 4877, 5133, 
+	2944, 3084, 3086, 3199, 4365, 4621, 4877, 5133, 
+	2944, 3084, 3086, 3199, 5642, 2826, 3082, 4621, 
+	4877, 5133, 2944, 3084, 3086, 3199, 4365, 4621, 
+	4877, 5133, 2688, 2828, 2830, 2943, 2944, 3084, 
+	3086, 3199, 2826, 3082, 4365, 4621, 4877, 5133, 
+	2688, 2828, 2830, 2943, 2944, 3084, 3086, 3199, 
+	4365, 4621, 4877, 5133, 2864, 2873, 2944, 3084, 
+	3086, 3119, 3120, 3129, 3130, 3199, 2826, 4621, 
+	4877, 5133, 2944, 3084, 3086, 3199, 5642, 2826, 
+	3082, 4621, 4877, 5133, 2944, 3084, 3086, 3199, 
+	13, 10, 13, 1549, 1805, 2061, 384, 524, 
+	526, 639, 5668, 5675, 5677, 5690, 2852, 2859, 
+	2861, 2874, 3108, 3115, 3117, 3130, 4621, 4877, 
+	5133, 2944, 3084, 3086, 3199, 5645, 5668, 5675, 
+	5677, 5690, 2852, 2859, 2861, 2874, 3108, 3115, 
+	3117, 3130, 4365, 4621, 4877, 5133, 2944, 3084, 
+	3086, 3199, 2852, 2859, 2861, 2874, 3108, 3115, 
+	3117, 3130, 2944, 3199, 0
+};
+
+static const char _reply_single_lengths[] = {
+	0, 5, 2, 0, 1, 1, 2, 1, 
+	1, 1, 1, 0, 3, 5, 2, 1, 
+	1, 1, 2, 1, 1, 4, 2, 0, 
+	1, 1, 1, 2, 2, 1, 1, 1, 
+	1, 0, 3, 5, 7, 3, 4, 6, 
+	5, 4, 1, 5, 4, 6, 4, 4, 
+	1, 5, 1, 2, 0, 3, 4, 11, 
+	5, 12, 8
+};
+
+static const char _reply_range_lengths[] = {
+	0, 0, 1, 1, 1, 0, 0, 0, 
+	0, 1, 0, 1, 2, 2, 1, 0, 
+	0, 0, 0, 1, 0, 0, 1, 1, 
+	1, 0, 1, 1, 0, 0, 0, 1, 
+	0, 1, 2, 2, 5, 5, 5, 2, 
+	2, 2, 0, 2, 4, 4, 5, 2, 
+	0, 2, 0, 0, 0, 2, 0, 2, 
+	0, 2, 1
+};
+
+static const short _reply_index_offsets[] = {
+	0, 0, 6, 10, 12, 15, 17, 20, 
+	22, 24, 27, 29, 31, 37, 45, 49, 
+	51, 53, 55, 58, 61, 63, 68, 72, 
+	74, 77, 79, 82, 86, 89, 91, 93, 
+	96, 98, 100, 106, 114, 127, 136, 146, 
+	155, 163, 170, 172, 180, 189, 200, 210, 
+	217, 219, 227, 229, 232, 233, 239, 244, 
+	258, 264, 279
+};
+
+static const char _reply_indicies[] = {
+	0, 2, 3, 3, 3, 1, 4, 5, 
+	6, 1, 7, 1, 8, 7, 1, 9, 
+	1, 10, 5, 1, 11, 1, 8, 1, 
+	12, 13, 1, 14, 1, 15, 1, 15, 
+	8, 16, 15, 15, 1, 9, 17, 15, 
+	8, 16, 15, 15, 1, 18, 19, 20, 
+	1, 21, 1, 22, 1, 23, 1, 22, 
+	19, 1, 24, 25, 1, 26, 1, 27, 
+	28, 28, 28, 1, 29, 30, 31, 1, 
+	32, 1, 33, 32, 1, 34, 1, 35, 
+	28, 1, 34, 35, 28, 1, 36, 30, 
+	1, 37, 1, 33, 1, 38, 39, 1, 
+	40, 1, 41, 1, 41, 33, 42, 41, 
+	41, 1, 34, 43, 41, 33, 42, 41, 
+	41, 1, 29, 30, 44, 45, 41, 33, 
+	42, 31, 41, 41, 46, 41, 1, 41, 
+	33, 42, 32, 41, 41, 47, 41, 1, 
+	33, 42, 33, 42, 32, 41, 41, 47, 
+	41, 1, 30, 45, 36, 48, 49, 50, 
+	41, 41, 1, 37, 51, 41, 33, 42, 
+	41, 41, 1, 33, 42, 33, 42, 41, 
+	41, 1, 52, 1, 52, 53, 41, 33, 
+	42, 41, 41, 1, 35, 55, 35, 55, 
+	28, 28, 54, 54, 1, 34, 43, 35, 
+	55, 35, 55, 28, 28, 54, 54, 1, 
+	38, 57, 58, 59, 39, 41, 41, 56, 
+	41, 1, 40, 41, 33, 42, 41, 41, 
+	1, 60, 1, 60, 43, 41, 33, 42, 
+	41, 41, 1, 61, 3, 62, 61, 3, 
+	1, 15, 8, 16, 15, 15, 1, 27, 
+	28, 28, 28, 1, 27, 28, 28, 28, 
+	63, 54, 54, 54, 41, 33, 42, 41, 
+	41, 1, 33, 27, 28, 28, 28, 1, 
+	27, 28, 28, 28, 63, 54, 54, 54, 
+	33, 42, 33, 42, 41, 41, 1, 27, 
+	28, 28, 28, 63, 54, 54, 54, 41, 
+	1, 0
+};
+
+static const char _reply_trans_targs[] = {
+	2, 0, 14, 50, 3, 6, 9, 4, 
+	5, 52, 7, 8, 10, 9, 11, 12, 
+	13, 53, 15, 18, 19, 16, 17, 52, 
+	20, 19, 21, 22, 26, 23, 28, 31, 
+	24, 25, 54, 27, 29, 30, 32, 31, 
+	33, 34, 35, 55, 37, 39, 46, 38, 
+	40, 42, 43, 41, 56, 57, 44, 45, 
+	46, 47, 48, 49, 58, 51, 52, 36
+};
+
+static const char _reply_trans_actions[] = {
+	0, 0, 0, 0, 0, 0, 1, 0, 
+	0, 2, 0, 0, 0, 3, 0, 0, 
+	0, 2, 0, 0, 4, 0, 0, 5, 
+	0, 6, 7, 0, 0, 0, 0, 1, 
+	0, 0, 8, 0, 0, 0, 0, 3, 
+	0, 0, 0, 8, 0, 0, 1, 0, 
+	0, 0, 0, 0, 8, 8, 0, 0, 
+	3, 0, 0, 0, 8, 0, 9, 0
+};
+
 static const int reply_start = 1;
 static const int reply_error = 0;
 
@@ -51,7 +282,7 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx, ssize_t bytes)
             dd("init the state machine");
 
             
-#line 57 "src/ngx_http_redis2_reply.c"
+#line 288 "src/ngx_http_redis2_reply.c"
 	{
 	cs = reply_start;
 	}
@@ -71,73 +302,246 @@ ngx_http_redis2_process_reply(ngx_http_redis2_ctx_t *ctx, ssize_t bytes)
         dd("response body: %.*s", (int) bytes, p);
 
         
-#line 77 "src/ngx_http_redis2_reply.c"
+#line 308 "src/ngx_http_redis2_reply.c"
 	{
+	int _klen;
+	const short *_keys;
+	int _trans;
 	short _widec;
+
 	if ( p == pe )
 		goto _test_eof;
-	switch ( cs )
-	{
-case 1:
-	switch( (*p) ) {
-		case 36: goto st2;
-		case 42: goto st14;
-		case 43: goto st50;
-		case 45: goto st50;
-		case 58: goto st50;
+	if ( cs == 0 )
+		goto _out;
+_resume:
+	_widec = (*p);
+	_klen = _reply_cond_lengths[cs];
+	_keys = _reply_cond_keys + (_reply_cond_offsets[cs]*2);
+	if ( _klen > 0 ) {
+		const short *_lower = _keys;
+		const short *_mid;
+		const short *_upper = _keys + (_klen<<1) - 2;
+		while (1) {
+			if ( _upper < _lower )
+				break;
+
+			_mid = _lower + (((_upper-_lower) >> 1) & ~1);
+			if ( _widec < _mid[0] )
+				_upper = _mid - 2;
+			else if ( _widec > _mid[1] )
+				_lower = _mid + 2;
+			else {
+				switch ( _reply_cond_spaces[_reply_cond_offsets[cs] + ((_mid - _keys)>>1)] ) {
+	case 0: {
+		_widec = (short)(128 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		break;
 	}
-	goto st0;
-st0:
-cs = 0;
-	goto _out;
-st2:
-	if ( ++p == pe )
-		goto _test_eof2;
-case 2:
-	switch( (*p) ) {
-		case 45: goto st3;
-		case 48: goto st6;
+	case 1: {
+		_widec = (short)(640 + ((*p) - -128));
+		if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 256;
+		break;
 	}
-	if ( 49 <= (*p) && (*p) <= 57 )
-		goto tr6;
-	goto st0;
-st3:
-	if ( ++p == pe )
-		goto _test_eof3;
-case 3:
-	if ( 48 <= (*p) && (*p) <= 57 )
-		goto st4;
-	goto st0;
-st4:
-	if ( ++p == pe )
-		goto _test_eof4;
-case 4:
-	if ( (*p) == 13 )
-		goto st5;
-	if ( 48 <= (*p) && (*p) <= 57 )
-		goto st4;
-	goto st0;
-st5:
-	if ( ++p == pe )
-		goto _test_eof5;
-case 5:
-	if ( (*p) == 10 )
-		goto tr9;
-	goto st0;
-tr9:
-#line 50 "src/common.rl"
-	{
-        ctx->chunks_read++;
-        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (signed char *) b->last), (signed char *) b->last);
-    }
+	case 2: {
+		_widec = (short)(5248 + ((*p) - -128));
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 256;
+		break;
+	}
+	case 3: {
+		_widec = (short)(1152 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 512;
+		break;
+	}
+	case 4: {
+		_widec = (short)(2176 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 512;
+		break;
+	}
+	case 5: {
+		_widec = (short)(3200 + ((*p) - -128));
+		if ( 
+#line 34 "src/common.rl"
+
+#if 0
+        fprintf(stderr, "test chunk len: %d < %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read++ < ctx->chunk_size
+     ) _widec += 256;
+		if ( 
+#line 56 "src/common.rl"
+
+#if 0
+        fprintf(stderr,
+            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
+            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
+#endif
+        ctx->chunk_bytes_read == ctx->chunk_size + 1
+     ) _widec += 512;
+		if ( 
+#line 6 "src/multi_bulk_reply.rl"
+
+#if 0
+        fprintf(stderr, "test chunk count: %d < %d\n",
+            (int) ctx->chunks_read, (int) ctx->chunk_count),
+#endif
+        ctx->chunks_read < ctx->chunk_count
+     ) _widec += 1024;
+		break;
+	}
+				}
+				break;
+			}
+		}
+	}
+
+	_keys = _reply_trans_keys + _reply_key_offsets[cs];
+	_trans = _reply_index_offsets[cs];
+
+	_klen = _reply_single_lengths[cs];
+	if ( _klen > 0 ) {
+		const short *_lower = _keys;
+		const short *_mid;
+		const short *_upper = _keys + _klen - 1;
+		while (1) {
+			if ( _upper < _lower )
+				break;
+
+			_mid = _lower + ((_upper-_lower) >> 1);
+			if ( _widec < *_mid )
+				_upper = _mid - 1;
+			else if ( _widec > *_mid )
+				_lower = _mid + 1;
+			else {
+				_trans += (unsigned int)(_mid - _keys);
+				goto _match;
+			}
+		}
+		_keys += _klen;
+		_trans += _klen;
+	}
+
+	_klen = _reply_range_lengths[cs];
+	if ( _klen > 0 ) {
+		const short *_lower = _keys;
+		const short *_mid;
+		const short *_upper = _keys + (_klen<<1) - 2;
+		while (1) {
+			if ( _upper < _lower )
+				break;
+
+			_mid = _lower + (((_upper-_lower) >> 1) & ~1);
+			if ( _widec < _mid[0] )
+				_upper = _mid - 2;
+			else if ( _widec > _mid[1] )
+				_lower = _mid + 2;
+			else {
+				_trans += (unsigned int)((_mid - _keys)>>1);
+				goto _match;
+			}
+		}
+		_trans += _klen;
+	}
+
+_match:
+	_trans = _reply_indicies[_trans];
+	cs = _reply_trans_targs[_trans];
+
+	if ( _reply_trans_actions[_trans] == 0 )
+		goto _again;
+
+	switch ( _reply_trans_actions[_trans] ) {
+	case 9:
 #line 12 "src/common.rl"
 	{
         dd("done!");
         done = 1;
     }
-	goto st52;
-tr23:
+	break;
+	case 3:
+#line 17 "src/common.rl"
+	{
+        ctx->chunk_size *= 10;
+        ctx->chunk_size += *p - '0';
+        dd("read chunk size: %d", (int) ctx->chunk_size);
+    }
+	break;
+	case 7:
+#line 14 "src/multi_bulk_reply.rl"
+	{
+        dd("start reading bulk");
+        ctx->chunks_read = 0;
+    }
+	break;
+	case 6:
+#line 24 "src/multi_bulk_reply.rl"
+	{
+        ctx->chunk_count *= 10;
+        ctx->chunk_count += *p - '0';
+        dd("chunk count: %d", (int) ctx->chunk_count);
+    }
+	break;
+	case 5:
 #line 30 "src/multi_bulk_reply.rl"
 	{
         dd("finalize multi bulks");
@@ -147,44 +551,8 @@ tr23:
             done = 1;
         }
     }
-	goto st52;
-tr62:
-#line 12 "src/common.rl"
-	{
-        dd("done!");
-        done = 1;
-    }
-	goto st52;
-st52:
-	if ( ++p == pe )
-		goto _test_eof52;
-case 52:
-#line 165 "src/ngx_http_redis2_reply.c"
-	goto st0;
-st6:
-	if ( ++p == pe )
-		goto _test_eof6;
-case 6:
-	switch( (*p) ) {
-		case 13: goto st7;
-		case 48: goto st6;
-	}
-	goto st0;
-st7:
-	if ( ++p == pe )
-		goto _test_eof7;
-case 7:
-	if ( (*p) == 10 )
-		goto st8;
-	goto st0;
-st8:
-	if ( ++p == pe )
-		goto _test_eof8;
-case 8:
-	if ( (*p) == 13 )
-		goto st5;
-	goto st0;
-tr6:
+	break;
+	case 1:
 #line 23 "src/common.rl"
 	{
         dd("start reading chunk size");
@@ -197,181 +565,8 @@ tr6:
         ctx->chunk_size += *p - '0';
         dd("read chunk size: %d", (int) ctx->chunk_size);
     }
-	goto st9;
-tr13:
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st9;
-st9:
-	if ( ++p == pe )
-		goto _test_eof9;
-case 9:
-#line 216 "src/ngx_http_redis2_reply.c"
-	if ( (*p) == 13 )
-		goto st10;
-	if ( 48 <= (*p) && (*p) <= 57 )
-		goto tr13;
-	goto st0;
-st10:
-	if ( ++p == pe )
-		goto _test_eof10;
-case 10:
-	if ( (*p) == 10 )
-		goto st11;
-	goto st0;
-st11:
-	if ( ++p == pe )
-		goto _test_eof11;
-case 11:
-	_widec = (*p);
-	_widec = (short)(128 + ((*p) - -128));
-	if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-	if ( 384 <= _widec && _widec <= 639 )
-		goto st12;
-	goto st0;
-st12:
-	if ( ++p == pe )
-		goto _test_eof12;
-case 12:
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(128 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(128 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(1152 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 1549: goto st12;
-		case 1805: goto st5;
-		case 2061: goto st13;
-	}
-	if ( _widec > 524 ) {
-		if ( 526 <= _widec && _widec <= 639 )
-			goto st12;
-	} else if ( _widec >= 384 )
-		goto st12;
-	goto st0;
-st13:
-	if ( ++p == pe )
-		goto _test_eof13;
-case 13:
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(128 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(128 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(1152 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 266: goto tr9;
-		case 522: goto tr17;
-		case 1549: goto st12;
-		case 1805: goto st5;
-		case 2061: goto st13;
-	}
-	if ( _widec > 524 ) {
-		if ( 526 <= _widec && _widec <= 639 )
-			goto st12;
-	} else if ( _widec >= 384 )
-		goto st12;
-	goto st0;
-tr17:
+	break;
+	case 2:
 #line 50 "src/common.rl"
 	{
         ctx->chunks_read++;
@@ -383,114 +578,25 @@ tr17:
         dd("done!");
         done = 1;
     }
-	goto st53;
-st53:
-	if ( ++p == pe )
-		goto _test_eof53;
-case 53:
-#line 394 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(128 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
+	break;
+	case 8:
+#line 50 "src/common.rl"
+	{
+        ctx->chunks_read++;
+        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
+            (int) (p - (signed char *) b->last), (signed char *) b->last);
+    }
+#line 30 "src/multi_bulk_reply.rl"
+	{
+        dd("finalize multi bulks");
 
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(128 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(1152 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 1549: goto st12;
-		case 1805: goto st5;
-		case 2061: goto st13;
-	}
-	if ( _widec > 524 ) {
-		if ( 526 <= _widec && _widec <= 639 )
-			goto st12;
-	} else if ( _widec >= 384 )
-		goto st12;
-	goto st0;
-st14:
-	if ( ++p == pe )
-		goto _test_eof14;
-case 14:
-	switch( (*p) ) {
-		case 45: goto st15;
-		case 48: goto st18;
-	}
-	if ( 49 <= (*p) && (*p) <= 57 )
-		goto tr20;
-	goto st0;
-st15:
-	if ( ++p == pe )
-		goto _test_eof15;
-case 15:
-	if ( (*p) == 49 )
-		goto st16;
-	goto st0;
-st16:
-	if ( ++p == pe )
-		goto _test_eof16;
-case 16:
-	if ( (*p) == 13 )
-		goto st17;
-	goto st0;
-st17:
-	if ( ++p == pe )
-		goto _test_eof17;
-case 17:
-	if ( (*p) == 10 )
-		goto tr23;
-	goto st0;
-st18:
-	if ( ++p == pe )
-		goto _test_eof18;
-case 18:
-	switch( (*p) ) {
-		case 13: goto st17;
-		case 48: goto st18;
-	}
-	goto st0;
-tr20:
+        if (ctx->chunks_read == ctx->chunk_count) {
+            dd("done multi bunlk reading!");
+            done = 1;
+        }
+    }
+	break;
+	case 4:
 #line 19 "src/multi_bulk_reply.rl"
 	{
         dd("start reading bulk count");
@@ -502,3561 +608,15 @@ tr20:
         ctx->chunk_count += *p - '0';
         dd("chunk count: %d", (int) ctx->chunk_count);
     }
-	goto st19;
-tr25:
-#line 24 "src/multi_bulk_reply.rl"
-	{
-        ctx->chunk_count *= 10;
-        ctx->chunk_count += *p - '0';
-        dd("chunk count: %d", (int) ctx->chunk_count);
-    }
-	goto st19;
-st19:
-	if ( ++p == pe )
-		goto _test_eof19;
-case 19:
-#line 521 "src/ngx_http_redis2_reply.c"
-	if ( (*p) == 13 )
-		goto st20;
-	if ( 48 <= (*p) && (*p) <= 57 )
-		goto tr25;
-	goto st0;
-st20:
-	if ( ++p == pe )
-		goto _test_eof20;
-case 20:
-	if ( (*p) == 10 )
-		goto tr26;
-	goto st0;
-tr26:
-#line 14 "src/multi_bulk_reply.rl"
-	{
-        dd("start reading bulk");
-        ctx->chunks_read = 0;
-    }
-	goto st21;
-st21:
-	if ( ++p == pe )
-		goto _test_eof21;
-case 21:
-#line 545 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 43 ) {
-		if ( 36 <= (*p) && (*p) <= 36 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 43 ) {
-		if ( (*p) > 45 ) {
-			if ( 58 <= (*p) && (*p) <= 58 ) {
-				_widec = (short)(5248 + ((*p) - -128));
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-			}
-		} else if ( (*p) >= 45 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
+	break;
+#line 615 "src/ngx_http_redis2_reply.c"
 	}
-	switch( _widec ) {
-		case 5668: goto st22;
-		case 5675: goto st26;
-		case 5677: goto st26;
-		case 5690: goto st26;
-	}
-	goto st0;
-st22:
-	if ( ++p == pe )
-		goto _test_eof22;
-case 22:
-	_widec = (*p);
-	if ( (*p) < 48 ) {
-		if ( 45 <= (*p) && (*p) <= 45 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
 
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 48 ) {
-		if ( 49 <= (*p) && (*p) <= 57 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	switch( _widec ) {
-		case 5677: goto st23;
-		case 5680: goto st28;
-	}
-	if ( 5681 <= _widec && _widec <= 5689 )
-		goto tr31;
-	goto st0;
-st23:
-	if ( ++p == pe )
-		goto _test_eof23;
-case 23:
-	_widec = (*p);
-	if ( 48 <= (*p) && (*p) <= 57 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( 5680 <= _widec && _widec <= 5689 )
-		goto st24;
-	goto st0;
-st24:
-	if ( ++p == pe )
-		goto _test_eof24;
-case 24:
-	_widec = (*p);
-	if ( (*p) > 13 ) {
-		if ( 48 <= (*p) && (*p) <= 57 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) >= 13 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5645 )
-		goto st25;
-	if ( 5680 <= _widec && _widec <= 5689 )
-		goto st24;
-	goto st0;
-st25:
-	if ( ++p == pe )
-		goto _test_eof25;
-case 25:
-	_widec = (*p);
-	if ( 10 <= (*p) && (*p) <= 10 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5642 )
-		goto tr34;
-	goto st0;
-tr34:
-#line 50 "src/common.rl"
-	{
-        ctx->chunks_read++;
-        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (signed char *) b->last), (signed char *) b->last);
-    }
-#line 30 "src/multi_bulk_reply.rl"
-	{
-        dd("finalize multi bulks");
-
-        if (ctx->chunks_read == ctx->chunk_count) {
-            dd("done multi bunlk reading!");
-            done = 1;
-        }
-    }
-	goto st54;
-st54:
-	if ( ++p == pe )
-		goto _test_eof54;
-case 54:
-#line 751 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 43 ) {
-		if ( 36 <= (*p) && (*p) <= 36 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 43 ) {
-		if ( (*p) > 45 ) {
-			if ( 58 <= (*p) && (*p) <= 58 ) {
-				_widec = (short)(5248 + ((*p) - -128));
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-			}
-		} else if ( (*p) >= 45 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	switch( _widec ) {
-		case 5668: goto st22;
-		case 5675: goto st26;
-		case 5677: goto st26;
-		case 5690: goto st26;
-	}
-	goto st0;
-st26:
-	if ( ++p == pe )
-		goto _test_eof26;
-case 26:
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5645 )
-		goto st27;
-	if ( 5504 <= _widec && _widec <= 5759 )
-		goto st26;
-	goto st0;
-st27:
-	if ( ++p == pe )
-		goto _test_eof27;
-case 27:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(5248 + ((*p) - -128));
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-			}
-		} else {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(5248 + ((*p) - -128));
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	switch( _widec ) {
-		case 5642: goto tr34;
-		case 5645: goto st27;
-	}
-	if ( 5504 <= _widec && _widec <= 5759 )
-		goto st26;
-	goto st0;
-st28:
-	if ( ++p == pe )
-		goto _test_eof28;
-case 28:
-	_widec = (*p);
-	if ( (*p) > 13 ) {
-		if ( 48 <= (*p) && (*p) <= 48 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) >= 13 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	switch( _widec ) {
-		case 5645: goto st29;
-		case 5680: goto st28;
-	}
-	goto st0;
-st29:
-	if ( ++p == pe )
-		goto _test_eof29;
-case 29:
-	_widec = (*p);
-	if ( 10 <= (*p) && (*p) <= 10 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5642 )
-		goto st30;
-	goto st0;
-st30:
-	if ( ++p == pe )
-		goto _test_eof30;
-case 30:
-	_widec = (*p);
-	if ( 13 <= (*p) && (*p) <= 13 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5645 )
-		goto st25;
-	goto st0;
-tr31:
-#line 23 "src/common.rl"
-	{
-        dd("start reading chunk size");
-        ctx->chunk_bytes_read = 0;
-        ctx->chunk_size = 0;
-    }
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st31;
-tr39:
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st31;
-st31:
-	if ( ++p == pe )
-		goto _test_eof31;
-case 31:
-#line 1036 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) > 13 ) {
-		if ( 48 <= (*p) && (*p) <= 57 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) >= 13 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5645 )
-		goto st32;
-	if ( 5680 <= _widec && _widec <= 5689 )
-		goto tr39;
-	goto st0;
-st32:
-	if ( ++p == pe )
-		goto _test_eof32;
-case 32:
-	_widec = (*p);
-	if ( 10 <= (*p) && (*p) <= 10 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5642 )
-		goto st33;
-	goto st0;
-st33:
-	if ( ++p == pe )
-		goto _test_eof33;
-case 33:
-	_widec = (*p);
-	_widec = (short)(2176 + ((*p) - -128));
-	if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-	if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	if ( 2944 <= _widec && _widec <= 3199 )
-		goto st34;
-	goto st0;
-st34:
-	if ( ++p == pe )
-		goto _test_eof34;
-case 34:
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(3200 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-	}
-	switch( _widec ) {
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st35:
-	if ( ++p == pe )
-		goto _test_eof35;
-case 35:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto tr34;
-		case 3082: goto tr43;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-tr43:
-#line 50 "src/common.rl"
-	{
-        ctx->chunks_read++;
-        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (signed char *) b->last), (signed char *) b->last);
-    }
-#line 30 "src/multi_bulk_reply.rl"
-	{
-        dd("finalize multi bulks");
-
-        if (ctx->chunks_read == ctx->chunk_count) {
-            dd("done multi bunlk reading!");
-            done = 1;
-        }
-    }
-	goto st55;
-st55:
-	if ( ++p == pe )
-		goto _test_eof55;
-case 55:
-#line 1364 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 43 ) {
-		if ( (*p) < 14 ) {
-			if ( (*p) > 12 ) {
-				if ( 13 <= (*p) && (*p) <= 13 ) {
-					_widec = (short)(3200 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-				}
-			} else {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 35 ) {
-			if ( (*p) > 36 ) {
-				if ( 37 <= (*p) && (*p) <= 42 ) {
-					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 36 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 43 ) {
-		if ( (*p) < 46 ) {
-			if ( (*p) > 44 ) {
-				if ( 45 <= (*p) && (*p) <= 45 ) {
-					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 44 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 57 ) {
-			if ( (*p) > 58 ) {
-				if ( 59 <= (*p) )
- {					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 58 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2852: goto st22;
-		case 2859: goto st26;
-		case 2861: goto st26;
-		case 2874: goto st26;
-		case 3108: goto st36;
-		case 3115: goto st44;
-		case 3117: goto st44;
-		case 3130: goto st44;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st36:
-	if ( ++p == pe )
-		goto _test_eof36;
-case 36:
-	_widec = (*p);
-	if ( (*p) < 45 ) {
-		if ( (*p) < 13 ) {
-			if ( (*p) <= 12 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 13 ) {
-			if ( 14 <= (*p) && (*p) <= 44 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else if ( (*p) > 45 ) {
-		if ( (*p) < 48 ) {
-			if ( 46 <= (*p) && (*p) <= 47 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 48 ) {
-			if ( (*p) > 57 ) {
-				if ( 58 <= (*p) )
- {					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 49 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2861: goto st23;
-		case 2864: goto st28;
-		case 3117: goto st37;
-		case 3120: goto st39;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st34;
-		} else if ( _widec >= 2865 )
-			goto tr31;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st34;
-		} else if ( _widec >= 3121 )
-			goto tr46;
-	} else
-		goto st34;
-	goto st0;
-st37:
-	if ( ++p == pe )
-		goto _test_eof37;
-case 37:
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 57 ) {
-			if ( 58 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st34;
-		} else if ( _widec >= 2864 )
-			goto st24;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st34;
-		} else if ( _widec >= 3120 )
-			goto st38;
-	} else
-		goto st34;
-	goto st0;
-st38:
-	if ( ++p == pe )
-		goto _test_eof38;
-case 38:
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 57 ) {
-			if ( 58 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 4365: goto st25;
-		case 4621: goto st35;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st34;
-		} else if ( _widec >= 2864 )
-			goto st24;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st34;
-		} else if ( _widec >= 3120 )
-			goto st38;
-	} else
-		goto st34;
-	goto st0;
-st39:
-	if ( ++p == pe )
-		goto _test_eof39;
-case 39:
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 48 ) {
-			if ( 49 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2864: goto st28;
-		case 3120: goto st39;
-		case 4365: goto st29;
-		case 4621: goto st40;
-		case 4877: goto st42;
-		case 5133: goto st43;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st40:
-	if ( ++p == pe )
-		goto _test_eof40;
-case 40:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto st30;
-		case 3082: goto st41;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st41:
-	if ( ++p == pe )
-		goto _test_eof41;
-case 41:
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(3200 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-	}
-	switch( _widec ) {
-		case 4365: goto st25;
-		case 4621: goto st35;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st42:
-	if ( ++p == pe )
-		goto _test_eof42;
-case 42:
-	_widec = (*p);
-	if ( 10 <= (*p) && (*p) <= 10 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5642 )
-		goto tr52;
-	goto st0;
-tr52:
-#line 50 "src/common.rl"
-	{
-        ctx->chunks_read++;
-        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (signed char *) b->last), (signed char *) b->last);
-    }
-#line 30 "src/multi_bulk_reply.rl"
-	{
-        dd("finalize multi bulks");
-
-        if (ctx->chunks_read == ctx->chunk_count) {
-            dd("done multi bunlk reading!");
-            done = 1;
-        }
-    }
-	goto st56;
-st56:
-	if ( ++p == pe )
-		goto _test_eof56;
-case 56:
-#line 2547 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 43 ) {
-		if ( (*p) > 13 ) {
-			if ( 36 <= (*p) && (*p) <= 36 ) {
-				_widec = (short)(5248 + ((*p) - -128));
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else if ( (*p) > 43 ) {
-		if ( (*p) > 45 ) {
-			if ( 58 <= (*p) && (*p) <= 58 ) {
-				_widec = (short)(5248 + ((*p) - -128));
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-			}
-		} else if ( (*p) >= 45 ) {
-			_widec = (short)(5248 + ((*p) - -128));
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-		}
-	} else {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	switch( _widec ) {
-		case 5645: goto st25;
-		case 5668: goto st22;
-		case 5675: goto st26;
-		case 5677: goto st26;
-		case 5690: goto st26;
-	}
-	goto st0;
-st43:
-	if ( ++p == pe )
-		goto _test_eof43;
-case 43:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto tr52;
-		case 3082: goto tr53;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-tr53:
-#line 50 "src/common.rl"
-	{
-        ctx->chunks_read++;
-        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (signed char *) b->last), (signed char *) b->last);
-    }
-#line 30 "src/multi_bulk_reply.rl"
-	{
-        dd("finalize multi bulks");
-
-        if (ctx->chunks_read == ctx->chunk_count) {
-            dd("done multi bunlk reading!");
-            done = 1;
-        }
-    }
-	goto st57;
-st57:
-	if ( ++p == pe )
-		goto _test_eof57;
-case 57:
-#line 2779 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 43 ) {
-		if ( (*p) < 14 ) {
-			if ( (*p) > 12 ) {
-				if ( 13 <= (*p) && (*p) <= 13 ) {
-					_widec = (short)(3200 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-				}
-			} else {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 35 ) {
-			if ( (*p) > 36 ) {
-				if ( 37 <= (*p) && (*p) <= 42 ) {
-					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 36 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 43 ) {
-		if ( (*p) < 46 ) {
-			if ( (*p) > 44 ) {
-				if ( 45 <= (*p) && (*p) <= 45 ) {
-					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 44 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 57 ) {
-			if ( (*p) > 58 ) {
-				if ( 59 <= (*p) )
- {					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 58 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2852: goto st22;
-		case 2859: goto st26;
-		case 2861: goto st26;
-		case 2874: goto st26;
-		case 3108: goto st36;
-		case 3115: goto st44;
-		case 3117: goto st44;
-		case 3130: goto st44;
-		case 4365: goto st25;
-		case 4621: goto st35;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st44:
-	if ( ++p == pe )
-		goto _test_eof44;
-case 44:
-	_widec = (*p);
-	if ( (*p) < 13 ) {
-		if ( (*p) <= 12 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 13 ) {
-		if ( 14 <= (*p) )
- {			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(3200 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-	}
-	switch( _widec ) {
-		case 4365: goto st27;
-		case 4621: goto st45;
-		case 4877: goto st27;
-		case 5133: goto st45;
-	}
-	if ( _widec < 2830 ) {
-		if ( 2688 <= _widec && _widec <= 2828 )
-			goto st26;
-	} else if ( _widec > 2943 ) {
-		if ( _widec > 3084 ) {
-			if ( 3086 <= _widec && _widec <= 3199 )
-				goto st44;
-		} else if ( _widec >= 2944 )
-			goto st44;
-	} else
-		goto st26;
-	goto st0;
-st45:
-	if ( ++p == pe )
-		goto _test_eof45;
-case 45:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto tr34;
-		case 3082: goto tr43;
-		case 4365: goto st27;
-		case 4621: goto st45;
-		case 4877: goto st27;
-		case 5133: goto st45;
-	}
-	if ( _widec < 2830 ) {
-		if ( 2688 <= _widec && _widec <= 2828 )
-			goto st26;
-	} else if ( _widec > 2943 ) {
-		if ( _widec > 3084 ) {
-			if ( 3086 <= _widec && _widec <= 3199 )
-				goto st44;
-		} else if ( _widec >= 2944 )
-			goto st44;
-	} else
-		goto st26;
-	goto st0;
-tr46:
-#line 23 "src/common.rl"
-	{
-        dd("start reading chunk size");
-        ctx->chunk_bytes_read = 0;
-        ctx->chunk_size = 0;
-    }
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st46;
-tr56:
-#line 17 "src/common.rl"
-	{
-        ctx->chunk_size *= 10;
-        ctx->chunk_size += *p - '0';
-        dd("read chunk size: %d", (int) ctx->chunk_size);
-    }
-	goto st46;
-st46:
-	if ( ++p == pe )
-		goto _test_eof46;
-case 46:
-#line 3320 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 14 ) {
-		if ( (*p) > 12 ) {
-			if ( 13 <= (*p) && (*p) <= 13 ) {
-				_widec = (short)(3200 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 47 ) {
-		if ( (*p) > 57 ) {
-			if ( 58 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 48 ) {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 4365: goto st32;
-		case 4621: goto st47;
-		case 4877: goto st48;
-		case 5133: goto st49;
-	}
-	if ( _widec < 3086 ) {
-		if ( _widec > 2873 ) {
-			if ( 2944 <= _widec && _widec <= 3084 )
-				goto st34;
-		} else if ( _widec >= 2864 )
-			goto tr39;
-	} else if ( _widec > 3119 ) {
-		if ( _widec > 3129 ) {
-			if ( 3130 <= _widec && _widec <= 3199 )
-				goto st34;
-		} else if ( _widec >= 3120 )
-			goto tr56;
-	} else
-		goto st34;
-	goto st0;
-st47:
-	if ( ++p == pe )
-		goto _test_eof47;
-case 47:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto st33;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st48:
-	if ( ++p == pe )
-		goto _test_eof48;
-case 48:
-	_widec = (*p);
-	if ( 10 <= (*p) && (*p) <= 10 ) {
-		_widec = (short)(5248 + ((*p) - -128));
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 256;
-	}
-	if ( _widec == 5642 )
-		goto tr60;
-	goto st0;
-tr60:
-#line 50 "src/common.rl"
-	{
-        ctx->chunks_read++;
-        dd("have read chunk %d, %.*s", (int) ctx->chunks_read,
-            (int) (p - (signed char *) b->last), (signed char *) b->last);
-    }
-#line 30 "src/multi_bulk_reply.rl"
-	{
-        dd("finalize multi bulks");
-
-        if (ctx->chunks_read == ctx->chunk_count) {
-            dd("done multi bunlk reading!");
-            done = 1;
-        }
-    }
-	goto st58;
-st58:
-	if ( ++p == pe )
-		goto _test_eof58;
-case 58:
-#line 3639 "src/ngx_http_redis2_reply.c"
-	_widec = (*p);
-	if ( (*p) < 44 ) {
-		if ( (*p) < 36 ) {
-			if ( (*p) <= 35 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 36 ) {
-			if ( (*p) > 42 ) {
-				if ( 43 <= (*p) && (*p) <= 43 ) {
-					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 37 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 44 ) {
-		if ( (*p) < 46 ) {
-			if ( 45 <= (*p) && (*p) <= 45 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) > 57 ) {
-			if ( (*p) > 58 ) {
-				if ( 59 <= (*p) )
- {					_widec = (short)(2176 + ((*p) - -128));
-					if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-					if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-				}
-			} else if ( (*p) >= 58 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2852: goto st22;
-		case 2859: goto st26;
-		case 2861: goto st26;
-		case 2874: goto st26;
-		case 3108: goto st36;
-		case 3115: goto st44;
-		case 3117: goto st44;
-		case 3130: goto st44;
-	}
-	if ( 2944 <= _widec && _widec <= 3199 )
-		goto st34;
-	goto st0;
-st49:
-	if ( ++p == pe )
-		goto _test_eof49;
-case 49:
-	_widec = (*p);
-	if ( (*p) < 11 ) {
-		if ( (*p) > 9 ) {
-			if ( 10 <= (*p) && (*p) <= 10 ) {
-				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else {
-			_widec = (short)(2176 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-		}
-	} else if ( (*p) > 12 ) {
-		if ( (*p) > 13 ) {
-			if ( 14 <= (*p) )
- {				_widec = (short)(2176 + ((*p) - -128));
-				if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-				if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-			}
-		} else if ( (*p) >= 13 ) {
-			_widec = (short)(3200 + ((*p) - -128));
-			if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-			if ( 
-#line 56 "src/common.rl"
-
-#if 0
-        fprintf(stderr,
-            "check_data_complete: chunk bytes read: %d, chunk size: %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read == ctx->chunk_size + 1
-     ) _widec += 512;
-			if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 1024;
-		}
-	} else {
-		_widec = (short)(2176 + ((*p) - -128));
-		if ( 
-#line 34 "src/common.rl"
-
-#if 0
-        fprintf(stderr, "test chunk len: %d < %d\n",
-            (int) ctx->chunk_bytes_read, (int) ctx->chunk_size),
-#endif
-        ctx->chunk_bytes_read++ < ctx->chunk_size
-     ) _widec += 256;
-		if ( 
-#line 6 "src/multi_bulk_reply.rl"
-
-#if 0
-        fprintf(stderr, "test chunk count: %d < %d\n",
-            (int) ctx->chunks_read, (int) ctx->chunk_count),
-#endif
-        ctx->chunks_read < ctx->chunk_count
-     ) _widec += 512;
-	}
-	switch( _widec ) {
-		case 2826: goto tr60;
-		case 3082: goto tr43;
-		case 4621: goto st34;
-		case 4877: goto st25;
-		case 5133: goto st35;
-	}
-	if ( _widec > 3084 ) {
-		if ( 3086 <= _widec && _widec <= 3199 )
-			goto st34;
-	} else if ( _widec >= 2944 )
-		goto st34;
-	goto st0;
-st50:
-	if ( ++p == pe )
-		goto _test_eof50;
-case 50:
-	if ( (*p) == 13 )
-		goto st51;
-	goto st50;
-st51:
-	if ( ++p == pe )
-		goto _test_eof51;
-case 51:
-	switch( (*p) ) {
-		case 10: goto tr62;
-		case 13: goto st51;
-	}
-	goto st50;
-	}
-	_test_eof2: cs = 2; goto _test_eof; 
-	_test_eof3: cs = 3; goto _test_eof; 
-	_test_eof4: cs = 4; goto _test_eof; 
-	_test_eof5: cs = 5; goto _test_eof; 
-	_test_eof52: cs = 52; goto _test_eof; 
-	_test_eof6: cs = 6; goto _test_eof; 
-	_test_eof7: cs = 7; goto _test_eof; 
-	_test_eof8: cs = 8; goto _test_eof; 
-	_test_eof9: cs = 9; goto _test_eof; 
-	_test_eof10: cs = 10; goto _test_eof; 
-	_test_eof11: cs = 11; goto _test_eof; 
-	_test_eof12: cs = 12; goto _test_eof; 
-	_test_eof13: cs = 13; goto _test_eof; 
-	_test_eof53: cs = 53; goto _test_eof; 
-	_test_eof14: cs = 14; goto _test_eof; 
-	_test_eof15: cs = 15; goto _test_eof; 
-	_test_eof16: cs = 16; goto _test_eof; 
-	_test_eof17: cs = 17; goto _test_eof; 
-	_test_eof18: cs = 18; goto _test_eof; 
-	_test_eof19: cs = 19; goto _test_eof; 
-	_test_eof20: cs = 20; goto _test_eof; 
-	_test_eof21: cs = 21; goto _test_eof; 
-	_test_eof22: cs = 22; goto _test_eof; 
-	_test_eof23: cs = 23; goto _test_eof; 
-	_test_eof24: cs = 24; goto _test_eof; 
-	_test_eof25: cs = 25; goto _test_eof; 
-	_test_eof54: cs = 54; goto _test_eof; 
-	_test_eof26: cs = 26; goto _test_eof; 
-	_test_eof27: cs = 27; goto _test_eof; 
-	_test_eof28: cs = 28; goto _test_eof; 
-	_test_eof29: cs = 29; goto _test_eof; 
-	_test_eof30: cs = 30; goto _test_eof; 
-	_test_eof31: cs = 31; goto _test_eof; 
-	_test_eof32: cs = 32; goto _test_eof; 
-	_test_eof33: cs = 33; goto _test_eof; 
-	_test_eof34: cs = 34; goto _test_eof; 
-	_test_eof35: cs = 35; goto _test_eof; 
-	_test_eof55: cs = 55; goto _test_eof; 
-	_test_eof36: cs = 36; goto _test_eof; 
-	_test_eof37: cs = 37; goto _test_eof; 
-	_test_eof38: cs = 38; goto _test_eof; 
-	_test_eof39: cs = 39; goto _test_eof; 
-	_test_eof40: cs = 40; goto _test_eof; 
-	_test_eof41: cs = 41; goto _test_eof; 
-	_test_eof42: cs = 42; goto _test_eof; 
-	_test_eof56: cs = 56; goto _test_eof; 
-	_test_eof43: cs = 43; goto _test_eof; 
-	_test_eof57: cs = 57; goto _test_eof; 
-	_test_eof44: cs = 44; goto _test_eof; 
-	_test_eof45: cs = 45; goto _test_eof; 
-	_test_eof46: cs = 46; goto _test_eof; 
-	_test_eof47: cs = 47; goto _test_eof; 
-	_test_eof48: cs = 48; goto _test_eof; 
-	_test_eof58: cs = 58; goto _test_eof; 
-	_test_eof49: cs = 49; goto _test_eof; 
-	_test_eof50: cs = 50; goto _test_eof; 
-	_test_eof51: cs = 51; goto _test_eof; 
-
+_again:
+	if ( cs == 0 )
+		goto _out;
+	if ( ++p != pe )
+		goto _resume;
 	_test_eof: {}
 	_out: {}
 	}
