@@ -52,7 +52,7 @@ This module is already production ready.
 Version
 =======
 
-This document describes ngx_redis2 [v0.14](https://github.com/openresty/redis2-nginx-module/tags) released on 8 April 2017.
+This document describes ngx_redis2 [v0.15](https://github.com/openresty/redis2-nginx-module/tags) released on 19 April 2018.
 
 Synopsis
 ========
