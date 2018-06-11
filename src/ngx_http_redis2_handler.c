@@ -231,6 +231,7 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
     ngx_buf_t                   *b;
     u_char                       chr;
     ngx_str_t                    buf;
+    ngx_http_core_loc_conf_t    *clcf;
 
     u = r->upstream;
     b = &u->buffer;
@@ -266,6 +267,12 @@ ngx_http_redis2_process_header(ngx_http_request_t *r)
             return NGX_HTTP_UPSTREAM_INVALID_HEADER;
     }
 
+    clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+    
+    if (!clcf->chunked_transfer_encoding) {
+        u->headers_in.content_length_n = b->last - b->pos;
+    }
+    
     u->headers_in.status_n = NGX_HTTP_OK;
     u->state->status = NGX_HTTP_OK;
 
