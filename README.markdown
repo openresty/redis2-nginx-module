@@ -653,6 +653,7 @@ Redis 2.0, 2.2, 2.4, and above should work with this module without any issues. 
 
 The following versions of Nginx should work with this module:
 
+* **1.17.x**                      (last tested: 1.17.4)
 * **1.16.x**
 * **1.15.x**                      (last tested: 1.15.8)
 * **1.14.x**
