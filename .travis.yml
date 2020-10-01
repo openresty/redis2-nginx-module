@@ -44,7 +44,7 @@ services:
 install:
   - git clone https://github.com/openresty/nginx-devel-utils.git
   - git clone https://github.com/openresty/openresty.git ../openresty
-  - git clone -b 1.19.3.x https://github.com/xiaocang/no-pool-nginx.git ../no-pool-nginx
+  - git clone https://github.com/openresty/no-pool-nginx.git ../no-pool-nginx
   - git clone https://github.com/simpl/ngx_devel_kit.git ../ndk-nginx-module
   - git clone https://github.com/openresty/test-nginx.git
   - git clone -b v2.1-agentzh https://github.com/openresty/luajit2.git
