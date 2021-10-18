@@ -15,6 +15,7 @@ $ENV{TEST_NGINX_REDIS_PORT} ||= 6379;
 #no_diff;
 
 #log_level 'warn';
+no_long_string;
 
 run_tests();
 
@@ -80,8 +81,8 @@ __DATA__
     }
 --- request
     GET /foo
---- response_body eval
-"-ERR unknown command 'bad_cmd'\r\n"
+--- response_body_like eval
+qr/-ERR unknown command `bad_cmd`(?:, with args beginning with: )?\r\n/
 
 
 
