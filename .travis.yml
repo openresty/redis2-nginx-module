@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: bionic
 
 os: linux
 
@@ -7,7 +7,6 @@ language: c
 
 compiler:
   - gcc
-  - clang
 
 addons:
   apt:
@@ -35,8 +34,8 @@ env:
     - JOBS=3
     - NGX_BUILD_JOBS=$JOBS
   matrix:
-    - NGINX_VERSION=1.9.15
-    - NGINX_VERSION=1.19.3
+    - NGINX_VERSION=1.17.8
+    - NGINX_VERSION=1.19.9
 
 services:
  - redis-server
@@ -66,4 +65,4 @@ script:
   - sh util/build.sh $NGINX_VERSION > build.log 2>&1 || (cat build.log && exit 1)
   - nginx -V
   - ldd `which nginx`|grep luajit
-  - prove -r t
+  - prove -I. -r t
