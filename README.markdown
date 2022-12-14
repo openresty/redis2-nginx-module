@@ -453,6 +453,8 @@ You can also use POST/PUT subrequests to transfer the raw Redis request via requ
  }
 ```
 
+> **Important** The nginx variable `$request_body` *only* contains content buffered into memory. If nginx writes the request body to a temporary file (default behavior) the `$request_body` will **not** include the entire content or may be empty. It's recommended to use `$echo_request_body` which reads the full request body (regardless of being in buffer or temporary file).
+
 This yeilds exactly the same output as the previous (GET) sample.
 
 One can also use Lua to pick up a concrete Redis backend based on some complicated hashing rules. For instance,
