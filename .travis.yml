@@ -1,6 +1,10 @@
 sudo: required
 dist: bionic
 
+branches:
+  only:
+    - "master"
+
 os: linux
 
 language: c
@@ -34,8 +38,7 @@ env:
     - JOBS=3
     - NGX_BUILD_JOBS=$JOBS
   matrix:
-    - NGINX_VERSION=1.17.8
-    - NGINX_VERSION=1.19.9
+    - NGINX_VERSION=1.25.3
 
 services:
  - redis-server
