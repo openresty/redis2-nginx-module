@@ -81,7 +81,7 @@ __DATA__
 --- request
     GET /foo
 --- response_body_like eval
-qr/-ERR unknown command `bad_cmd`(?:, with args beginning with: )?\r\n/
+qr/-ERR unknown command [`']bad_cmd[`'](?:, with args beginning with: )?/
 
 
 
