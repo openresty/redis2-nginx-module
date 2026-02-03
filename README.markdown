@@ -253,7 +253,7 @@ redis2_pass
 
 **phase:** *content*
 
-Specify the Redis server backend. 
+Specify the Redis server backend.
 
 [Back to TOC](#table-of-contents)
 
@@ -619,6 +619,25 @@ Installation
 
 You are recommended to install this module (as well as the Nginx core and many many other goodies) via the [ngx_openresty bundle](http://openresty.org). Check out the [installation instructions](http://openresty.org/#Installation) for setting up [ngx_openresty](http://openresty.org).
 
+Pre-built packages for this module are also freely available from the GetPageSpeed repository for Ubuntu and Debian:
+
+```bash
+# Install the repository keyring
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://extras.getpagespeed.com/deb-archive-keyring.gpg \
+  | sudo tee /etc/apt/keyrings/getpagespeed.gpg >/dev/null
+
+# Add the repository (Ubuntu example - replace 'ubuntu' and 'jammy' for your distro)
+echo "deb [signed-by=/etc/apt/keyrings/getpagespeed.gpg] https://extras.getpagespeed.com/ubuntu jammy main" \
+  | sudo tee /etc/apt/sources.list.d/getpagespeed-extras.list
+
+# Install nginx and the module
+sudo apt-get update
+sudo apt-get install nginx nginx-module-redis2
+```
+
+The module is automatically enabled after installation. Supported distributions include Debian 12/13 and Ubuntu 20.04/22.04/24.04 (both amd64 and arm64). See [the complete setup instructions](https://apt-nginx-extras.getpagespeed.com/apt-setup/).
+
 Alternatively, you can install this module manually by recompiling the standard Nginx core as follows:
 
 * Grab the nginx source code from [nginx.org](http://nginx.org), for example, the version 1.11.2 (see nginx compatibility),
@@ -768,4 +787,3 @@ SEE ALSO
 * The [lua-resty-redis](https://github.com/openresty/lua-resty-redis) library based on the [lua-nginx-module](http://github.com/openresty/lua-nginx-module) cosocket API.
 
 [Back to TOC](#table-of-contents)
-
