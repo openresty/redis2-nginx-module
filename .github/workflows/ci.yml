@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: nginx ${{ matrix.nginx }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        nginx:
+          - "1.31.4"
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      CC: gcc
+      JOBS: 3
+      NGX_BUILD_JOBS: 3
+      LUAJIT_PREFIX: /opt/luajit21
+      LUAJIT_LIB: /opt/luajit21/lib
+      LUAJIT_INC: /opt/luajit21/include/luajit-2.1
+      LUA_INCLUDE_DIR: /opt/luajit21/include/luajit-2.1
+      LUA_CMODULE_DIR: /lib
+      LD_LIBRARY_PATH: /opt/luajit21/lib
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            axel \
+            build-essential \
+            cpanminus \
+            liblist-moreutils-perl \
+            libpcre3-dev \
+            libtest-base-perl \
+            libtest-longstring-perl \
+            libtext-diff-perl \
+            liburi-perl \
+            libwww-perl \
+            ragel \
+            zlib1g-dev
+
+      - name: Clone dependencies
+        run: |
+          git clone --depth=1 https://github.com/openresty/openresty-devel-utils.git
+          git clone --depth=1 https://github.com/openresty/openresty.git ../openresty
+          git clone --depth=1 https://github.com/openresty/no-pool-nginx.git ../no-pool-nginx
+          git clone --depth=1 https://github.com/openresty/ngx_devel_kit.git ../ndk-nginx-module
+          git clone --depth=1 https://github.com/openresty/test-nginx.git
+          git clone --depth=1 --branch v2.1-agentzh https://github.com/openresty/luajit2.git
+          git clone --depth=1 https://github.com/openresty/lua-nginx-module.git ../lua-nginx-module
+          git clone --depth=1 https://github.com/openresty/lua-resty-core.git ../lua-resty-core
+          git clone --depth=1 https://github.com/openresty/lua-resty-lrucache.git ../lua-resty-lrucache
+          git clone --depth=1 https://github.com/openresty/nginx-eval-module.git ../eval-nginx-module
+          git clone --depth=1 https://github.com/openresty/echo-nginx-module.git ../echo-nginx-module
+          git clone --depth=1 https://github.com/openresty/set-misc-nginx-module.git ../set-misc-nginx-module
+
+      - name: Build LuaJIT
+        run: |
+          cd luajit2
+          make -j"$JOBS" CCDEBUG=-g Q= PREFIX="$LUAJIT_PREFIX" CC="$CC" \
+            XCFLAGS='-DLUA_USE_APICHECK -DLUA_USE_ASSERT' \
+            > build.log 2>&1 || (cat build.log && exit 1)
+          { sudo make install PREFIX="$LUAJIT_PREFIX"; } \
+            > build.log 2>&1 || (cat build.log && exit 1)
+
+      - name: Install Perl test dependencies
+        run: |
+          cpanm --sudo --notest Test::Nginx IPC::Run Test2::Util \
+            > build.log 2>&1 || (cat build.log && exit 1)
+          cd test-nginx
+          cpanm --sudo --notest . \
+            > build.log 2>&1 || (cat build.log && exit 1)
+
+      - name: Build nginx
+        run: |
+          export PATH="$PWD/work/nginx/sbin:$PWD/openresty-devel-utils:$PATH"
+          export NGX_BUILD_CC="$CC"
+          sh util/build.sh "${{ matrix.nginx }}" \
+            > build.log 2>&1 || (cat build.log && exit 1)
+          nginx -V
+          ldd "$(command -v nginx)" | grep luajit
+
+      - name: Run tests
+        run: |
+          export PATH="$PWD/work/nginx/sbin:$PWD/openresty-devel-utils:$PATH"
+          prove -I. -r t
